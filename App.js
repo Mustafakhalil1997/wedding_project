@@ -12,6 +12,8 @@ import { enableScreens } from "react-native-screens";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import HallListScreen from "./screens/HallListScreen";
+import HallDetailScreen from "./screens/HallDetailScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 enableScreens();
 
@@ -38,6 +40,32 @@ export default function App() {
     );
   }
 
+  const MainStackNavigator = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <Stack.Screen name="HallList" component={HallListScreen} />
+        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const TabNavigation = () => {
+    return (
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Tab.Screen name="Home" component={HallListScreen} />
+        <Tab.Screen name="Login" component={LoginScreen} />
+      </Tab.Navigator>
+    );
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -45,7 +73,8 @@ export default function App() {
           headerTitleAlign: "center",
         }}
       >
-        <Stack.Screen name="HallList" component={HallListScreen} />
+        <Stack.Screen name="HallList" component={TabNavigation} />
+        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     // <View style={styles.container}>
