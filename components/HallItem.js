@@ -8,18 +8,26 @@ import {
   Text,
 } from "react-native";
 import DefaultText from "./DefaultText";
+import ImageSlider from "./ImageSliderShow/ImageSlider";
 
 const HallItem = (props) => {
   console.log("HallItem");
   const { navigation, item } = props;
 
-  const { id, name, email, number, images } = item;
-
-  console.log(name);
-  console.log(images[0]);
+  const { id, name, email, location, number, images } = item;
 
   const handleHallClick = () => {
-    console.log("Hall clicked");
+    navigation.navigate({
+      name: "HallDetail",
+      params: {
+        id,
+        name,
+        email,
+        location,
+        number,
+        images,
+      },
+    });
   };
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
@@ -33,9 +41,14 @@ const HallItem = (props) => {
           background={TouchableNativeFeedback.Ripple("white", false)}
           //   useForeground
         >
-          <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 20 }}>
+          <View style={styles.contentContainer}>
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={source} />
+              <ImageSlider
+                dot
+                images={[source, source1, source]}
+                styles={{ width: "100%", height: "80%" }}
+              />
+              {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>
               <View>
@@ -67,6 +80,12 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     height: 350,
     overflow: "hidden",
+  },
+
+  contentContainer: {
+    flex: 1,
+    paddingTop: 10,
+    paddingHorizontal: 20,
   },
 
   infoContainer: {

@@ -14,7 +14,7 @@ const DUMMY_HALLLIST = [
     ],
   },
   {
-    id: "h1",
+    id: "h2",
     name: "North Hall",
     email: "NorthHall@gmail.com",
     number: "79126550",
@@ -24,7 +24,7 @@ const DUMMY_HALLLIST = [
     ],
   },
   {
-    id: "h1",
+    id: "h3",
     name: "North Hall",
     email: "NorthHall@gmail.com",
     number: "79126550",
