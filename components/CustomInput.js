@@ -4,16 +4,7 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 
 const CustomInput = (props) => {
-  const {
-    iconName,
-    iconSize,
-    value,
-    secureTextEntry,
-    label,
-    placeholder,
-    onChangeText,
-    error,
-  } = props;
+  const { iconName, iconSize, label, error } = props;
 
   return (
     <View style={styles.inputLabelContainer}>
@@ -25,19 +16,25 @@ const CustomInput = (props) => {
         }}
       >
         <Text style={{ fontFamily: "open-sans-bold" }}>{label}</Text>
-        {error && <Text style={{ color: "red", fontSize: 16 }}>{error}</Text>}
+        {error && <Text style={{ color: "red", fontSize: 14 }}>{error}</Text>}
       </View>
 
-      <View style={styles.inputContainer}>
+      <View
+        style={
+          error
+            ? { ...styles.inputContainer, borderColor: "red" }
+            : styles.inputContainer
+        }
+      >
         <EvilIcons name={iconName} size={iconSize} />
         <View style={styles.input}>
           <TextInput
             {...props}
-            value={value}
-            onChangeText={onChangeText}
-            secureTextEntry={secureTextEntry}
+            // value={value}
+            // onChangeText={onChangeText}
+            // secureTextEntry={secureTextEntry}
+            // placeholder={placeholder}
             autoCapitalize="none"
-            placeholder={placeholder}
           />
         </View>
       </View>
@@ -54,7 +51,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 10,
-    borderBottomColor: "gray",
     paddingVertical: 10,
     alignItems: "center",
   },

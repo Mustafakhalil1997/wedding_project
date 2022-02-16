@@ -1,15 +1,29 @@
 import React from "react";
-import { View, StyleSheet, TouchableNativeFeedback, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  Text,
+  Platform,
+} from "react-native";
 import Colors from "../constants/Colors";
+
+let TouchableComponent = TouchableOpacity;
+let android = false;
+if (Platform.OS === "android") {
+  TouchableComponent = TouchableNativeFeedback;
+  android = true;
+}
 
 const CustomButton = (props) => {
   const { buttonDisabled, handleSubmit, label } = props;
 
   return (
-    <TouchableNativeFeedback
+    <TouchableComponent
       disabled={buttonDisabled}
       onPress={handleSubmit}
-      background={TouchableNativeFeedback.Ripple("white", false)}
+      //   background={TouchableNativeFeedback.Ripple("white", false)}
     >
       <View
         style={
@@ -20,7 +34,7 @@ const CustomButton = (props) => {
       >
         <Text>{label}</Text>
       </View>
-    </TouchableNativeFeedback>
+    </TouchableComponent>
   );
 };
 

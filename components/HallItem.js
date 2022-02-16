@@ -6,9 +6,17 @@ import {
   TouchableNativeFeedback,
   Image,
   Text,
+  Platform,
 } from "react-native";
 import DefaultText from "./DefaultText";
 import ImageSlider from "./ImageSliderShow/ImageSlider";
+
+let TouchableComponent = TouchableOpacity;
+let android = false;
+if (Platform.OS === "android") {
+  TouchableComponent = TouchableNativeFeedback;
+  android = true;
+}
 
 const HallItem = (props) => {
   console.log("HallItem");
@@ -37,9 +45,11 @@ const HallItem = (props) => {
   return (
     <View style={styles.itemContainer}>
       <View style={{ flex: 1, width: "100%" }}>
-        <TouchableNativeFeedback
+        <TouchableComponent
           onPress={handleHallClick}
-          background={TouchableNativeFeedback.Ripple("white", false)}
+          background={
+            android ? TouchableNativeFeedback.Ripple("white", false) : null
+          }
           //   useForeground
         >
           <View style={styles.contentContainer}>
@@ -62,7 +72,7 @@ const HallItem = (props) => {
               <DefaultText>{number}</DefaultText>
             </View>
           </View>
-        </TouchableNativeFeedback>
+        </TouchableComponent>
       </View>
     </View>
   );

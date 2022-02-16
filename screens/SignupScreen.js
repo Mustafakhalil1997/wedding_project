@@ -2,20 +2,14 @@ import React from "react";
 import {
   StatusBar,
   View,
-  Text,
   StyleSheet,
-  TextInput,
-  Button,
   SafeAreaView,
   Platform,
-  Pressable,
-  TouchableNativeFeedback,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
-import { EvilIcons } from "@expo/vector-icons";
 import CustomButton from "../components/CustomButton";
 
 // envelope // lock
@@ -28,6 +22,7 @@ const validationSchema = Yup.object().shape({
     .required("Name is required!"),
   email: Yup.string()
     .label("email")
+    .trim()
     .email("Invalid email!")
     .required("Email is required"),
   password: Yup.string()
@@ -52,8 +47,11 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
-    console.log("Submit values ", values);
-    // console.log("Formik acitons ", formikActions);
+    setTimeout(() => {
+      console.log("Submit values ", values);
+      formikActions.resetForm();
+      formikActions.setSubmitting(false);
+    }, 4000);
   };
 
   return (
@@ -125,25 +123,11 @@ const SignupScreen = ({ navigation }) => {
                 error={touched.confirmPassword && errors.confirmPassword}
               />
 
-              <CustomButton buttonDisabled handleSubmit label="SIGN UP" />
-              <TouchableNativeFeedback
-                disabled={buttonDisabled}
-                onPress={handleSubmit}
-                background={
-                  !buttonDisabled &&
-                  TouchableNativeFeedback.Ripple("white", false)
-                }
-              >
-                <View
-                  style={
-                    buttonDisabled
-                      ? { ...styles.buttonContainer, opacity: 0.4 }
-                      : styles.buttonContainer
-                  }
-                >
-                  <Text>SIGN UP</Text>
-                </View>
-              </TouchableNativeFeedback>
+              <CustomButton
+                buttonDisabled={buttonDisabled}
+                handleSubmit={handleSubmit}
+                label="SIGN UP"
+              />
             </View>
           );
         }}

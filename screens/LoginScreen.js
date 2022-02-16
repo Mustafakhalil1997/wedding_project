@@ -4,30 +4,21 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
-  Button,
   SafeAreaView,
   Platform,
-  Pressable,
-  TouchableNativeFeedback,
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
-import { EvilIcons } from "@expo/vector-icons";
 import CustomButton from "./../components/CustomButton";
 
 // envelope // lock
 
 const validationSchema = Yup.object().shape({
-  fullName: Yup.string()
-    .label("fullName")
-    .trim()
-    .min(3, "Invalid name!")
-    .required("Name is required!"),
   email: Yup.string()
     .label("email")
+    .trim()
     .email("Invalid email!")
     .required("Email is required"),
   password: Yup.string()
@@ -35,9 +26,6 @@ const validationSchema = Yup.object().shape({
     .trim()
     .min(8, "Password is too short!")
     .required("Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Password does not match!")
-    .required("Confirm Password is required"),
 });
 
 const LoginScreen = ({ navigation }) => {
@@ -48,7 +36,13 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
-    console.log("Submit values ", values);
+
+    setTimeout(() => {
+      console.log("Submit values ", values);
+      formikActions.resetForm();
+      formikActions.setSubmitting(false);
+    });
+
     // console.log("Formik acitons ", formikActions);
   };
 
@@ -99,7 +93,24 @@ const LoginScreen = ({ navigation }) => {
                 onBlur={handleBlur("password")}
                 error={touched.password && errors.password}
               />
-              <CustomButton buttonDisabled handleSubmit label="LOG IN" />
+              <CustomButton
+                buttonDisabled={buttonDisabled}
+                handleSubmit={handleSubmit}
+                label="LOG IN"
+              />
+              <View>
+                <Text style={{ marginTop: 10 }}>
+                  Already have an account?{" "}
+                  <Text
+                    style={{ color: "blue", textDecorationLine: "underline" }}
+                    onPress={() => {
+                      navigation.navigate("Signup");
+                    }}
+                  >
+                    Signup
+                  </Text>
+                </Text>
+              </View>
             </View>
           );
         }}
