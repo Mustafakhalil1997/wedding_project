@@ -17,6 +17,7 @@ const HallItem = (props) => {
   const { id, name, email, location, number, images } = item;
 
   const handleHallClick = () => {
+    console.log("clicked");
     navigation.navigate({
       name: "HallDetail",
       params: {
