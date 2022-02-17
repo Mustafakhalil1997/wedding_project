@@ -6,8 +6,10 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
 import * as Yup from "yup";
+
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
@@ -51,6 +53,11 @@ const SignupScreen = ({ navigation }) => {
       console.log("Submit values ", values);
       formikActions.resetForm();
       formikActions.setSubmitting(false);
+      showMessage({
+        message: "Signup Successfull",
+        type: "success",
+        style: { borderRadius: 20 },
+      });
     }, 4000);
   };
 

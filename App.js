@@ -10,6 +10,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { EvilIcons } from "@expo/vector-icons";
 
+import FlashMessage from "react-native-flash-message";
+
 import Colors from "./constants/Colors";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
@@ -119,18 +121,27 @@ export default function App() {
     );
   };
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="HallList" component={TabNavigation} />
-        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
-        <Stack.Screen name="Auth" component={TabNavigation} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <React.Fragment>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="HallList" component={TabNavigation} />
+          <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+          <Stack.Screen name="Auth" component={TabNavigation} />
+          <Stack.Screen name="Signup" component={SignupScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      <FlashMessage
+        position={"center"}
+        animated={true}
+        animationDuration={500}
+        autoHide={true}
+        // style={{ borderRadius: "10" }}
+      />
+    </React.Fragment>
     // <View style={styles.container}>
     //   <Text>Open up App.js to start working on your app!</Text>
     //   <StatusBar style="auto" />

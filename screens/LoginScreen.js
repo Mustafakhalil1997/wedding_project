@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Platform,
 } from "react-native";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Colors from "../constants/Colors";
@@ -41,6 +42,16 @@ const LoginScreen = ({ navigation }) => {
       console.log("Submit values ", values);
       formikActions.resetForm();
       formikActions.setSubmitting(false);
+      showMessage({
+        message: "Logged In Successfully",
+        type: "success",
+        style: {
+          borderRadius: 20,
+        },
+      });
+      navigation.navigate({
+        name: "Explore",
+      });
     }, 3000);
 
     // console.log("Formik acitons ", formikActions);
