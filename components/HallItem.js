@@ -24,6 +24,8 @@ const HallItem = (props) => {
 
   const { id, name, email, location, number, images } = item;
 
+  const { lat, lng } = location;
+
   const handleHallClick = () => {
     console.log("clicked");
     navigation.navigate({

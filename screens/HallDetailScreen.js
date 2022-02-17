@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -11,18 +11,25 @@ import ImageSlider from "./../components/ImageSliderShow/ImageSlider";
 import DefaultText from "./../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
+import MapViewer from "./MapViewer";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
   const { id, name, email, location, number, images } = route.params;
 
+  const [openMap, setOpenMap] = useState(false);
+
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
   const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
 
   const mapIconClickHandler = () => {
-    console.log("Icon clicked");
+    setOpenMap(true);
   };
+
+  if (openMap) {
+    return <MapViewer location={location} name={name} />;
+  }
 
   return (
     <ScrollView>
