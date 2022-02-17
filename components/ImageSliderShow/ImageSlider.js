@@ -26,6 +26,7 @@ const ImageSlider = (props) => {
             style={{
               resizeMode: "cover",
               width: width,
+              aspectRatio: 1.3,
             }}
           />
         ))}

@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { enableScreens } from "react-native-screens";
@@ -122,25 +123,27 @@ export default function App() {
   };
   return (
     <React.Fragment>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="HallList" component={TabNavigation} />
-          <Stack.Screen name="HallDetail" component={HallDetailScreen} />
-          <Stack.Screen name="Auth" component={TabNavigation} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <FlashMessage
-        position={"center"}
-        animated={true}
-        animationDuration={500}
-        autoHide={true}
-        // style={{ borderRadius: "10" }}
-      />
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen name="HallList" component={TabNavigation} />
+            <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+            <Stack.Screen name="Auth" component={TabNavigation} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <FlashMessage
+          position={"center"}
+          animated={true}
+          animationDuration={500}
+          autoHide={true}
+          // style={{ borderRadius: "10" }}
+        />
+      </SafeAreaProvider>
     </React.Fragment>
     // <View style={styles.container}>
     //   <Text>Open up App.js to start working on your app!</Text>

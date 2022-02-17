@@ -20,13 +20,13 @@ const CustomInput = (props) => {
       </View>
 
       <View
-        style={
-          error
-            ? { ...styles.inputContainer, borderColor: "red" }
-            : styles.inputContainer
-        }
+        style={[styles.inputContainer, error ? { borderColor: "red" } : null]}
       >
-        <EvilIcons name={iconName} size={iconSize} />
+        <EvilIcons
+          name={iconName}
+          size={iconSize}
+          color={error ? "red" : "black"}
+        />
         <View style={styles.input}>
           <TextInput
             {...props}

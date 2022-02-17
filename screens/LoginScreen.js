@@ -113,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
               />
               <View>
                 <Text style={{ marginTop: 10 }}>
-                  Already have an account?{" "}
+                  Don't have an account?
                   <Text
                     style={{ color: "blue", textDecorationLine: "underline" }}
                     onPress={() => {
