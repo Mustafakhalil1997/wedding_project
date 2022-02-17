@@ -9,7 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { enableScreens } from "react-native-screens";
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Feather } from "@expo/vector-icons";
 
 import FlashMessage from "react-native-flash-message";
 
@@ -22,6 +22,7 @@ import HallDetailScreen from "./screens/HallDetailScreen";
 import LoginScreen from "./screens/LoginScreen";
 import DefaultText from "./components/DefaultText";
 import SignupScreen from "./screens/SignupScreen";
+import MapViewer from "./screens/MapViewer";
 
 enableScreens();
 
@@ -57,44 +58,36 @@ export default function App() {
           tabBarLabel: ({ focused }) => {
             if (route.name === "Explore") {
               console.log("isfocused", focused);
-              return focused ? (
+              return (
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: "open-sans-bold",
-                  }}
-                >
-                  Explore
-                </Text>
-              ) : (
-                <Text
-                  style={{
-                    fontSize: 12.3,
-                    color: "black",
-                    fontFamily: "open-sans",
+                    fontFamily: focused ? "open-sans-bold" : "open-sans",
                   }}
                 >
                   Explore
                 </Text>
               );
-            } else if (route.name === "Login") {
-              return focused ? (
+            } else if (route.name === "MapView") {
+              return (
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: "open-sans-bold",
+                    fontFamily: focused ? "open-sans-bold" : "open-sans",
                   }}
                 >
-                  Login
+                  Map
                 </Text>
-              ) : (
+              );
+            } else if (route.name === "Login") {
+              return (
                 <Text
                   style={{
-                    fontSize: 12.3,
+                    fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: "open-sans",
+                    fontFamily: focused ? "open-sans-bold" : "open-sans",
                   }}
                 >
                   Login
@@ -111,12 +104,17 @@ export default function App() {
             } else if (route.name === "Login") {
               iconName = "user";
               iconColor = focused ? Colors.accentColor : "black";
+            } else if (route.name === "MapView") {
+              iconName = "map-pin";
+              iconColor = focused ? Colors.accentColor : "black";
+              return <Feather name={iconName} size={22} color={iconColor} />;
             }
             return <EvilIcons name={iconName} size={30} color={iconColor} />;
           },
         })}
       >
         <Tab.Screen name="Explore" component={HallListScreen} />
+        <Tab.Screen name="MapView" component={MapViewer} />
         <Tab.Screen name="Login" component={LoginScreen} />
       </Tab.Navigator>
     );
@@ -134,6 +132,7 @@ export default function App() {
             <Stack.Screen name="HallDetail" component={HallDetailScreen} />
             <Stack.Screen name="Auth" component={TabNavigation} />
             <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="MapView" component={MapViewer} />
           </Stack.Navigator>
         </NavigationContainer>
         <FlashMessage
