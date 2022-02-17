@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
       console.log("Submit values ", values);
       formikActions.resetForm();
       formikActions.setSubmitting(false);
-    });
+    }, 3000);
 
     // console.log("Formik acitons ", formikActions);
   };
@@ -61,6 +61,7 @@ const LoginScreen = ({ navigation }) => {
           touched,
           handleBlur,
           errors,
+          isSubmitting,
         }) => {
           let buttonDisabled = true;
           if (
@@ -96,6 +97,7 @@ const LoginScreen = ({ navigation }) => {
               <CustomButton
                 buttonDisabled={buttonDisabled}
                 handleSubmit={handleSubmit}
+                submitting={isSubmitting}
                 label="LOG IN"
               />
               <View>

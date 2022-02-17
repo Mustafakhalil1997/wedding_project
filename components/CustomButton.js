@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import Colors from "../constants/Colors";
 
@@ -17,7 +18,9 @@ if (Platform.OS === "android") {
 }
 
 const CustomButton = (props) => {
-  const { buttonDisabled, handleSubmit, label } = props;
+  const { buttonDisabled, handleSubmit, label, submitting } = props;
+
+  const opacity = submitting || buttonDisabled ? 0.4 : 1;
 
   return (
     <TouchableComponent
@@ -25,14 +28,9 @@ const CustomButton = (props) => {
       onPress={handleSubmit}
       //   background={TouchableNativeFeedback.Ripple("white", false)}
     >
-      <View
-        style={
-          buttonDisabled
-            ? { ...styles.buttonContainer, opacity: 0.4 }
-            : styles.buttonContainer
-        }
-      >
-        <Text>{label}</Text>
+      <View style={[styles.buttonContainer, { opacity }]}>
+        {submitting && <ActivityIndicator size={20} color="#0000ff" />}
+        {!submitting && <Text>{label}</Text>}
       </View>
     </TouchableComponent>
   );

@@ -69,6 +69,7 @@ const SignupScreen = ({ navigation }) => {
           touched,
           handleBlur,
           errors,
+          isSubmitting,
         }) => {
           let buttonDisabled = true;
           if (
@@ -126,6 +127,7 @@ const SignupScreen = ({ navigation }) => {
               <CustomButton
                 buttonDisabled={buttonDisabled}
                 handleSubmit={handleSubmit}
+                submitting={isSubmitting}
                 label="SIGN UP"
               />
             </View>
