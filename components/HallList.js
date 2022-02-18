@@ -19,7 +19,7 @@ const DUMMY_HALLLIST = [
   },
   {
     id: "h2",
-    name: "North Hall",
+    name: "West hall",
     email: "NorthHall@gmail.com",
     number: "79126550",
     location: {
@@ -33,7 +33,7 @@ const DUMMY_HALLLIST = [
   },
   {
     id: "h3",
-    name: "North Hall",
+    name: "South Hall",
     email: "NorthHall@gmail.com",
     number: "79126550",
     location: {

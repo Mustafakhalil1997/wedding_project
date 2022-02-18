@@ -1,6 +1,7 @@
-import React from "react";
-import MapView, { Marker } from "react-native-maps";
+import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import * as Location from "expo-location";
 
 const locations = [
   {
@@ -20,7 +21,28 @@ const locations = [
   },
 ];
 
-const MapViewer = ({ route }) => {
+const MapViewer = ({ route, navigation }) => {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    console.log("inside useEffect");
+    (async () => {
+      console.log("inside async");
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = location.coords;
+      setCurrentLocation({ latitude: latitude, longitude: longitude });
+    })();
+  }, []);
+
+  // console.log("location ", currentLocation.coords);
+
   // const { lat, lng } = location;
   let title;
   let lat;
@@ -29,35 +51,61 @@ const MapViewer = ({ route }) => {
     title = route.params.title;
     lat = route.params.location.lat;
     lng = route.params.location.lng;
+  } else {
+    if (currentLocation) {
+      console.log("currentLocation ", currentLocation);
+      lat = currentLocation.latitude;
+      lng = currentLocation.longitude;
+    }
   }
+
+  const markerClickHandler = () => {
+    navigation.navigate({
+      name: "HallDetail",
+      params: {
+        id: "u4",
+      },
+    });
+  };
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        region={
-          route.params && {
-            latitude: lat,
-            longitude: lng,
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03,
+      {currentLocation && (
+        <MapView
+          style={styles.map}
+          region={
+            route.params
+              ? {
+                  latitude: lat,
+                  longitude: lng,
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.03,
+                }
+              : currentLocation
+              ? {
+                  latitude: lat,
+                  longitude: lng,
+                  latitudeDelta: 0.5,
+                  longitudeDelta: 0.5, // more view of the map
+                }
+              : {}
           }
-        }
-      >
-        {locations.map((location, index) => {
-          const { title, lat, lng } = location;
-          return (
-            <Marker
-              key={index}
-              pinColor="green"
-              title={title}
-              coordinate={{ latitude: lat, longitude: lng }}
-            />
-          );
-        })}
-        {/* {route.params && (
+        >
+          {locations.map((location, index) => {
+            const { title, lat, lng } = location;
+            return (
+              <Marker
+                key={index}
+                pinColor="green"
+                title={title}
+                onPress={markerClickHandler}
+                coordinate={{ latitude: lat, longitude: lng }}
+              />
+            );
+          })}
+          {/* {route.params && (
           <Marker
             pinColor="green"
             title={title}
@@ -65,7 +113,8 @@ const MapViewer = ({ route }) => {
             coordinate={{ latitude: lat, longitude: lng }}
           />
         )} */}
-      </MapView>
+        </MapView>
+      )}
     </View>
   );
 };
