@@ -1,32 +1,60 @@
-import React, { useState } from "react";
-import { View, Image, ScrollView, Dimensions, Text } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+  Text,
+  StyleSheet,
+} from "react-native";
 
-let { width } = Dimensions.get("window");
+// let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
 
 const ImageSlider = (props) => {
-  const { images, styles, dot } = props;
+  const { images, newStyles, dot } = props;
 
   const [imageNumber, setImageNumber] = useState(1);
 
+  const [dimensions, setDimensions] = useState(0);
+
+  const ref = useRef(null);
+
+  const onLayout = (event) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    console.log(x, y, width, height);
+    setDimensions({ width: width, height: height });
+  };
+
+  useEffect(() => {
+    console.log("slider ref", ref.current.offsetWidth);
+  }, []);
+
   return (
-    <View style={{ width: "100%", height: "100%" }}>
+    // <View style={{ width: "100%", height: "100%" }}>
+    <View
+      style={{ flex: 1, backgroundColor: "red" }}
+      ref={ref}
+      onLayout={onLayout}
+    >
       <ScrollView
         pagingEnabled
         horizontal
         // scrollEventThrottle={changeNumber}
         // onScrollEndDrag={changeNumber}
-        // showsHorizontalScrollIndicator={false}
-        style={{ width: "100%", height: "100%" }}
+        showsHorizontalScrollIndicator={false}
+        // style={{ width: "100%", height: "100%" }}
       >
         {images.map((image, index) => (
           <Image
             key={index}
             source={image}
             style={{
-              resizeMode: "cover",
-              width: width,
-              aspectRatio: 1.3,
+              ...styles.image,
+              width: dimensions.width,
+              height: dimensions.height,
+              aspectRatio: dot ? 2 / 1.8 : 3 / 2.3,
+              ...newStyles,
             }}
           />
         ))}
@@ -51,5 +79,11 @@ const ImageSlider = (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    resizeMode: "cover",
+  },
+});
 
 export default ImageSlider;

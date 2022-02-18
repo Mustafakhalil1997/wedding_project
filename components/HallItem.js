@@ -56,11 +56,7 @@ const HallItem = (props) => {
         >
           <View style={styles.contentContainer}>
             <View style={styles.imageContainer}>
-              <ImageSlider
-                dot
-                images={[source, source1, source]}
-                styles={{ width: "100%", height: "80%" }}
-              />
+              <ImageSlider dot images={[source, source1, source]} />
               {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>

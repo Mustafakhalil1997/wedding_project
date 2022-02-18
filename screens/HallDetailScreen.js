@@ -43,7 +43,7 @@ const HallDetailScreen = (props) => {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.screenContainer}>
           <View style={styles.imagesContainer}>
-            <ImageSlider images={[source, source1]} />
+            <ImageSlider images={[source, source1, source]} />
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.hallNameContainer}>
