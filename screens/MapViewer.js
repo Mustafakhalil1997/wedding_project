@@ -46,10 +46,11 @@ const MapViewer = ({ route }) => {
           }
         }
       >
-        {locations.map((location) => {
+        {locations.map((location, index) => {
           const { title, lat, lng } = location;
           return (
             <Marker
+              key={index}
               pinColor="green"
               title={title}
               coordinate={{ latitude: lat, longitude: lng }}
