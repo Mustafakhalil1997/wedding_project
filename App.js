@@ -1,18 +1,19 @@
 import "react-native-gesture-handler";
 
 import React, { useState } from "react";
-
+import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { EvilIcons, Feather } from "@expo/vector-icons";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
 
+import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";
-
 import Colors from "./constants/Colors";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
@@ -23,8 +24,15 @@ import LoginScreen from "./screens/LoginScreen";
 import DefaultText from "./components/DefaultText";
 import SignupScreen from "./screens/SignupScreen";
 import MapViewer from "./screens/MapViewer";
+import hallListReducer from "./store/reducers/HallList";
 
 enableScreens();
+
+const rootReducer = combineReducers({
+  halls: hallListReducer,
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -120,7 +128,7 @@ export default function App() {
     );
   };
   return (
-    <React.Fragment>
+    <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator
@@ -143,7 +151,7 @@ export default function App() {
           // style={{ borderRadius: "10" }}
         />
       </SafeAreaProvider>
-    </React.Fragment>
+    </Provider>
     // <View style={styles.container}>
     //   <Text>Open up App.js to start working on your app!</Text>
     //   <StatusBar style="auto" />
