@@ -27,9 +27,10 @@ const DUMMY_HALLLIST = [
       lat: 34.15550968858545,
       lng: 35.64338541736089,
     },
+
     images: [
-      "./constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
-      "./constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
+      "./constants/images/pexels-jeremy-wong-1035665.jpg",
+      "./constants/images/pexels-logan-rhoads-10905822.jpg",
     ],
   },
   {

@@ -23,6 +23,8 @@ const HallDetailScreen = (props) => {
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
   const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
+  const source2 = require("../constants/images/pexels-jeremy-wong-1035665.jpg");
+  const source3 = require("../constants/images/pexels-logan-rhoads-10905822.jpg");
 
   const mapIconClickHandler = () => {
     navigation.navigate({

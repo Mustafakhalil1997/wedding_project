@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
@@ -18,6 +19,8 @@ const ImageSlider = (props) => {
 
   const [dimensions, setDimensions] = useState(0);
 
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const ref = useRef(null);
 
   const onLayout = (event) => {
@@ -26,9 +29,11 @@ const ImageSlider = (props) => {
     setDimensions({ width: width, height: height });
   };
 
-  useEffect(() => {
-    console.log("slider ref", ref.current.offsetWidth);
-  }, []);
+  const favoriteIconClickHandler = () => {
+    setIsFavorite((preVal) => !preVal);
+  };
+
+  const source = "img/tiny_logo.png";
 
   return (
     // <View style={{ width: "100%", height: "100%" }}>
@@ -58,7 +63,36 @@ const ImageSlider = (props) => {
             }}
           />
         ))}
+        <Image
+          source={{
+            uri: `https://reactnative.dev/${source}`,
+          }}
+          style={{
+            ...styles.image,
+
+            width: dimensions.width,
+            height: dimensions.height,
+            aspectRatio: dot ? 2 / 1.8 : 3 / 2.3,
+            ...newStyles,
+          }}
+        />
       </ScrollView>
+      <View
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          top: 5,
+          right: 5,
+          // alignSelf: "flex-end",
+        }}
+      >
+        <Ionicons
+          name={isFavorite ? "heart" : "heart-outline"}
+          size={35}
+          color="white"
+          onPress={favoriteIconClickHandler}
+        />
+      </View>
       {dot && (
         <View
           style={{
