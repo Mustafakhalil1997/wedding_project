@@ -1,19 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHallList } from "../store/actions/HallList";
 import HallItem from "./HallItem";
+import { setCurrentLocation } from "./../store/actions/Location";
 
 const HallList = (props) => {
   const { navigation } = props;
 
+  console.log("rendering");
+  const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const loadCurrentLocation = async () => {
+      dispatch(setCurrentLocation());
+    };
     dispatch(setHallList());
-  });
-
-  const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+    loadCurrentLocation();
+  }, [dispatch]);
 
   const renderHall = (itemData) => {
     const { item } = itemData;

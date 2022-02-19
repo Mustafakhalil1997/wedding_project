@@ -2,19 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { useSelector } from "react-redux";
 
 const locations = [
   {
+    hallId: "h1",
     title: "North Hall",
     lat: 34.431093869627254,
     lng: 35.8377506411768,
   },
   {
+    hallId: "h2",
     title: "West Hall",
     lat: 34.15550968858545,
     lng: 35.64338541736089,
   },
   {
+    hallId: "h3",
     title: "5 Star Hall",
     lat: 39.92801442507861,
     lng: 32.83767491273409,
@@ -22,28 +26,13 @@ const locations = [
 ];
 
 const MapViewer = ({ route, navigation }) => {
-  const [currentLocation, setCurrentLocation] = useState(null);
+  // const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    console.log("inside useEffect");
-    (async () => {
-      console.log("inside async");
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+  const currentLocation = useSelector(
+    (state) => state.location.currentLocation
+  );
 
-      let location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      setCurrentLocation({ latitude: latitude, longitude: longitude });
-    })();
-  }, []);
-
-  // console.log("location ", currentLocation.coords);
-
-  // const { lat, lng } = location;
   let title;
   let lat;
   let lng;

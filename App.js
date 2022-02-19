@@ -25,11 +25,13 @@ import DefaultText from "./components/DefaultText";
 import SignupScreen from "./screens/SignupScreen";
 import MapViewer from "./screens/MapViewer";
 import hallListReducer from "./store/reducers/HallList";
+import currentLocationReducer from "./store/reducers/Location";
 
 enableScreens();
 
 const rootReducer = combineReducers({
   halls: hallListReducer,
+  location: currentLocationReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
