@@ -13,12 +13,13 @@ export const setCurrentLocation = () => {
         type: SET_ERROR,
         errorMessage: "Don't have access to maps, please allow access",
       });
+      //   throw "Don't have access to maps";
     } else {
       let location = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = location.coords;
       dispatch({
         type: SET_CURRENT_LOCATION,
-        currentLocation: location.coords,
+        currentLocation: { latitude: latitude, longitude: longitude },
       });
       //   setCurrentLocation({ latitude: latitude, longitude: longitude });
     }
