@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   View,
   FlatList,
@@ -12,36 +12,52 @@ import HallItem from "./HallItem";
 import { setCurrentLocation } from "./../store/actions/Location";
 import Colors from "../constants/Colors";
 
+const initialState = { mockList: [], loading: false };
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setList":
+      return {
+        ...state,
+        mockList: action.list,
+        loading: false,
+      };
+    case "setLoading":
+      return {
+        ...state,
+        loading: action.loading,
+      };
+    default:
+      return state;
+  }
+};
+
 const HallList = (props) => {
   const { navigation } = props;
 
   const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
 
-  const [loading, setLoading] = useState(false);
-  const [mockList, setMockList] = useState(DUMMY_HALLLIST);
+  const [state, dispatchState] = useReducer(reducer, initialState);
 
   const dispatch = useDispatch();
 
-  console.log("loading ", loading);
-
   console.log("rendering");
 
-  useEffect(() => {
-    if (mockList !== DUMMY_HALLLIST) {
-      setMockList(DUMMY_HALLLIST);
-      // timeout is for testing
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-    }
-  }, [DUMMY_HALLLIST, setMockList]);
+  if (state.list !== DUMMY_HALLLIST) {
+    dispatch({ type: "setList", list: DUMMY_HALLLIST });
+    // timeout is for testing
+  }
 
   useEffect(() => {
-    setLoading(true);
+    dispatchState({ type: "setLoading", loading: false });
+  }, [state.list]);
+
+  useEffect(() => {
     const loadCurrentLocation = async () => {
       dispatch(setCurrentLocation());
       dispatch(setHallList());
     };
+    // dispatchState({ type: "setLoading", loading: true });
     loadCurrentLocation();
   }, [dispatch]);
 
@@ -50,7 +66,7 @@ const HallList = (props) => {
     return <HallItem item={item} navigation={navigation} />;
   };
 
-  if (loading) {
+  if (state.loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.primaryColor} />
