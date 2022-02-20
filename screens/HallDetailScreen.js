@@ -13,12 +13,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import MapViewer from "./MapViewer";
 import SlidingUpPanel from "rn-sliding-up-panel";
+import { useSelector } from "react-redux";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
-  const { id, name, email, location, number, images } = route.params;
+  const { hallId, name, email, location, number, images, isFavorite } =
+    route.params;
+  // const { hallId } = route.params;
+  console.log("detailScreen isFavortie ", isFavorite);
 
+  console.log("isFavoriteDetail ", isFavorite);
   const [openMap, setOpenMap] = useState(false);
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
@@ -45,7 +50,7 @@ const HallDetailScreen = (props) => {
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.screenContainer}>
           <View style={styles.imagesContainer}>
-            <ImageSlider images={[source, source1, source]} />
+            <ImageSlider images={[source, source1, source]} hallId={hallId} />
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.hallNameContainer}>

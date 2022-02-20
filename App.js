@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { enableScreens } from "react-native-screens";
-import { EvilIcons, Feather } from "@expo/vector-icons";
+import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 
@@ -20,6 +20,7 @@ import * as Font from "expo-font";
 
 import HallListScreen from "./screens/HallListScreen";
 import HallDetailScreen from "./screens/HallDetailScreen";
+import FavoriteHallsScreen from "./screens/FavoriteHallsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import DefaultText from "./components/DefaultText";
 import SignupScreen from "./screens/SignupScreen";
@@ -66,6 +67,7 @@ export default function App() {
           // headerShown: false,
           headerTitleAlign: "center",
           tabBarLabel: ({ focused }) => {
+            const fontFamily = focused ? "open-sans-bold" : "open-sans";
             if (route.name === "Explore") {
               console.log("isfocused", focused);
               return (
@@ -73,7 +75,7 @@ export default function App() {
                   style={{
                     fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: focused ? "open-sans-bold" : "open-sans",
+                    fontFamily: fontFamily,
                   }}
                 >
                   Explore
@@ -85,7 +87,7 @@ export default function App() {
                   style={{
                     fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: focused ? "open-sans-bold" : "open-sans",
+                    fontFamily: fontFamily,
                   }}
                 >
                   Map
@@ -97,26 +99,38 @@ export default function App() {
                   style={{
                     fontSize: focused ? 12 : 12.3,
                     color: "black",
-                    fontFamily: focused ? "open-sans-bold" : "open-sans",
+                    fontFamily: fontFamily,
                   }}
                 >
                   Login
+                </Text>
+              );
+            } else if (route.name === "Favorites") {
+              return (
+                <Text
+                  style={{
+                    fontSize: focused ? 12 : 12.3,
+                    color: "black",
+                    fontFamily: fontFamily,
+                  }}
+                >
+                  Favorites
                 </Text>
               );
             }
           },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
-            let iconColor;
+            let iconColor = focused ? Colors.accentColor : "black";
             if (route.name === "Explore") {
               iconName = "search";
-              iconColor = focused ? Colors.accentColor : "black";
             } else if (route.name === "Login") {
               iconName = "user";
-              iconColor = focused ? Colors.accentColor : "black";
+            } else if (route.name === "Favorites") {
+              iconName = "heart-outline";
+              return <Ionicons name={iconName} size={25} color={iconColor} />;
             } else if (route.name === "MapView") {
               iconName = "map-pin";
-              iconColor = focused ? Colors.accentColor : "black";
               return <Feather name={iconName} size={22} color={iconColor} />;
             }
             return <EvilIcons name={iconName} size={30} color={iconColor} />;
@@ -124,6 +138,7 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Explore" component={HallListScreen} />
+        <Tab.Screen name="Favorites" component={FavoriteHallsScreen} />
         <Tab.Screen name="MapView" component={MapViewer} />
         <Tab.Screen name="Login" component={LoginScreen} />
       </Tab.Navigator>

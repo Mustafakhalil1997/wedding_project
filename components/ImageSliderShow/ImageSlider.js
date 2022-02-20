@@ -8,20 +8,28 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "./../../store/actions/HallList";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
 
 const ImageSlider = (props) => {
-  const { images, newStyles, dot } = props;
+  const { images, newStyles, dot, hallId } = props;
 
   const [imageNumber, setImageNumber] = useState(1);
 
   const [dimensions, setDimensions] = useState(0);
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const hallList = useSelector((state) => state.halls.hallList);
+  const { isFavorite } = hallList.find((hallItem) => hallItem.id === hallId);
+  console.log("isFavoriteImageSlider ", isFavorite);
+
+  const [isHallFavorite, setIsHallFavorite] = useState(isFavorite);
 
   const ref = useRef(null);
+
+  const dispatch = useDispatch();
 
   const onLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
@@ -30,7 +38,7 @@ const ImageSlider = (props) => {
   };
 
   const favoriteIconClickHandler = () => {
-    setIsFavorite((preVal) => !preVal);
+    dispatch(toggleFavorite(hallId));
   };
 
   const source = "img/tiny_logo.png";

@@ -17,6 +17,7 @@ const DUMMY_HALLLIST = [
       "beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
       "beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
     ],
+    isFavorite: false,
   },
   {
     id: "h2",
@@ -32,6 +33,7 @@ const DUMMY_HALLLIST = [
       "./constants/images/pexels-jeremy-wong-1035665.jpg",
       "./constants/images/pexels-logan-rhoads-10905822.jpg",
     ],
+    isFavorite: false,
   },
   {
     id: "h3",
@@ -46,11 +48,15 @@ const DUMMY_HALLLIST = [
       "./constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
       "./constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
     ],
+    isFavorite: false,
   },
 ];
 
-export const toggleFavorite = () => {};
+export const toggleFavorite = (hallId) => {
+  return { type: TOGGLE_FAVORITE, hallId: hallId };
+};
 
 export const setHallList = () => {
+  // later we get the list from mongodb and set the store list
   return { type: SET_LIST, hallList: DUMMY_HALLLIST };
 };

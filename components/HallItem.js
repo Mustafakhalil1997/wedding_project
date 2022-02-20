@@ -12,6 +12,7 @@ import DefaultText from "./DefaultText";
 import ImageSlider from "./ImageSliderShow/ImageSlider";
 import { useSelector } from "react-redux";
 import Card from "./Card";
+import { findDistanceBetween } from "./../constants/FindDistance";
 
 let TouchableComponent = TouchableOpacity;
 let android = false;
@@ -20,33 +21,12 @@ if (Platform.OS === "android") {
   android = true;
 }
 
-const findDistanceBetween = (location1, location2) => {
-  // let R = 3958.8; // Radius of the earth in miles
-  let R = 6371.071; // to get result in km
-  let rlat1 = location1.lat * (Math.PI / 180); // Convert degrees to radians
-  let rlat2 = location2.latitude * (Math.PI / 180); // Convert degrees to radians
-  let difflat = rlat2 - rlat1; // Radian difference (latitudes)
-  let difflon = (location2.longitude - location1.lng) * (Math.PI / 180); // radian diff longitudes
-  let d =
-    2 *
-    R *
-    Math.asin(
-      Math.sqrt(
-        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
-      )
-    );
-  return Math.floor(d);
-};
-
 const HallItem = (props) => {
-  const { navigation, item } = props;
+  const { navigation, item, favoriteNavigation } = props;
 
-  const { id, name, email, location, number, images } = item;
+  const { id, name, email, location, number, images, isFavorite } = item;
 
+  console.log("isFAvorite ", isFavorite);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -57,15 +37,20 @@ const HallItem = (props) => {
 
   const handleHallClick = () => {
     console.log("clicked");
-    navigation.navigate({
+    let customNavigation = navigation;
+    if (favoriteNavigation) {
+      customNavigation = favoriteNavigation;
+    }
+    customNavigation.navigate({
       name: "HallDetail",
       params: {
-        id,
+        hallId: id,
         name,
         email,
         location,
         number,
         images,
+        isFavorite,
       },
     });
   };
@@ -85,7 +70,7 @@ const HallItem = (props) => {
         >
           <View style={styles.contentContainer}>
             <View style={styles.imageContainer}>
-              <ImageSlider dot images={[source, source1, source]} />
+              <ImageSlider dot images={[source, source1, source]} hallId={id} />
               {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>

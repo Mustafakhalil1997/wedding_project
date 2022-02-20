@@ -33,11 +33,21 @@ const reducer = (state, action) => {
 };
 
 const HallList = (props) => {
-  const { navigation } = props;
+  const { navigation, favorite, favoriteNavigation } = props;
 
-  const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+  let DUMMY_HALLLIST;
+
+  if (favorite) {
+    DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
+  } else {
+    console.log("hreeeeee");
+    DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+  }
+
+  console.log("updatedddddd ", favorite);
 
   const [state, dispatchState] = useReducer(reducer, initialState);
+  console.log("state.loading ", state.loading);
 
   const dispatch = useDispatch();
 
@@ -45,11 +55,13 @@ const HallList = (props) => {
 
   if (state.list !== DUMMY_HALLLIST) {
     dispatch({ type: "setList", list: DUMMY_HALLLIST });
-    // timeout is for testing
   }
 
   useEffect(() => {
-    dispatchState({ type: "setLoading", loading: false });
+    console.log("this is useEffect");
+    setTimeout(() => {
+      dispatchState({ type: "setLoading", loading: false });
+    }, 3000);
   }, [state.list]);
 
   useEffect(() => {
@@ -57,13 +69,19 @@ const HallList = (props) => {
       dispatch(setCurrentLocation());
       dispatch(setHallList());
     };
-    // dispatchState({ type: "setLoading", loading: true });
+    dispatchState({ type: "setLoading", loading: true });
     loadCurrentLocation();
   }, [dispatch]);
 
   const renderHall = (itemData) => {
     const { item } = itemData;
-    return <HallItem item={item} navigation={navigation} />;
+    return (
+      <HallItem
+        item={item}
+        navigation={navigation}
+        favoriteNavigation={favoriteNavigation}
+      />
+    );
   };
 
   if (state.loading) {
