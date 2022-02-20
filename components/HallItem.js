@@ -11,6 +11,7 @@ import {
 import DefaultText from "./DefaultText";
 import ImageSlider from "./ImageSliderShow/ImageSlider";
 import { useSelector } from "react-redux";
+import Card from "./Card";
 
 let TouchableComponent = TouchableOpacity;
 let android = false;
@@ -73,7 +74,7 @@ const HallItem = (props) => {
   const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
 
   return (
-    <View style={styles.itemContainer}>
+    <Card>
       <View style={{ flex: 1, width: "100%" }}>
         <TouchableComponent
           onPress={handleHallClick}
@@ -102,25 +103,11 @@ const HallItem = (props) => {
           </View>
         </TouchableComponent>
       </View>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    flex: 1,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.26,
-    shadowRadius: 8,
-    elevation: 5,
-
-    alignItems: "center",
-    // borderRadius: 10,
-    height: 350,
-    overflow: "hidden",
-  },
-
   contentContainer: {
     flex: 1,
     paddingTop: 10,
