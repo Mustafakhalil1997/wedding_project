@@ -153,8 +153,18 @@ export default function App() {
     // }
 
     return (
-      <Stack.Navigator>
-        <Stack.Screen name="HallList" component={HallListScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <Stack.Screen
+          name="HallList"
+          component={HallListScreen}
+          options={{
+            title: "Wedding Venues",
+          }}
+        />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
       </Stack.Navigator>
     );
@@ -162,7 +172,11 @@ export default function App() {
 
   const FavoriteStack = () => {
     return (
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
         <Stack.Screen name="MyFavorites" component={FavoriteHallsScreen} />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
       </Stack.Navigator>
@@ -171,7 +185,11 @@ export default function App() {
 
   const MapStack = () => {
     return (
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
         <Stack.Screen name="Map" component={MapViewer} />
         {/* <Stack.Screen component={HallDetailScreen} /> */}
       </Stack.Navigator>
@@ -180,8 +198,12 @@ export default function App() {
 
   const AuthStack = () => {
     return (
-      <Stack.Navigator>
-        <Stack.Screen name="Loginn" component={LoginScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
       </Stack.Navigator>
     );
@@ -222,7 +244,7 @@ export default function App() {
                       Map
                     </Text>
                   );
-                } else if (route.name === "Login") {
+                } else if (route.name === "Auth") {
                   return (
                     <Text
                       style={{
@@ -253,7 +275,7 @@ export default function App() {
                 let iconColor = focused ? Colors.accentColor : "black";
                 if (route.name === "Explore") {
                   iconName = "search";
-                } else if (route.name === "Login") {
+                } else if (route.name === "Auth") {
                   iconName = "user";
                 } else if (route.name === "Favorites") {
                   iconName = "heart-outline";
@@ -275,7 +297,7 @@ export default function App() {
             <Tab.Screen name="Explore" component={HomeStack} />
             <Tab.Screen name="Favorites" component={FavoriteStack} />
             <Tab.Screen name="MapView" component={MapStack} />
-            <Tab.Screen name="Login" component={AuthStack} />
+            <Tab.Screen name="Auth" component={AuthStack} />
           </Tab.Navigator>
 
           {/* <Stack.Navigator
