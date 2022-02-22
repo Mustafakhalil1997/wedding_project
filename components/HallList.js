@@ -103,6 +103,7 @@ const HallList = (props) => {
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
+    backgroundColor: "white",
   },
 });
 

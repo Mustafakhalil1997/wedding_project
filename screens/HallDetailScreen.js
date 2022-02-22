@@ -47,47 +47,47 @@ const HallDetailScreen = (props) => {
 
   return (
     <ScrollView>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.screenContainer}>
-          <View style={styles.imagesContainer}>
-            <ImageSlider images={[source, source1, source]} hallId={hallId} />
-          </View>
-          <View style={styles.infoContainer}>
-            <View style={styles.hallNameContainer}>
-              <DefaultText styles={{ fontSize: 32, marginBottom: 10 }}>
-                {name}
+      {/* <SafeAreaView style={{ flex: 1, backgroundColor: "pink" }}> */}
+      <View style={styles.screenContainer}>
+        <View style={styles.imagesContainer}>
+          <ImageSlider images={[source, source1, source]} hallId={hallId} />
+        </View>
+        <View style={styles.infoContainer}>
+          <View style={styles.hallNameContainer}>
+            <DefaultText styles={{ fontSize: 32, marginBottom: 10 }}>
+              {name}
+            </DefaultText>
+            <View style={styles.location}>
+              <DefaultText styles={{ fontSize: 14 }}>
+                Abu samra, Tripoli, Lebanon
               </DefaultText>
-              <View style={styles.location}>
-                <DefaultText styles={{ fontSize: 14 }}>
-                  Abu samra, Tripoli, Lebanon
-                </DefaultText>
 
-                <TouchableOpacity onPress={mapIconClickHandler}>
-                  <Feather name="map-pin" size={22} color="green" />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={mapIconClickHandler}>
+                <Feather name="map-pin" size={22} color="green" />
+              </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={styles.priceContainer}>
-              <DefaultText styles={{ fontSize: 24 }}>Prices</DefaultText>
-              <View style={styles.offer}>
-                <Text style={{ width: "70%" }}>
-                  Our Premium Offer. Our best offer with the North hall, let
-                  everything be on us and have a beautiful nice wedding
-                </Text>
-                <Text style={{ alignSelf: "center" }}>2000$</Text>
-              </View>
-              <View style={styles.offer}>
-                <Text style={{ width: "70%" }}>
-                  Our Premium ooOffer. Our best offer with the North hall, let
-                  everything be on us and have a beautiful nice wedding
-                </Text>
-                <Text style={{ alignSelf: "center" }}>2000$</Text>
-              </View>
+          <View style={styles.priceContainer}>
+            <DefaultText styles={{ fontSize: 24 }}>Prices</DefaultText>
+            <View style={styles.offer}>
+              <Text style={{ width: "70%" }}>
+                Our Premium Offer. Our best offer with the North hall, let
+                everything be on us and have a beautiful nice wedding
+              </Text>
+              <Text style={{ alignSelf: "center" }}>2000$</Text>
+            </View>
+            <View style={styles.offer}>
+              <Text style={{ width: "70%" }}>
+                Our Premium ooOffer. Our best offer with the North hall, let
+                everything be on us and have a beautiful nice wedding
+              </Text>
+              <Text style={{ alignSelf: "center" }}>2000$</Text>
             </View>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
+      {/* </SafeAreaView> */}
     </ScrollView>
   );
 };
