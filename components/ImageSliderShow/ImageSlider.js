@@ -43,6 +43,13 @@ const ImageSlider = (props) => {
 
   const source = "img/tiny_logo.png";
 
+  const scrollingHandler = (event) => {
+    console.log(event.nativeEvent.contentOffset.x);
+    const offset = event.nativeEvent.contentOffset.x;
+    const pageNum = offset / 360;
+    setImageNumber(pageNum + 1);
+  };
+
   return (
     // <View style={{ width: "100%", height: "100%" }}>
     <View
@@ -53,6 +60,7 @@ const ImageSlider = (props) => {
       <ScrollView
         pagingEnabled
         horizontal
+        onMomentumScrollEnd={scrollingHandler}
         // scrollEventThrottle={changeNumber}
         // onScrollEndDrag={changeNumber}
         showsHorizontalScrollIndicator={false}
