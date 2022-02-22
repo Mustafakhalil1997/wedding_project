@@ -6,12 +6,11 @@ import {
   StyleSheet,
   SafeAreaView,
   Platform,
-  ScrollView,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
-import * as Yup from "yup";
 
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
@@ -67,7 +66,13 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.formContainer}>
+    // <SafeAreaView style={[styles.formContainer]}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.formContainer]}
+      // enabled={false}
+    >
+      {/* <View style={[styles.formContainer]}> */}
       {/* <StatusBar style="auto" /> */}
       {/* <View style={styles.signupSwitchContainer}>
         <FormSelectorBtn
@@ -88,86 +93,88 @@ const SignupScreen = ({ navigation }) => {
         />
       </View> */}
 
-      <View style={styles.formContentContainer}>
-        <Formik
-          initialValues={userInfo}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmitForm}
-        >
-          {({
-            values,
-            handleChange,
-            handleSubmit,
-            touched,
-            handleBlur,
-            errors,
-            isSubmitting,
-          }) => {
-            let buttonDisabled = true;
-            if (
-              Object.keys(errors).length == 0 &&
-              Object.keys(touched).length != 0
-            ) {
-              buttonDisabled = false;
-            }
+      {/* <View style={styles.formContentContainer}> */}
+      <Formik
+        initialValues={userInfo}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmitForm}
+      >
+        {({
+          values,
+          handleChange,
+          handleSubmit,
+          touched,
+          handleBlur,
+          errors,
+          isSubmitting,
+        }) => {
+          let buttonDisabled = true;
+          if (
+            Object.keys(errors).length == 0 &&
+            Object.keys(touched).length != 0
+          ) {
+            buttonDisabled = false;
+          }
 
-            return (
-              <View style={styles.inputsContainer}>
-                <CustomInput
-                  iconName="user"
-                  iconSize={32}
-                  value={values.fullName}
-                  label="Full Name"
-                  placeholder="John Smith"
-                  onChangeText={handleChange("fullName")}
-                  onBlur={handleBlur("fullName")}
-                  error={touched.fullName && errors.fullName}
-                />
-                <CustomInput
-                  iconName="envelope"
-                  iconSize={32}
-                  value={values.email}
-                  label="E-mail Address"
-                  placeholder="example@gmail.com"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  error={touched.email && errors.email}
-                />
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.password}
-                  secureTextEntry
-                  label="Password"
-                  placeholder="********"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  error={touched.password && errors.password}
-                />
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.confirmPassword}
-                  secureTextEntry
-                  label="Confirm Password"
-                  placeholder="********"
-                  onChangeText={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                  error={touched.confirmPassword && errors.confirmPassword}
-                />
+          return (
+            <View style={styles.inputsContainer}>
+              <CustomInput
+                iconName="user"
+                iconSize={32}
+                value={values.fullName}
+                label="Full Name"
+                placeholder="John Smith"
+                onChangeText={handleChange("fullName")}
+                onBlur={handleBlur("fullName")}
+                error={touched.fullName && errors.fullName}
+              />
+              <CustomInput
+                iconName="envelope"
+                iconSize={32}
+                value={values.email}
+                label="E-mail Address"
+                placeholder="example@gmail.com"
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                error={touched.email && errors.email}
+              />
+              <CustomInput
+                iconName="lock"
+                iconSize={32}
+                value={values.password}
+                secureTextEntry
+                label="Password"
+                placeholder="********"
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                error={touched.password && errors.password}
+              />
+              <CustomInput
+                iconName="lock"
+                iconSize={32}
+                value={values.confirmPassword}
+                secureTextEntry
+                label="Confirm Password"
+                placeholder="********"
+                onChangeText={handleChange("confirmPassword")}
+                onBlur={handleBlur("confirmPassword")}
+                error={touched.confirmPassword && errors.confirmPassword}
+              />
 
-                <CustomButton
-                  buttonDisabled={buttonDisabled}
-                  handleSubmit={handleSubmit}
-                  submitting={isSubmitting}
-                  label="SIGN UP"
-                />
-              </View>
-            );
-          }}
-        </Formik>
-      </View>
-    </SafeAreaView>
+              <CustomButton
+                buttonDisabled={buttonDisabled}
+                handleSubmit={handleSubmit}
+                submitting={isSubmitting}
+                label="SIGN UP"
+              />
+            </View>
+          );
+        }}
+      </Formik>
+      {/* </View> */}
+      {/* </View> */}
+    </KeyboardAvoidingView>
+    // </SafeAreaView>
   );
 };
 
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     backgroundColor: "white",
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 
   signupSwitchContainer: {
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
   },
 
   formContentContainer: {
-    flex: 4,
+    flex: 1,
     // backgroundColor: "pink",
   },
 
