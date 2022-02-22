@@ -17,9 +17,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.26,
     shadowRadius: 8,
     elevation: 5,
-
     alignItems: "center",
-    // borderRadius: 10,
     height: 350,
     overflow: "hidden",
   },
