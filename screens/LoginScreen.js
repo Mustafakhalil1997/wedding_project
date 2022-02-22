@@ -13,21 +13,9 @@ import * as Yup from "yup";
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
+import validationSchema from "./LoginSchema";
 
 // envelope // lock
-
-const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .label("email")
-    .trim()
-    .email("Invalid email!")
-    .required("Email is required"),
-  password: Yup.string()
-    .label("password")
-    .trim()
-    .min(8, "Password is too short!")
-    .required("Password is required"),
-});
 
 const LoginScreen = ({ navigation }) => {
   const userInfo = {

@@ -1,19 +1,22 @@
 import * as Yup from "yup";
 
 export default Yup.object().shape({
-  full_name: Yup.string()
-    .label("Name")
-    .required("Please enter your full name")
-    .min(2, "Must have at least 2 characters"),
+  fullName: Yup.string()
+    .label("fullName")
+    .trim()
+    .min(3, "Invalid name!")
+    .required("Name is required!"),
   email: Yup.string()
-    .label("Email")
-    .email("Enter a valid email")
-    .required("Please enter a registered email"),
+    .label("email")
+    .trim()
+    .email("Invalid email!")
+    .required("Email is required"),
   password: Yup.string()
-    .label("Password")
-    .required()
-    .min(5, "Password must have more than 4 characters "),
-  password_confirmation: Yup.string()
-    .oneOf([Yup.ref("password")], "Confirm Password must matched Password")
+    .label("password")
+    .trim()
+    .min(8, "Password is too short!")
+    .required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Password does not match!")
     .required("Confirm Password is required"),
 });

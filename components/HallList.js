@@ -61,7 +61,7 @@ const HallList = (props) => {
     console.log("this is useEffect");
     setTimeout(() => {
       dispatchState({ type: "setLoading", loading: false });
-    }, 3000);
+    }, 1000);
   }, [state.list]);
 
   useEffect(() => {

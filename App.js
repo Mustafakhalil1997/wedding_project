@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -60,95 +60,225 @@ export default function App() {
     );
   }
 
-  const TabNavigation = () => {
+  // const TabNavigation = () => {
+  //   return (
+  //     <Tab.Navigator
+  //       screenOptions={({ route }) => ({
+  //         // headerShown: false,
+  //         headerTitleAlign: "center",
+  //         tabBarLabel: ({ focused }) => {
+  //           const fontFamily = focused ? "open-sans-bold" : "open-sans";
+  //           if (route.name === "Explore") {
+  //             console.log("isfocused", focused);
+  //             return (
+  //               <Text
+  //                 style={{
+  //                   fontSize: focused ? 12 : 12.3,
+  //                   color: "black",
+  //                   fontFamily: fontFamily,
+  //                 }}
+  //               >
+  //                 Explore
+  //               </Text>
+  //             );
+  //           } else if (route.name === "MapView") {
+  //             return (
+  //               <Text
+  //                 style={{
+  //                   fontSize: focused ? 12 : 12.3,
+  //                   color: "black",
+  //                   fontFamily: fontFamily,
+  //                 }}
+  //               >
+  //                 Map
+  //               </Text>
+  //             );
+  //           } else if (route.name === "Login") {
+  //             return (
+  //               <Text
+  //                 style={{
+  //                   fontSize: focused ? 12 : 12.3,
+  //                   color: "black",
+  //                   fontFamily: fontFamily,
+  //                 }}
+  //               >
+  //                 Login
+  //               </Text>
+  //             );
+  //           } else if (route.name === "Favorites") {
+  //             return (
+  //               <Text
+  //                 style={{
+  //                   fontSize: focused ? 12 : 12.3,
+  //                   color: "black",
+  //                   fontFamily: fontFamily,
+  //                 }}
+  //               >
+  //                 Favorites
+  //               </Text>
+  //             );
+  //           }
+  //         },
+  //         tabBarIcon: ({ focused, color, size }) => {
+  //           let iconName;
+  //           let iconColor = focused ? Colors.accentColor : "black";
+  //           if (route.name === "Explore") {
+  //             iconName = "search";
+  //           } else if (route.name === "Login") {
+  //             iconName = "user";
+  //           } else if (route.name === "Favorites") {
+  //             iconName = "heart-outline";
+  //             return <Ionicons name={iconName} size={25} color={iconColor} />;
+  //           } else if (route.name === "MapView") {
+  //             iconName = "map-pin";
+  //             return <Feather name={iconName} size={22} color={iconColor} />;
+  //           }
+  //           return <EvilIcons name={iconName} size={30} color={iconColor} />;
+  //         },
+  //       })}
+  //     >
+  //       <Tab.Screen name="Explore" component={HallListScreen} />
+  //       <Tab.Screen name="Favorites" component={FavoriteHallsScreen} />
+  //       <Tab.Screen name="MapView" component={MapViewer} />
+  //       <Tab.Screen name="Login" component={LoginScreen} />
+  //     </Tab.Navigator>
+  //   );
+  // };
+
+  const HomeStack = ({ navigation, route }) => {
+    // if (route.state && route.state.index > 0) {
+    //   navigation.setOptions({ tabBarVisible: false });
+    // } else {
+    //   navigation.setOptions({ tabBarVisible: true });
+    // }
+
     return (
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          // headerShown: false,
-          headerTitleAlign: "center",
-          tabBarLabel: ({ focused }) => {
-            const fontFamily = focused ? "open-sans-bold" : "open-sans";
-            if (route.name === "Explore") {
-              console.log("isfocused", focused);
-              return (
-                <Text
-                  style={{
-                    fontSize: focused ? 12 : 12.3,
-                    color: "black",
-                    fontFamily: fontFamily,
-                  }}
-                >
-                  Explore
-                </Text>
-              );
-            } else if (route.name === "MapView") {
-              return (
-                <Text
-                  style={{
-                    fontSize: focused ? 12 : 12.3,
-                    color: "black",
-                    fontFamily: fontFamily,
-                  }}
-                >
-                  Map
-                </Text>
-              );
-            } else if (route.name === "Login") {
-              return (
-                <Text
-                  style={{
-                    fontSize: focused ? 12 : 12.3,
-                    color: "black",
-                    fontFamily: fontFamily,
-                  }}
-                >
-                  Login
-                </Text>
-              );
-            } else if (route.name === "Favorites") {
-              return (
-                <Text
-                  style={{
-                    fontSize: focused ? 12 : 12.3,
-                    color: "black",
-                    fontFamily: fontFamily,
-                  }}
-                >
-                  Favorites
-                </Text>
-              );
-            }
-          },
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            let iconColor = focused ? Colors.accentColor : "black";
-            if (route.name === "Explore") {
-              iconName = "search";
-            } else if (route.name === "Login") {
-              iconName = "user";
-            } else if (route.name === "Favorites") {
-              iconName = "heart-outline";
-              return <Ionicons name={iconName} size={25} color={iconColor} />;
-            } else if (route.name === "MapView") {
-              iconName = "map-pin";
-              return <Feather name={iconName} size={22} color={iconColor} />;
-            }
-            return <EvilIcons name={iconName} size={30} color={iconColor} />;
-          },
-        })}
-      >
-        <Tab.Screen name="Explore" component={HallListScreen} />
-        <Tab.Screen name="Favorites" component={FavoriteHallsScreen} />
-        <Tab.Screen name="MapView" component={MapViewer} />
-        <Tab.Screen name="Login" component={LoginScreen} />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="HallList" component={HallListScreen} />
+        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+      </Stack.Navigator>
     );
   };
+
+  const FavoriteStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="MyFavorites" component={FavoriteHallsScreen} />
+        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const MapStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Map" component={MapViewer} />
+        {/* <Stack.Screen component={HallDetailScreen} /> */}
+      </Stack.Navigator>
+    );
+  };
+
+  const AuthStack = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Loginn" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    );
+  };
+
   return (
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              headerShown: false,
+              headerTitleAlign: "center",
+              tabBarLabel: ({ focused }) => {
+                const fontFamily = focused ? "open-sans-bold" : "open-sans";
+                if (route.name === "Explore") {
+                  console.log("isfocused", focused);
+                  return (
+                    <Text
+                      style={{
+                        fontSize: focused ? 12 : 12.3,
+                        color: "black",
+                        fontFamily: fontFamily,
+                      }}
+                    >
+                      Explore
+                    </Text>
+                  );
+                } else if (route.name === "MapView") {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: focused ? 12 : 12.3,
+                        color: "black",
+                        fontFamily: fontFamily,
+                      }}
+                    >
+                      Map
+                    </Text>
+                  );
+                } else if (route.name === "Login") {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: focused ? 12 : 12.3,
+                        color: "black",
+                        fontFamily: fontFamily,
+                      }}
+                    >
+                      Login
+                    </Text>
+                  );
+                } else if (route.name === "Favorites") {
+                  return (
+                    <Text
+                      style={{
+                        fontSize: focused ? 12 : 12.3,
+                        color: "black",
+                        fontFamily: fontFamily,
+                      }}
+                    >
+                      Favorites
+                    </Text>
+                  );
+                }
+              },
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+                let iconColor = focused ? Colors.accentColor : "black";
+                if (route.name === "Explore") {
+                  iconName = "search";
+                } else if (route.name === "Login") {
+                  iconName = "user";
+                } else if (route.name === "Favorites") {
+                  iconName = "heart-outline";
+                  return (
+                    <Ionicons name={iconName} size={25} color={iconColor} />
+                  );
+                } else if (route.name === "MapView") {
+                  iconName = "map-pin";
+                  return (
+                    <Feather name={iconName} size={22} color={iconColor} />
+                  );
+                }
+                return (
+                  <EvilIcons name={iconName} size={30} color={iconColor} />
+                );
+              },
+            })}
+          >
+            <Tab.Screen name="Explore" component={HomeStack} />
+            <Tab.Screen name="Favorites" component={FavoriteStack} />
+            <Tab.Screen name="MapView" component={MapStack} />
+            <Tab.Screen name="Login" component={AuthStack} />
+          </Tab.Navigator>
+
+          {/* <Stack.Navigator
             screenOptions={{
               headerShown: false,
             }}
@@ -156,9 +286,15 @@ export default function App() {
             <Stack.Screen name="HallList" component={TabNavigation} />
             <Stack.Screen name="HallDetail" component={HallDetailScreen} />
             <Stack.Screen name="Auth" component={TabNavigation} />
-            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen
+              name="Signup"
+              component={SignupScreen}
+              options={{
+                headerShown: true,
+              }}
+            />
             <Stack.Screen name="MapView" component={MapViewer} />
-          </Stack.Navigator>
+          </Stack.Navigator> */}
         </NavigationContainer>
         <FlashMessage
           position={"center"}
