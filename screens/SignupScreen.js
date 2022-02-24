@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
+  Dimensions,
   Platform,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
@@ -16,8 +17,14 @@ import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import validationSchema from "./SignupSchema";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useDispatch } from "react-redux";
+import { signUp, login } from "./../store/actions/Auth";
 
 // envelope // lock
+
+const height = Dimensions.get("window").height;
+console.log("height ", height * 0.2);
 
 const SignupScreen = ({ navigation }) => {
   const [toggleSignup, setToggleSignup] = useState(true);
@@ -29,12 +36,15 @@ const SignupScreen = ({ navigation }) => {
     confirmPassword: "",
   };
 
+  const dispatch = useDispatch();
+
   // console.log("statusBar height", StatusBar.currentHeight);
 
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
     setTimeout(() => {
       console.log("Submit values ", values);
+      dispatch(signUp(values));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
       showMessage({
@@ -69,31 +79,10 @@ const SignupScreen = ({ navigation }) => {
     // <SafeAreaView style={[styles.formContainer]}>
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={50}
       style={[styles.formContainer]}
       // enabled={false}
     >
-      {/* <View style={[styles.formContainer]}> */}
-      {/* <StatusBar style="auto" /> */}
-      {/* <View style={styles.signupSwitchContainer}>
-        <FormSelectorBtn
-          title="SignUp"
-          optionStyles={styles.signupOption}
-          onPress={signUpPressHandler}
-          style={{
-            backgroundColor: toggleSignup ? "#1b1b33" : "rgba(27, 27, 51, 0.4)",
-          }}
-        />
-        <FormSelectorBtn
-          title="Have a Wedding Venue? Signup here"
-          optionStyles={styles.honorOption}
-          onPress={honorPressHandler}
-          style={{
-            backgroundColor: toggleSignup ? "rgba(27, 27, 51, 0.4)" : "#1b1b33",
-          }}
-        />
-      </View> */}
-
-      {/* <View style={styles.formContentContainer}> */}
       <Formik
         initialValues={userInfo}
         validationSchema={validationSchema}
@@ -133,6 +122,7 @@ const SignupScreen = ({ navigation }) => {
                 iconSize={32}
                 value={values.email}
                 label="E-mail Address"
+                keyboardType="email-address"
                 placeholder="example@gmail.com"
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
@@ -144,6 +134,7 @@ const SignupScreen = ({ navigation }) => {
                 value={values.password}
                 secureTextEntry
                 label="Password"
+                keyboardType="default"
                 placeholder="********"
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
@@ -155,6 +146,7 @@ const SignupScreen = ({ navigation }) => {
                 value={values.confirmPassword}
                 secureTextEntry
                 label="Confirm Password"
+                keyboardType="default"
                 placeholder="********"
                 onChangeText={handleChange("confirmPassword")}
                 onBlur={handleBlur("confirmPassword")}
@@ -185,41 +177,6 @@ const styles = StyleSheet.create({
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 
-  signupSwitchContainer: {
-    flex: 1,
-    // backgroundColor: "yellow",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingHorizontal: 30,
-  },
-
-  signupOption: {
-    width: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 50,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    backgroundColor: "#1b1b33",
-  },
-
-  honorOption: {
-    width: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 50,
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
-    backgroundColor: "rgba(27, 27, 51, 0.4)",
-  },
-
-  optionText: {
-    fontFamily: "open-sans-bold",
-    color: "white",
-    fontSize: 14,
-  },
-
   formContentContainer: {
     flex: 1,
     // backgroundColor: "pink",
@@ -227,7 +184,9 @@ const styles = StyleSheet.create({
 
   inputsContainer: {
     flex: 1,
-
+    // marginTop: height * 0.08,
+    // marginBottom: height * 0.08,
+    // backgroundColor: "pink",
     justifyContent: "center",
     alignItems: "center",
   },

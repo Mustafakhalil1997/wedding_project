@@ -77,6 +77,7 @@ const LoginScreen = ({ navigation }) => {
                 iconSize={32}
                 value={values.email}
                 label="E-mail Address"
+                keyboardType="email-address"
                 placeholder="example@gmail.com"
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
@@ -88,6 +89,7 @@ const LoginScreen = ({ navigation }) => {
                 value={values.password}
                 secureTextEntry
                 label="Password"
+                keyboardType="default"
                 placeholder="********"
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
