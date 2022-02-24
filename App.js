@@ -10,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { enableScreens } from "react-native-screens";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 
 import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";
@@ -27,12 +27,15 @@ import SignupScreen from "./screens/SignupScreen";
 import MapViewer from "./screens/MapViewer";
 import hallListReducer from "./store/reducers/HallList";
 import currentLocationReducer from "./store/reducers/Location";
+import ProfileScreen from "./screens/ProfileScreen";
+import AuthReducer from "./store/reducers/Auth";
 
 enableScreens();
 
 const rootReducer = combineReducers({
   halls: hallListReducer,
   location: currentLocationReducer,
+  Auth: AuthReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
@@ -60,94 +63,13 @@ export default function App() {
     );
   }
 
-  // const TabNavigation = () => {
-  //   return (
-  //     <Tab.Navigator
-  //       screenOptions={({ route }) => ({
-  //         // headerShown: false,
-  //         headerTitleAlign: "center",
-  //         tabBarLabel: ({ focused }) => {
-  //           const fontFamily = focused ? "open-sans-bold" : "open-sans";
-  //           if (route.name === "Explore") {
-  //             console.log("isfocused", focused);
-  //             return (
-  //               <Text
-  //                 style={{
-  //                   fontSize: focused ? 12 : 12.3,
-  //                   color: "black",
-  //                   fontFamily: fontFamily,
-  //                 }}
-  //               >
-  //                 Explore
-  //               </Text>
-  //             );
-  //           } else if (route.name === "MapView") {
-  //             return (
-  //               <Text
-  //                 style={{
-  //                   fontSize: focused ? 12 : 12.3,
-  //                   color: "black",
-  //                   fontFamily: fontFamily,
-  //                 }}
-  //               >
-  //                 Map
-  //               </Text>
-  //             );
-  //           } else if (route.name === "Login") {
-  //             return (
-  //               <Text
-  //                 style={{
-  //                   fontSize: focused ? 12 : 12.3,
-  //                   color: "black",
-  //                   fontFamily: fontFamily,
-  //                 }}
-  //               >
-  //                 Login
-  //               </Text>
-  //             );
-  //           } else if (route.name === "Favorites") {
-  //             return (
-  //               <Text
-  //                 style={{
-  //                   fontSize: focused ? 12 : 12.3,
-  //                   color: "black",
-  //                   fontFamily: fontFamily,
-  //                 }}
-  //               >
-  //                 Favorites
-  //               </Text>
-  //             );
-  //           }
-  //         },
-  //         tabBarIcon: ({ focused, color, size }) => {
-  //           let iconName;
-  //           let iconColor = focused ? Colors.accentColor : "black";
-  //           if (route.name === "Explore") {
-  //             iconName = "search";
-  //           } else if (route.name === "Login") {
-  //             iconName = "user";
-  //           } else if (route.name === "Favorites") {
-  //             iconName = "heart-outline";
-  //             return <Ionicons name={iconName} size={25} color={iconColor} />;
-  //           } else if (route.name === "MapView") {
-  //             iconName = "map-pin";
-  //             return <Feather name={iconName} size={22} color={iconColor} />;
-  //           }
-  //           return <EvilIcons name={iconName} size={30} color={iconColor} />;
-  //         },
-  //       })}
-  //     >
-  //       <Tab.Screen name="Explore" component={HallListScreen} />
-  //       <Tab.Screen name="Favorites" component={FavoriteHallsScreen} />
-  //       <Tab.Screen name="MapView" component={MapViewer} />
-  //       <Tab.Screen name="Login" component={LoginScreen} />
-  //     </Tab.Navigator>
-  //   );
-  // };
-
   const HomeStack = ({ navigation, route }) => {
     // if (route.state && route.state.index > 0) {
-    //   navigation.setOptions({ tabBarVisible: false });
+    //   navigation.setOptions({
+    //     tabBarStyle: {
+    //       display: "none",
+    //     },
+    //   });
     // } else {
     //   navigation.setOptions({ tabBarVisible: true });
     // }
@@ -197,14 +119,22 @@ export default function App() {
   };
 
   const AuthStack = () => {
+    const token = useSelector((state) => state.Auth.token);
+    console.log("token ", token);
+    console.log("tokennn", !token);
     return (
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
         }}
       >
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
+        {!token && (
+          <>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+          </>
+        )}
+        {token && <Stack.Screen name="Profile" component={ProfileScreen} />}
       </Stack.Navigator>
     );
   };
@@ -216,8 +146,13 @@ export default function App() {
           <Tab.Navigator
             screenOptions={({ route }) => ({
               headerShown: false,
+              tabBarHideOnKeyboard: true,
+
+              // tabBarVisibilityAnimationConfig: true,
               headerTitleAlign: "center",
+
               tabBarLabel: ({ focused }) => {
+                const token = useSelector((state) => state.Auth.token);
                 const fontFamily = focused ? "open-sans-bold" : "open-sans";
                 if (route.name === "Explore") {
                   console.log("isfocused", focused);
@@ -253,7 +188,7 @@ export default function App() {
                         fontFamily: fontFamily,
                       }}
                     >
-                      Login
+                      {!token ? "Login" : "Profile"}
                     </Text>
                   );
                 } else if (route.name === "Favorites") {
