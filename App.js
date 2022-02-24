@@ -44,6 +44,8 @@ const fetchFonts = () => {
   return Font.loadAsync({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    "acme-regular": require("./assets/fonts/Acme-Regular.ttf"),
+    "abel-regular": require("./assets/fonts/abel-regular.ttf"),
   });
 };
 
@@ -134,7 +136,15 @@ export default function App() {
             <Stack.Screen name="Signup" component={SignupScreen} />
           </>
         )}
-        {token && <Stack.Screen name="Profile" component={ProfileScreen} />}
+        {token && (
+          <Stack.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        )}
       </Stack.Navigator>
     );
   };
