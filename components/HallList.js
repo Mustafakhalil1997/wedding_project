@@ -111,7 +111,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   noFavorites: {
-    margin: 10,
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
   },
   noFavoritesText: {
     fontSize: 18,

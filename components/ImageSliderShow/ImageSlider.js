@@ -22,8 +22,8 @@ const ImageSlider = (props) => {
   const [dimensions, setDimensions] = useState(0);
 
   const hallList = useSelector((state) => state.halls.hallList);
+
   const { isFavorite } = hallList.find((hallItem) => hallItem.id === hallId);
-  console.log("isFavoriteImageSlider ", isFavorite);
 
   const [isHallFavorite, setIsHallFavorite] = useState(isFavorite);
 
@@ -51,7 +51,6 @@ const ImageSlider = (props) => {
   };
 
   return (
-    // <View style={{ width: "100%", height: "100%" }}>
     <View
       style={{ flex: 1, backgroundColor: "red" }}
       ref={ref}
