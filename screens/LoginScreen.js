@@ -14,6 +14,8 @@ import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
 import validationSchema from "./LoginSchema";
+import { useDispatch } from "react-redux";
+import { login } from "../store/actions/Auth";
 
 // envelope // lock
 
@@ -23,11 +25,14 @@ const LoginScreen = ({ navigation }) => {
     password: "",
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
 
     setTimeout(() => {
       console.log("Submit values ", values);
+      dispatch(login(values));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
       showMessage({

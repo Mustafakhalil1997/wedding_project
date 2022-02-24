@@ -19,7 +19,7 @@ import CustomButton from "../components/CustomButton";
 import validationSchema from "./SignupSchema";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
-import { signUp, login } from "./../store/actions/Auth";
+import { signUp } from "./../store/actions/Auth";
 
 // envelope // lock
 
