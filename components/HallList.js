@@ -11,6 +11,7 @@ import { setHallList } from "../store/actions/HallList";
 import HallItem from "./HallItem";
 import { setCurrentLocation } from "./../store/actions/Location";
 import Colors from "../constants/Colors";
+import DefaultText from "./DefaultText";
 
 const initialState = { mockList: [], loading: false };
 
@@ -35,23 +36,16 @@ const reducer = (state, action) => {
 const HallList = (props) => {
   const { navigation, favorite, favoriteNavigation } = props;
 
+  const dispatch = useDispatch();
   let DUMMY_HALLLIST;
 
   if (favorite) {
     DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
   } else {
-    console.log("hreeeeee");
     DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
   }
 
-  console.log("updatedddddd ", favorite);
-
   const [state, dispatchState] = useReducer(reducer, initialState);
-  console.log("state.loading ", state.loading);
-
-  const dispatch = useDispatch();
-
-  console.log("rendering");
 
   if (state.list !== DUMMY_HALLLIST) {
     dispatch({ type: "setList", list: DUMMY_HALLLIST });
@@ -72,6 +66,17 @@ const HallList = (props) => {
     dispatchState({ type: "setLoading", loading: true });
     loadCurrentLocation();
   }, [dispatch]);
+
+  if (DUMMY_HALLLIST.length === 0) {
+    return (
+      <View style={styles.noFavorites}>
+        <DefaultText styles={styles.noFavoritesText}>
+          You have no favorites.
+        </DefaultText>
+        <DefaultText>Why not add one?</DefaultText>
+      </View>
+    );
+  }
 
   const renderHall = (itemData) => {
     const { item } = itemData;
@@ -104,6 +109,13 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     backgroundColor: "white",
+  },
+  noFavorites: {
+    margin: 10,
+  },
+  noFavoritesText: {
+    fontSize: 18,
+    fontFamily: "open-sans-bold",
   },
 });
 
