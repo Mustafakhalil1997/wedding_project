@@ -7,6 +7,7 @@ import {
   Button,
   SafeAreaView,
   StatusBar,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { Avatar } from "react-native-paper";
@@ -14,10 +15,19 @@ import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
 
 const ProfileScreen = (props) => {
+  const { navigation } = props;
+
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo", userInfo);
 
   const { fullName, email } = userInfo;
+
+  const editProfileClickHandler = () => {
+    console.log("clicked");
+    navigation.navigate({
+      name: "Edit",
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -36,11 +46,21 @@ const ProfileScreen = (props) => {
           styles={{
             fontSize: 26,
             fontFamily: "acme-regular",
-            marginBottom: 30,
           }}
         >
           {fullName || "Mustafa Khalil"}
         </DefaultText>
+        <TouchableWithoutFeedback onPress={editProfileClickHandler}>
+          <DefaultText
+            styles={{
+              fontSize: 16,
+              marginBottom: 30,
+              textDecorationLine: "underline",
+            }}
+          >
+            Edit Profile
+          </DefaultText>
+        </TouchableWithoutFeedback>
         <DefaultText styles={styles.contentTitle}>Account Settings</DefaultText>
         <View style={styles.accountSettings}>
           <ProfileElement iconName="person-circle-outline">
