@@ -52,7 +52,7 @@ const MapViewer = ({ route, navigation }) => {
     navigation.navigate({
       name: "HallDetail",
       params: {
-        id: "u4",
+        hallId: "h3",
       },
     });
   };
