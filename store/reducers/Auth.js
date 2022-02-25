@@ -3,7 +3,7 @@ import { LOGIN, SET_TOKEN, SIGNUP } from "./../actions/Auth";
 const initialState = {
   //   token: null,
   userType: "user", // user or hoster
-  token: "token",
+  token: null,
   userInfo: {},
 };
 
