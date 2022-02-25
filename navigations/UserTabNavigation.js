@@ -4,8 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "./../components/HeaderButton";
 
 import Colors from "../constants/Colors";
 
@@ -13,13 +11,11 @@ import HallListScreen from "../screens/HallListScreen";
 import HallDetailScreen from "../screens/HallDetailScreen";
 import FavoriteHallsScreen from "../screens/FavoriteHallsScreen";
 import LoginScreen from "../screens/LoginScreen";
-import DefaultText from "../components/DefaultText";
 import SignupScreen from "../screens/SignupScreen";
 import MapViewer from "../screens/MapViewer";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChatScreen from "../screens/ChatScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
-import { Button } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -107,17 +103,6 @@ const TabNavigator = () => {
               component={EditProfileScreen}
               options={{
                 title: "",
-                headerRight: () => (
-                  //   <Text>Save</Text>
-
-                  <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-                    <Item
-                      title="Save"
-                      iconName="save-outline"
-                      onPress={() => {}}
-                    />
-                  </HeaderButtons>
-                ),
               }}
             />
           </>
