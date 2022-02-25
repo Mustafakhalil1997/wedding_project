@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   View,
   StyleSheet,
@@ -17,13 +17,15 @@ if (Platform.OS === "android") {
   android = true;
 }
 
-const CustomButton = (props) => {
+const CustomButton = React.forwardRef((props, ref) => {
   const { buttonDisabled, handleSubmit, label, submitting } = props;
 
   const opacity = submitting || buttonDisabled ? 0.4 : 1;
 
   return (
     <TouchableComponent
+      ref={ref}
+      {...props}
       disabled={buttonDisabled}
       onPress={handleSubmit}
       //   background={TouchableNativeFeedback.Ripple("white", false)}
@@ -34,7 +36,7 @@ const CustomButton = (props) => {
       </View>
     </TouchableComponent>
   );
-};
+});
 
 const styles = StyleSheet.create({
   buttonContainer: {

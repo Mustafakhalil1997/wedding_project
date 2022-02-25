@@ -15,7 +15,9 @@ const CustomInput = (props) => {
           marginBottom: 5,
         }}
       >
-        <Text style={{ fontFamily: "open-sans-bold" }}>{label}</Text>
+        <Text style={{ fontFamily: "open-sans-bold", color: "gray" }}>
+          {label}
+        </Text>
         {error && <Text style={{ color: "red", fontSize: 14 }}>{error}</Text>}
       </View>
 
@@ -34,7 +36,6 @@ const CustomInput = (props) => {
             // onChangeText={onChangeText}
             // secureTextEntry={secureTextEntry}
             // placeholder={placeholder}
-            autoCapitalize="none"
           />
         </View>
       </View>
