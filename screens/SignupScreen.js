@@ -27,8 +27,6 @@ const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
 const SignupScreen = ({ navigation }) => {
-  const [toggleSignup, setToggleSignup] = useState(true);
-
   const userInfo = {
     fullName: "",
     email: "",
@@ -42,9 +40,18 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
+    const { fullName, email, password } = values;
+    const user = {
+      id: "u1",
+      fullName,
+      email,
+      password,
+      profileImage: "",
+      favorites: [],
+    };
+    console.log("valuesss ", values);
     setTimeout(() => {
-      console.log("Submit values ", values);
-      dispatch(signUp(values));
+      dispatch(signUp(user));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
       showMessage({
@@ -53,26 +60,6 @@ const SignupScreen = ({ navigation }) => {
         style: { borderRadius: 20 },
       });
     }, 2000);
-  };
-
-  // const signUpPressHandler = () => {
-  //   setToggleSignup(true);
-  // };
-
-  // const honorPressHandler = () => {
-  //   setToggleSignup(false);
-  //   console.log("helo");
-  // };
-
-  const FormSelectorBtn = (props) => {
-    const { title, optionStyles, onPress, style } = props;
-    return (
-      <TouchableWithoutFeedback onPress={onPress}>
-        <View style={[optionStyles, style]}>
-          <Text style={styles.optionText}>{title}</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
   };
 
   return (
@@ -127,6 +114,7 @@ const SignupScreen = ({ navigation }) => {
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 error={touched.email && errors.email}
+                autoCapitalize="none"
               />
               <CustomInput
                 iconName="lock"

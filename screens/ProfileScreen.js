@@ -20,7 +20,7 @@ const ProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo", userInfo);
 
-  const { fullName, email } = userInfo;
+  const { fullName, email, id, profileImage } = userInfo;
 
   const editProfileClickHandler = () => {
     console.log("clicked");
