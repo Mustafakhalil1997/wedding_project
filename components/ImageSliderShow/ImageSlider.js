@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "./../../store/actions/HallList";
+import { addFavorite } from "./../../store/actions/Auth";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
@@ -39,6 +40,7 @@ const ImageSlider = (props) => {
 
   const favoriteIconClickHandler = () => {
     dispatch(toggleFavorite(hallId));
+    dispatch(addFavorite(hallId));
   };
 
   const source = "img/tiny_logo.png";
@@ -46,7 +48,7 @@ const ImageSlider = (props) => {
   const scrollingHandler = (event) => {
     console.log(event.nativeEvent.contentOffset.x);
     const offset = event.nativeEvent.contentOffset.x;
-    const pageNum = offset / 360;
+    const pageNum = parseInt(offset / 360);
     setImageNumber(pageNum + 1);
   };
 
