@@ -41,9 +41,21 @@ const SignupScreen = ({ navigation }) => {
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
     const { fullName, email, password } = values;
+
+    // split the fullName
+    const nameArray = fullName.split(" ");
+    const arraySize = nameArray.length;
+    let first = nameArray[0];
+    for (let i = 1; i < arraySize - 1; i++) {
+      console.log(nameArray[i]);
+      first = first + " " + nameArray[i];
+    }
+    const last = nameArray[arraySize - 1];
+
     const user = {
       id: "u1",
-      fullName,
+      firstName: first,
+      lastName: last,
       email,
       password,
       profileImage: "",

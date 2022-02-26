@@ -2,13 +2,14 @@ import React, { createRef, useLayoutEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, Image, Button } from "react-native";
 import { Avatar } from "react-native-paper";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import CustomHeaderButton from "./../components/HeaderButton";
 import validationSchema from "./EditProfileSchema";
 import { Formik } from "formik";
 import CustomInput from "./../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
+import { editProfile } from "./../store/actions/Auth";
 
 const EditProfileScreen = (props) => {
   // save button should be on header right
@@ -16,24 +17,17 @@ const EditProfileScreen = (props) => {
   //   Image.getSize("../constants/images/Me.jpeg", imageSize);
   const { route, navigation } = props;
 
+  const dispatch = useDispatch();
+
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
-  const { id, fullName, email, password, profileImage } = userInfo;
-
-  const nameArray = fullName.split(" ");
-  const arraySize = nameArray.length;
-  let first = nameArray[0];
-  for (let i = 1; i < arraySize - 1; i++) {
-    console.log(nameArray[i]);
-    first = first + " " + nameArray[i];
-  }
-  const last = nameArray[arraySize - 1];
+  const { id, firstName, lastName, email, password, profileImage } = userInfo;
 
   const buttonRef = createRef();
 
   const userInfoBasic = {
-    firstName: first,
-    lastName: last,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: password,
   };
@@ -66,11 +60,8 @@ const EditProfileScreen = (props) => {
   const handleSubmitForm = (values, formikActions) => {
     console.log("New Values ", values);
     // send data to the server and update the store
+    dispatch(editProfile(values));
     formikActions.setSubmitting(false);
-  };
-
-  const handleInputChange = (value) => {
-    console.log("value ", value);
   };
 
   return (
@@ -90,7 +81,6 @@ const EditProfileScreen = (props) => {
           initialValues={userInfoBasic}
           validationSchema={validationSchema}
           onSubmit={handleSubmitForm}
-          onChangeText={handleInputChange}
         >
           {({
             values,
