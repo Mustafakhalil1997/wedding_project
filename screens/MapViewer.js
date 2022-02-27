@@ -28,7 +28,7 @@ const locations = [
 const MapViewer = ({ route, navigation }) => {
   // const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  console.log("route.params ", route.params);
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
   );
@@ -56,6 +56,9 @@ const MapViewer = ({ route, navigation }) => {
       },
     });
   };
+
+  console.log("lat ", lat);
+  console.log("lng ", lng);
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
 

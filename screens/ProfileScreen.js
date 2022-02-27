@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "react-native-paper";
 import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
-import { logout } from "./../store/actions/Auth";
+import { logout, switchProfile } from "./../store/actions/Auth";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -36,6 +36,10 @@ const ProfileScreen = (props) => {
 
   const logoutClickHandler = () => {
     dispatch(logout());
+  };
+
+  const switchProfileClickHandler = () => {
+    dispatch(switchProfile());
   };
 
   return (
@@ -94,7 +98,12 @@ const ProfileScreen = (props) => {
           hosting
         </DefaultText>
         <View style={styles.accountSettings}>
-          <ProfileElement iconName="people-outline">Switch</ProfileElement>
+          <ProfileElement
+            iconName="people-outline"
+            onPress={switchProfileClickHandler}
+          >
+            Switch
+          </ProfileElement>
         </View>
       </ScrollView>
     </SafeAreaView>

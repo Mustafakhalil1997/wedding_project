@@ -12,8 +12,6 @@ import DefaultText from "./../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import MapViewer from "./MapViewer";
-import SlidingUpPanel from "rn-sliding-up-panel";
-import { useSelector } from "react-redux";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
@@ -21,9 +19,7 @@ const HallDetailScreen = (props) => {
   const { hallId, name, email, location, number, images, isFavorite } =
     route.params;
   // const { hallId } = route.params;
-  console.log("detailScreen isFavortie ", isFavorite);
-
-  console.log("isFavoriteDetail ", isFavorite);
+  console.log("location ", location);
   const [openMap, setOpenMap] = useState(false);
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
