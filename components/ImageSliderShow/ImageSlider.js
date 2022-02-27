@@ -11,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "./../../store/actions/HallList";
 import { addFavorite } from "./../../store/actions/Auth";
+import { showMessage } from "react-native-flash-message";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
@@ -23,6 +24,7 @@ const ImageSlider = (props) => {
   const [dimensions, setDimensions] = useState(0);
 
   const hallList = useSelector((state) => state.halls.hallList);
+  const token = useSelector((state) => state.Auth.token);
 
   const { isFavorite } = hallList.find((hallItem) => hallItem.id === hallId);
 
@@ -39,8 +41,16 @@ const ImageSlider = (props) => {
   };
 
   const favoriteIconClickHandler = () => {
-    dispatch(toggleFavorite(hallId));
-    dispatch(addFavorite(hallId));
+    if (token) {
+      dispatch(toggleFavorite(hallId));
+      dispatch(addFavorite(hallId));
+    } else {
+      showMessage({
+        message: "To add favorites, sign in!",
+        type: "success",
+        style: { backgroundColor: "black" },
+      });
+    }
   };
 
   const source = "img/tiny_logo.png";

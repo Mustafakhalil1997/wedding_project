@@ -21,6 +21,8 @@ if (Platform.OS === "android") {
   android = true;
 }
 
+console.log("OS ", android);
+
 const HallItem = (props) => {
   const { navigation, item, favoriteNavigation } = props;
 
@@ -60,7 +62,7 @@ const HallItem = (props) => {
 
   return (
     <Card>
-      <View style={{ flex: 1, width: "100%" }}>
+      <View style={{ flex: 1 }}>
         <TouchableComponent
           onPress={handleHallClick}
           background={
