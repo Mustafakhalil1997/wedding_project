@@ -10,7 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { enableScreens } from "react-native-screens";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 
 import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";
@@ -20,7 +20,8 @@ import * as Font from "expo-font";
 import hallListReducer from "./store/reducers/HallList";
 import currentLocationReducer from "./store/reducers/Location";
 import AuthReducer from "./store/reducers/Auth";
-import TabNavigator from "./navigations/UserTabNavigation";
+import UserTabNavigator from "./navigations/UserTabNavigation";
+import SwitchNavigation from "./navigations/SwitchNavigation";
 
 enableScreens();
 
@@ -58,7 +59,8 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <TabNavigator />
+          {/* <UserTabNavigator /> */}
+          <SwitchNavigation />
         </NavigationContainer>
         <FlashMessage
           position={"center"}
