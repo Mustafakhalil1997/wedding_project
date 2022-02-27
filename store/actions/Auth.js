@@ -1,8 +1,9 @@
 export const SET_TOKEN = "SET_TOKEN";
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 export const EDIT_PROFILE = "EDIT_PROFILE";
-export const TOGGLE_FAVORITE = "ADD_FAVORITE";
+export const TOGGLE_USER_FAVORITE = "TOGGLE_USER_FAVORITE";
 
 export const login = (email, password) => {
   // call the server here
@@ -26,5 +27,9 @@ export const editProfile = (newData) => {
 };
 
 export const addFavorite = (hallId) => {
-  return { type: TOGGLE_FAVORITE, hallId: hallId };
+  return { type: TOGGLE_USER_FAVORITE, hallId: hallId };
+};
+
+export const logout = () => {
+  return { type: LOGOUT };
 };

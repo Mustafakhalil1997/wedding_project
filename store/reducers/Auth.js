@@ -3,7 +3,8 @@ import {
   SET_TOKEN,
   SIGNUP,
   EDIT_PROFILE,
-  TOGGLE_FAVORITE,
+  TOGGLE_USER_FAVORITE,
+  LOGOUT,
 } from "./../actions/Auth";
 
 const initialState = {
@@ -26,6 +27,11 @@ const AuthReducer = (state = initialState, action) => {
         token: action.token,
         userInfo: action.userInfo,
       };
+    case LOGOUT:
+      return {
+        ...state,
+        token: null,
+      };
     case EDIT_PROFILE:
       const tempInfo = { ...state.userInfo };
       console.log("tempInfo ", tempInfo);
@@ -35,8 +41,10 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         userInfo: updatedInfo,
       };
-    case TOGGLE_FAVORITE:
+    case TOGGLE_USER_FAVORITE:
+      console.log("action.hallId ", action.hallId);
       const hallId = action.hallId;
+      console.log("hallId ", hallId);
       const index = state.userInfo.favorites.findIndex((id) => id === hallId);
       if (index < 0) {
         const newFavorites = [...state.userInfo.favorites, action.hallId];
