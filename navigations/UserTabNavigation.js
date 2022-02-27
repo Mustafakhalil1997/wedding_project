@@ -20,7 +20,7 @@ import EditProfileScreen from "../screens/EditProfileScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const TabNavigator = () => {
+const UserTabNavigator = () => {
   const HomeStack = ({ navigation, route }) => {
     return (
       <Stack.Navigator
@@ -59,19 +59,19 @@ const TabNavigator = () => {
     );
   };
 
-  const MapStack = () => {
-    return (
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleAlign: "center",
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Map" component={MapViewer} />
-        {/* <Stack.Screen component={HallDetailScreen} /> */}
-      </Stack.Navigator>
-    );
-  };
+  //   const MapStack = () => {
+  //     return (
+  //       <Stack.Navigator
+  //         screenOptions={{
+  //           headerTitleAlign: "center",
+  //           headerShown: false,
+  //         }}
+  //       >
+  //         <Stack.Screen name="Map" component={MapViewer} />
+  //         {/* <Stack.Screen component={HallDetailScreen} /> */}
+  //       </Stack.Navigator>
+  //     );
+  //   };
 
   const AuthStack = () => {
     const token = useSelector((state) => state.Auth.token);
@@ -182,7 +182,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Explore" component={HomeStack} />
       <Tab.Screen name="Favorites" component={FavoriteStack} />
-      <Tab.Screen name="MapView" component={MapStack} />
+      <Tab.Screen name="MapView" component={MapViewer} />
       <Tab.Screen
         name="Chats"
         component={ChatScreen}
@@ -195,4 +195,4 @@ const TabNavigator = () => {
   );
 };
 
-export default TabNavigator;
+export default UserTabNavigator;
