@@ -3,6 +3,7 @@ export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";
 export const EDIT_PROFILE = "EDIT_PROFILE";
+export const SWITCH_PROFILE = "SWITCH_PROFILE";
 export const TOGGLE_USER_FAVORITE = "TOGGLE_USER_FAVORITE";
 
 export const login = (email, password) => {
@@ -32,4 +33,8 @@ export const addFavorite = (hallId) => {
 
 export const logout = () => {
   return { type: LOGOUT };
+};
+
+export const switchProfile = () => {
+  return { type: SWITCH_PROFILE };
 };

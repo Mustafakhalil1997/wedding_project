@@ -5,6 +5,7 @@ import {
   EDIT_PROFILE,
   TOGGLE_USER_FAVORITE,
   LOGOUT,
+  SWITCH_PROFILE,
 } from "./../actions/Auth";
 
 const initialState = {
@@ -19,11 +20,13 @@ const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
       return {
+        ...state,
         token: action.token,
         userInfo: action.userInfo,
       };
     case SIGNUP:
       return {
+        ...state,
         token: action.token,
         userInfo: action.userInfo,
       };
@@ -31,6 +34,12 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         token: null,
+      };
+    case SWITCH_PROFILE:
+      const switchType = state.userType === "user" ? "host" : "user";
+      return {
+        ...state,
+        userType: switchType,
       };
     case EDIT_PROFILE:
       const tempInfo = { ...state.userInfo };
