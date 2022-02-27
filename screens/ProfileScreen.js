@@ -7,15 +7,20 @@ import {
   Button,
   SafeAreaView,
   StatusBar,
+  TouchableOpacity,
   TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "react-native-paper";
 import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
+import { logout } from "./../store/actions/Auth";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
+
+  const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo", userInfo);
@@ -29,18 +34,30 @@ const ProfileScreen = (props) => {
     });
   };
 
+  const logoutClickHandler = () => {
+    dispatch(logout());
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.profileContainer}>
-        <View style={styles.imageCircleContainer}>
-          {/* <Avatar.Image
+        <View style={styles.header}>
+          <View style={styles.imageCircleContainer}>
+            {/* <Avatar.Image
           size={60}
           source={require("../constants/images/profile-icon-avatar.png")}
         /> */}
-          <Avatar.Image
-            size={60}
-            source={require("../constants/images/Roger.jpg")}
-          />
+            <Avatar.Image
+              size={60}
+              source={require("../constants/images/Roger.jpg")}
+            />
+          </View>
+          {/* <View></View> */}
+          <TouchableOpacity style={{}} onPress={logoutClickHandler}>
+            <DefaultText style={{ color: "red", fontFamily: "open-sans-bold" }}>
+              LOGOUT
+            </DefaultText>
+          </TouchableOpacity>
         </View>
         <DefaultText
           styles={{
@@ -50,7 +67,7 @@ const ProfileScreen = (props) => {
         >
           {fullName || "Mustafa Khalil"}
         </DefaultText>
-        <TouchableWithoutFeedback onPress={editProfileClickHandler}>
+        <TouchableOpacity onPress={editProfileClickHandler}>
           <DefaultText
             styles={{
               fontSize: 16,
@@ -60,7 +77,7 @@ const ProfileScreen = (props) => {
           >
             Edit Profile
           </DefaultText>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
         <DefaultText styles={styles.contentTitle}>Account Settings</DefaultText>
         <View style={styles.accountSettings}>
           <ProfileElement iconName="person-circle-outline">
@@ -92,6 +109,10 @@ const styles = StyleSheet.create({
   profileContainer: {
     backgroundColor: "white",
     padding: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   imageCircleContainer: {
     borderRadius: 30,
