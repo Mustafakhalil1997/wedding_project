@@ -16,22 +16,32 @@ import { Formik } from "formik";
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
-import validationSchema from "./SignupSchema";
+import validationSchema from "./HallSchema";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useDispatch } from "react-redux";
-import { signUp } from "./../store/actions/Auth";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp, editHall } from "./../store/actions/Auth";
 
 // envelope // lock
 
 const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
-const SignupScreen = ({ navigation }) => {
-  const userInfo = {
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+const EditHallScreen = ({ navigation }) => {
+  const user = useSelector((state) => state.Auth.userInfo);
+  const { id, email, firstName, lastName, password, profileImage } = user;
+
+  const currentLocation = useSelector(
+    (state) => state.location.currentLocation
+  );
+
+  const hallInformation = useSelector((state) => state.Auth.hallInfo);
+  console.log("Hall Information ", hallInformation);
+
+  const hallInfo = {
+    hallName: "",
+    email: email,
+    address: "",
+    location: currentLocation.latitude + ", " + currentLocation.longitude,
   };
 
   const dispatch = useDispatch();
@@ -40,31 +50,22 @@ const SignupScreen = ({ navigation }) => {
 
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
-    const { fullName, email, password } = values;
+    const { hallName, email, location } = values;
 
-    // split the fullName
-    const nameArray = fullName.split(" ");
-    const arraySize = nameArray.length;
-    let first = nameArray[0];
-    for (let i = 1; i < arraySize - 1; i++) {
-      console.log(nameArray[i]);
-      first = first + " " + nameArray[i];
-    }
-    const last = nameArray[arraySize - 1];
-
-    const user = {
-      id: "u1",
-      firstName: first,
-      lastName: last,
+    const hall = {
+      id: "h1",
+      hallName: hallName,
+      userId: id,
       email,
       password,
-      profileImage: "",
-      favorites: [],
+      profileImage: profileImage,
+      location: currentLocation,
+      images: [],
     };
-    console.log("valuesss ", values);
+    console.log("valuesss ", hall);
     setTimeout(() => {
-      dispatch(signUp(user));
-      formikActions.resetForm();
+      dispatch(editHall(hall));
+      //   formikActions.resetForm();
       formikActions.setSubmitting(false);
       showMessage({
         message: "Signup Successfull",
@@ -83,7 +84,7 @@ const SignupScreen = ({ navigation }) => {
       // enabled={false}
     >
       <Formik
-        initialValues={userInfo}
+        initialValues={hallInfo}
         validationSchema={validationSchema}
         onSubmit={handleSubmitForm}
       >
@@ -109,57 +110,48 @@ const SignupScreen = ({ navigation }) => {
               <CustomInput
                 iconName="user"
                 iconSize={32}
-                value={values.fullName}
-                label="Full Name"
-                placeholder="John Smith"
-                onChangeText={handleChange("fullName")}
-                onBlur={handleBlur("fullName")}
-                error={touched.fullName && errors.fullName}
+                value={values.hallName}
+                label="Hall Name"
+                placeholder="Some Hall"
+                onChangeText={handleChange("hallName")}
+                onBlur={handleBlur("hallName")}
+                error={touched.hallName && errors.hallName}
               />
               <CustomInput
-                iconName="envelope"
+                iconName="user"
                 iconSize={32}
                 value={values.email}
-                label="E-mail Address"
-                keyboardType="email-address"
-                placeholder="example@gmail.com"
+                label="E-mail address"
+                placeholder="mustafa@gmail.com"
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
-                error={touched.email && errors.email}
-                autoCapitalize="none"
+                error={errors.email}
               />
               <CustomInput
-                iconName="lock"
+                iconName="user"
                 iconSize={32}
-                value={values.password}
-                secureTextEntry
-                label="Password"
-                keyboardType="default"
-                placeholder="********"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                error={touched.password && errors.password}
-                type="password"
+                value={values.address}
+                label="Address"
+                placeholder="address"
+                onChangeText={handleChange("address")}
+                onBlur={handleBlur("address")}
+                error={touched.address && errors.address}
               />
               <CustomInput
-                iconName="lock"
+                iconName="user"
                 iconSize={32}
-                value={values.confirmPassword}
-                secureTextEntry
-                label="Confirm Password"
-                keyboardType="default"
-                placeholder="********"
-                onChangeText={handleChange("confirmPassword")}
-                onBlur={handleBlur("confirmPassword")}
-                error={touched.confirmPassword && errors.confirmPassword}
-                type="password"
+                value={values.location}
+                label="Location"
+                placeholder="location"
+                onChangeText={handleChange("location")}
+                onBlur={handleBlur("location")}
+                error={touched.location && errors.location}
               />
-
               <CustomButton
                 buttonDisabled={buttonDisabled}
                 handleSubmit={handleSubmit}
                 submitting={isSubmitting}
-                label="SIGN UP"
+                label="NEXT"
               />
             </View>
           );
@@ -208,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default EditHallScreen;
