@@ -6,13 +6,15 @@ import {
   TOGGLE_USER_FAVORITE,
   LOGOUT,
   SWITCH_PROFILE,
+  EDIT_HALL_INFO,
 } from "./../actions/Auth";
 
 const initialState = {
-  //   token: null,
+  //  token: null,
   userType: "user", // user or hoster
   token: null,
   userInfo: {},
+  hallInfo: {},
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -49,6 +51,14 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         userInfo: updatedInfo,
+      };
+    case EDIT_HALL_INFO:
+      const tempHallInfo = { ...state.hallInfo };
+      const updatedHallInfo = { ...tempHallInfo, ...action.newData };
+      console.log("UPDATEDHALLINFO ", updatedHallInfo);
+      return {
+        ...state,
+        hallInfo: updatedHallInfo,
       };
     case TOGGLE_USER_FAVORITE:
       console.log("action.hallId ", action.hallId);

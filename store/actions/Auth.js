@@ -5,6 +5,7 @@ export const LOGOUT = "LOGOUT";
 export const EDIT_PROFILE = "EDIT_PROFILE";
 export const SWITCH_PROFILE = "SWITCH_PROFILE";
 export const TOGGLE_USER_FAVORITE = "TOGGLE_USER_FAVORITE";
+export const EDIT_HALL_INFO = "EDIT_HALL_INFO";
 
 export const login = (email, password) => {
   // call the server here
@@ -37,4 +38,11 @@ export const logout = () => {
 
 export const switchProfile = () => {
   return { type: SWITCH_PROFILE };
+};
+
+export const editHall = (newData) => {
+  //call to the server here
+  // send new info to the server
+  console.log("this is edit halllll ", newData);
+  return { type: EDIT_HALL_INFO, newData: newData };
 };
