@@ -1,10 +1,23 @@
-import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 
-import { EvilIcons } from "@expo/vector-icons";
+import { EvilIcons, Ionicons } from "@expo/vector-icons";
+import DefaultText from "./DefaultText";
 
 const CustomInput = (props) => {
-  const { iconName, iconSize, label, error } = props;
+  const { iconName, iconSize, label, error, type, secureTextEntry } = props;
+
+  const [togglePass, setTogglePass] = useState(true);
+
+  const toggleShowPassword = () => {
+    setTogglePass((prevState) => !prevState);
+  };
 
   return (
     <View style={styles.inputLabelContainer}>
@@ -28,15 +41,22 @@ const CustomInput = (props) => {
           name={iconName}
           size={iconSize}
           color={error ? "red" : "black"}
+          style={{ flex: 1 }}
         />
         <View style={styles.input}>
           <TextInput
             {...props}
-            // value={value}
-            // onChangeText={onChangeText}
-            // secureTextEntry={secureTextEntry}
-            // placeholder={placeholder}
+            secureTextEntry={secureTextEntry ? togglePass : false}
           />
+          {type && (
+            <TouchableOpacity onPress={toggleShowPassword}>
+              <DefaultText
+                styles={{ marginRight: 10, fontFamily: "open-sans-bold" }}
+              >
+                {togglePass ? "Show" : "Hide"}
+              </DefaultText>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
@@ -46,6 +66,7 @@ const CustomInput = (props) => {
 const styles = StyleSheet.create({
   inputLabelContainer: {
     marginVertical: 10,
+    width: "90%",
   },
 
   inputContainer: {
@@ -57,8 +78,12 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    width: "80%",
-    paddingHorizontal: 5,
+    flex: 9,
+    // width: "80%",
+    // paddingHorizontal: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });
 
