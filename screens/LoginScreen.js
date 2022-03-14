@@ -30,9 +30,21 @@ const LoginScreen = ({ navigation }) => {
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
 
+    const { email, password } = values;
+
+    const user = {
+      id: "u1",
+      firstName: "Mustafa",
+      lastName: "Khalil",
+      email,
+      password,
+      profileImage: "",
+      favorites: [],
+    };
+
     setTimeout(() => {
       console.log("Submit values ", values);
-      dispatch(login(values));
+      dispatch(login(user));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
       showMessage({

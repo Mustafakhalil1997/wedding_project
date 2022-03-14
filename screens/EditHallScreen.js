@@ -41,6 +41,10 @@ const EditHallScreen = ({ navigation }) => {
     hallName: "",
     email: email,
     address: "",
+    // location: {
+    //   lat: currentLocation.latitude,
+    //   lng: currentLocation.lng,
+    // },
     location: currentLocation.latitude + ", " + currentLocation.longitude,
   };
 
@@ -51,6 +55,9 @@ const EditHallScreen = ({ navigation }) => {
   const handleSubmitForm = (values, formikActions) => {
     // send to the server
     const { hallName, email, location } = values;
+
+    // const coords = location.split(",");
+    // console.log("coords ", coords);
 
     const hall = {
       id: "h1",
