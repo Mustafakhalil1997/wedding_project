@@ -36,23 +36,11 @@ const reducer = (state, action) => {
 const HallList = (props) => {
   const { navigation, favorite, favoriteNavigation } = props;
 
-  const dispatch = useDispatch();
-  let DUMMY_HALLLIST;
-
-  if (favorite) {
-    DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
-  } else {
-    DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
-  }
-
   const [state, dispatchState] = useReducer(reducer, initialState);
 
-  if (state.list !== DUMMY_HALLLIST) {
-    dispatch({ type: "setList", list: DUMMY_HALLLIST });
-  }
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("this is useEffect");
     setTimeout(() => {
       dispatchState({ type: "setLoading", loading: false });
     }, 1000);
@@ -66,6 +54,38 @@ const HallList = (props) => {
     dispatchState({ type: "setLoading", loading: true });
     loadCurrentLocation();
   }, [dispatch]);
+  let DUMMY_HALLLIST;
+
+  // let usedList = DUMMY_HALLLIST;
+
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+  DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+  const allList = useSelector((state) => state.halls.hallList);
+
+  if (favorite) {
+    if (Object.keys(userInfo).length === 0) {
+      DUMMY_HALLLIST = [];
+    } else {
+      const favoritesIds = userInfo.favorites;
+      console.log("favoritesIds ", favoritesIds);
+      const favoritesList = allList.filter((h) => favoritesIds.includes(h.id));
+      DUMMY_HALLLIST = favoritesList;
+      // DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
+    }
+  }
+
+  const isItemFavorite = (id) => {
+    if (Object.keys(userInfo).length === 0) return false;
+    if (userInfo.favorites.includes(id)) return true;
+    return false;
+  };
+
+  // if (state.mockList !== DUMMY_HALLLIST && DUMMY_HALLLIST.length !== 0) {
+  //   console.log("hereee");
+  //   console.log("state.list ", state.mockList);
+  //   console.log("DUMMY_HALLLIST ", DUMMY_HALLLIST);
+  //   dispatchState({ type: "setList", list: DUMMY_HALLLIST });
+  // }
 
   if (DUMMY_HALLLIST.length === 0) {
     return (
@@ -80,8 +100,11 @@ const HallList = (props) => {
 
   const renderHall = (itemData) => {
     const { item } = itemData;
+    const { id } = item;
+    const isFavorite = isItemFavorite(id);
     return (
       <HallItem
+        isFavorite={isFavorite}
         item={item}
         navigation={navigation}
         favoriteNavigation={favoriteNavigation}

@@ -17,7 +17,7 @@ import { showMessage } from "react-native-flash-message";
 // const height = (width * 100) / 60; //60%
 
 const ImageSlider = (props) => {
-  const { images, newStyles, dot, hallId } = props;
+  const { images, newStyles, dot, hallId, isFavorite } = props;
 
   const [imageNumber, setImageNumber] = useState(1);
 
@@ -25,8 +25,6 @@ const ImageSlider = (props) => {
 
   const hallList = useSelector((state) => state.halls.hallList);
   const token = useSelector((state) => state.Auth.token);
-
-  const { isFavorite } = hallList.find((hallItem) => hallItem.id === hallId);
 
   const [isHallFavorite, setIsHallFavorite] = useState(isFavorite);
 

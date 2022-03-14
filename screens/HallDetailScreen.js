@@ -12,12 +12,13 @@ import DefaultText from "./../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import MapViewer from "./MapViewer";
+import { useSelector } from "react-redux";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
-  const { hallId, name, email, location, number, images, isFavorite } =
-    route.params;
+  const { hallId, name, email, location, number, images } = route.params;
+
   // const { hallId } = route.params;
   console.log("location ", location);
   const [openMap, setOpenMap] = useState(false);
@@ -37,6 +38,16 @@ const HallDetailScreen = (props) => {
     });
   };
 
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+
+  let favorite = () => {
+    if (Object.keys(userInfo).length === 0) return false;
+    if (userInfo.favorites.includes(hallId)) return true;
+    return false;
+  };
+
+  const reserveClickHandler = () => {};
+
   // if (openMap) {
   //   // return <MapViewer location={location} name={name} />;
   // }
@@ -46,7 +57,11 @@ const HallDetailScreen = (props) => {
       {/* <SafeAreaView style={{ flex: 1, backgroundColor: "pink" }}> */}
       <View style={styles.screenContainer}>
         <View style={styles.imagesContainer}>
-          <ImageSlider images={[source, source1, source]} hallId={hallId} />
+          <ImageSlider
+            images={[source, source1, source]}
+            hallId={hallId}
+            isFavorite={favorite()}
+          />
         </View>
         <View style={styles.infoContainer}>
           <View style={styles.hallNameContainer}>
@@ -81,6 +96,31 @@ const HallDetailScreen = (props) => {
               <Text style={{ alignSelf: "center" }}>2000$</Text>
             </View>
           </View>
+
+          <TouchableOpacity
+            onPress={reserveClickHandler}
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 12,
+              paddingHorizontal: 32,
+              borderRadius: 4,
+              elevation: 3,
+              backgroundColor: "black",
+            }}
+          >
+            <DefaultText
+              styles={{
+                fontSize: 16,
+                lineHeight: 21,
+                fontWeight: "bold",
+                letterSpacing: 0.25,
+                color: "white",
+              }}
+            >
+              RESERVE
+            </DefaultText>
+          </TouchableOpacity>
         </View>
       </View>
       {/* </SafeAreaView> */}

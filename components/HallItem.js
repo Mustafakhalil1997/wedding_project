@@ -24,11 +24,10 @@ if (Platform.OS === "android") {
 console.log("OS ", android);
 
 const HallItem = (props) => {
-  const { navigation, item, favoriteNavigation } = props;
+  const { navigation, item, favoriteNavigation, isFavorite } = props;
 
-  const { id, name, email, location, number, images, isFavorite } = item;
+  const { id, name, email, location, number, images } = item;
 
-  console.log("isFAvorite ", isFavorite);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -38,7 +37,6 @@ const HallItem = (props) => {
   const kmAway = findDistanceBetween(location, currentLocation);
 
   const handleHallClick = () => {
-    console.log("clicked");
     let customNavigation = navigation;
     if (favoriteNavigation) {
       customNavigation = favoriteNavigation;
@@ -52,7 +50,7 @@ const HallItem = (props) => {
         location,
         number,
         images,
-        isFavorite,
+        // isFavorite: isFavorite, // when isFavorite is changed in the store, route parameters don't get updated unless they are revisited, so I can't pass isFavorite in here instead I have to directly access it from the store in HallDetailScreen
       },
     });
   };
@@ -72,7 +70,12 @@ const HallItem = (props) => {
         >
           <View style={styles.contentContainer}>
             <View style={styles.imageContainer}>
-              <ImageSlider dot images={[source, source1, source]} hallId={id} />
+              <ImageSlider
+                dot
+                images={[source, source1, source]}
+                hallId={id}
+                isFavorite={isFavorite}
+              />
               {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>

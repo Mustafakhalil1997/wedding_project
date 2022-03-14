@@ -36,6 +36,8 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         token: null,
+        userInfo: {},
+        hallInfo: {},
       };
     case SWITCH_PROFILE:
       const switchType = state.userType === "user" ? "host" : "user";

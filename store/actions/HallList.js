@@ -53,6 +53,7 @@ const DUMMY_HALLLIST = [
 ];
 
 export const toggleFavorite = (hallId) => {
+  console.log("toggle Favorite");
   return { type: TOGGLE_FAVORITE, hallId: hallId };
 };
 

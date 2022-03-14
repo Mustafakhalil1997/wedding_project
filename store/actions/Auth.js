@@ -7,11 +7,11 @@ export const SWITCH_PROFILE = "SWITCH_PROFILE";
 export const TOGGLE_USER_FAVORITE = "TOGGLE_USER_FAVORITE";
 export const EDIT_HALL_INFO = "EDIT_HALL_INFO";
 
-export const login = (email, password) => {
+export const login = (userInfo) => {
   // call the server here
   // get user info
   // get token
-  return { type: SIGNUP, token: "token", userInfo: {} };
+  return { type: SIGNUP, token: "token", userInfo: userInfo };
 };
 
 export const signUp = (userInfo) => {
