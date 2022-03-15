@@ -20,6 +20,7 @@ import validationSchema from "./SignupSchema";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
 import { signUp } from "./../store/actions/Auth";
+import axios from "axios";
 
 // envelope // lock
 
@@ -38,7 +39,7 @@ const SignupScreen = ({ navigation }) => {
 
   // console.log("statusBar height", StatusBar.currentHeight);
 
-  const handleSubmitForm = (values, formikActions) => {
+  const handleSubmitForm = async (values, formikActions) => {
     // send to the server
     const { fullName, email, password } = values;
 
@@ -58,11 +59,20 @@ const SignupScreen = ({ navigation }) => {
       lastName: last,
       email,
       password,
-      profileImage: "",
+      profileImage: "myImage",
       favorites: [],
     };
-    console.log("valuesss ", values);
-    setTimeout(() => {
+    try {
+      const response = await fetch(
+        "http://aa17-185-101-16-98.ngrok.io/api/user/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
       dispatch(signUp(user));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
@@ -71,7 +81,12 @@ const SignupScreen = ({ navigation }) => {
         type: "success",
         style: { borderRadius: 20 },
       });
-    }, 2000);
+      const responseData = await response.json();
+    } catch (error) {
+      console.log("error ", error);
+    }
+
+    // }, 2000);
   };
 
   return (

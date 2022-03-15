@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  const handleSubmitForm = (values, formikActions) => {
+  const handleSubmitForm = async (values, formikActions) => {
     // send to the server
 
     const { email, password } = values;
@@ -41,9 +41,17 @@ const LoginScreen = ({ navigation }) => {
       profileImage: "",
       favorites: [],
     };
-
-    setTimeout(() => {
-      console.log("Submit values ", values);
+    try {
+      const response = await fetch(
+        "http://aa17-185-101-16-98.ngrok.io/api/user/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
       dispatch(login(user));
       formikActions.resetForm();
       formikActions.setSubmitting(false);
@@ -57,7 +65,10 @@ const LoginScreen = ({ navigation }) => {
       navigation.navigate({
         name: "Explore",
       });
-    }, 3000);
+      const responseData = await response.json();
+    } catch (error) {
+      console.log("error ", error);
+    }
 
     // console.log("Formik acitons ", formikActions);
   };
