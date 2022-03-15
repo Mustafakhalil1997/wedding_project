@@ -2,6 +2,7 @@ import WeddingHall from "../../models/WeddingHall";
 
 export const SET_LIST = "SET_LIST";
 export const TOGGLE_FAVORITE = "TOGGLE_FAVORITE";
+export const CREATE_RESERVATION = "CREATE_RESERVATION";
 
 const DUMMY_HALLLIST = [
   {
@@ -18,6 +19,7 @@ const DUMMY_HALLLIST = [
       "beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
     ],
     isFavorite: false,
+    reservations: [],
   },
   {
     id: "h2",
@@ -34,6 +36,7 @@ const DUMMY_HALLLIST = [
       "./constants/images/pexels-logan-rhoads-10905822.jpg",
     ],
     isFavorite: false,
+    reservations: [],
   },
   {
     id: "h3",
@@ -49,6 +52,7 @@ const DUMMY_HALLLIST = [
       "./constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg",
     ],
     isFavorite: false,
+    reservations: [],
   },
 ];
 
@@ -60,4 +64,8 @@ export const toggleFavorite = (hallId) => {
 export const setHallList = () => {
   // later we get the list from mongodb and set the store list
   return { type: SET_LIST, hallList: DUMMY_HALLLIST };
+};
+
+export const reserveHall = (reservation) => {
+  return { type: CREATE_RESERVATION, reservation };
 };

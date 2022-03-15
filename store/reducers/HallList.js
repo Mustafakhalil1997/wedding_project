@@ -1,4 +1,8 @@
-import { SET_LIST, TOGGLE_FAVORITE } from "../actions/HallList";
+import {
+  SET_LIST,
+  TOGGLE_FAVORITE,
+  CREATE_RESERVATION,
+} from "../actions/HallList";
 
 const initialState = {
   hallList: [],
@@ -41,6 +45,27 @@ const hallListReducer = (state = initialState, action) => {
         ...state,
         hallList: updatedHallsList,
         favoritesList: updatedFavoriteList,
+      };
+    case CREATE_RESERVATION:
+      const { userId, hallId, date, price } = action.reservation;
+      const hall = state.hallList.find((h) => h.id === hallId);
+      const index = state.hallList.findIndex((h) => h.id === hallId);
+      console.log("hall ", hall);
+      const previousReservations = hall.reservations;
+      const checkExistingIndex = previousReservations.findIndex(
+        (h) => h.date === date
+      );
+      let newHallList = [...state.hallList];
+      if (checkExistingIndex < 0) {
+        previousReservations.push(action.reservation);
+        const newHall = { ...hall, reservations: previousReservations };
+        newHallList[index] = newHall;
+      } else {
+        console.log("Hall is reserved on that day, choose another day");
+      }
+      return {
+        ...state,
+        hallList: newHallList,
       };
     default:
       return state;

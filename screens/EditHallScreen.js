@@ -68,6 +68,7 @@ const EditHallScreen = ({ navigation }) => {
       profileImage: profileImage,
       location: currentLocation,
       images: [],
+      reservations: [],
     };
     console.log("valuesss ", hall);
     setTimeout(() => {

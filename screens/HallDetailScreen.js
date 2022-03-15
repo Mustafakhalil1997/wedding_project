@@ -12,12 +12,16 @@ import DefaultText from "./../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import MapViewer from "./MapViewer";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { reserveHall } from "../store/actions/HallList";
+import { showMessage } from "react-native-flash-message";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
   const { hallId, name, email, location, number, images } = route.params;
+
+  const dispatch = useDispatch();
 
   // const { hallId } = route.params;
   console.log("location ", location);
@@ -39,6 +43,12 @@ const HallDetailScreen = (props) => {
   };
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const userId = userInfo.id;
+
+  const halls = useSelector((state) => state.halls.hallList);
+  console.log("halls ", halls);
+  const hall = halls.find((h) => h.id === hallId);
+  console.log("hall ", hall);
 
   let favorite = () => {
     if (Object.keys(userInfo).length === 0) return false;
@@ -46,7 +56,27 @@ const HallDetailScreen = (props) => {
     return false;
   };
 
-  const reserveClickHandler = () => {};
+  const reserveClickHandler = () => {
+    if (Object.keys(userInfo).length === 0) {
+      showMessage({
+        message: "To Book a hall, sign in!",
+        type: "success",
+        style: { backgroundColor: "black" },
+      });
+    } else {
+      const reservation = {
+        id: "r1",
+        userId: userId,
+        hallId: hallId,
+        date: "15/3/2022",
+        price: 100,
+      };
+      dispatch(reserveHall(reservation));
+      // send to the server
+      // update the reservations of each hall
+      // insure each date is unique for a reservation
+    }
+  };
 
   // if (openMap) {
   //   // return <MapViewer location={location} name={name} />;
