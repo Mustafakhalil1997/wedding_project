@@ -20,7 +20,6 @@ import validationSchema from "./SignupSchema";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
 import { signUp } from "./../store/actions/Auth";
-import axios from "axios";
 
 // envelope // lock
 
@@ -46,6 +45,7 @@ const SignupScreen = ({ navigation }) => {
     // split the fullName
     const nameArray = fullName.split(" ");
     const arraySize = nameArray.length;
+    console.log("full name ", nameArray);
     let first = nameArray[0];
     for (let i = 1; i < arraySize - 1; i++) {
       console.log(nameArray[i]);
@@ -62,9 +62,12 @@ const SignupScreen = ({ navigation }) => {
       profileImage: "myImage",
       favorites: [],
     };
+
+    console.log("user ", user);
     try {
+      console.log("heree");
       const response = await fetch(
-        "http://aa17-185-101-16-98.ngrok.io/api/user/signup",
+        "http://b684-185-101-16-102.ngrok.io/api/user/signup",
         {
           method: "POST",
           headers: {
@@ -73,15 +76,32 @@ const SignupScreen = ({ navigation }) => {
           body: JSON.stringify(user),
         }
       );
-      dispatch(signUp(user));
-      formikActions.resetForm();
-      formikActions.setSubmitting(false);
-      showMessage({
-        message: "Signup Successfull",
-        type: "success",
-        style: { borderRadius: 20 },
-      });
       const responseData = await response.json();
+      console.log(responseData);
+
+      console.log("res.status ", response.status);
+      console.log("reached heree");
+
+      if (response.status === 200) {
+        dispatch(signUp(user));
+        formikActions.resetForm();
+        formikActions.setSubmitting(false);
+        showMessage({
+          message: "Signup Successfull",
+          type: "success",
+          style: { borderRadius: 20 },
+        });
+        console.log("in hereeeeee");
+      } else {
+        const errorMessage = responseData.message;
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
+      }
     } catch (error) {
       console.log("error ", error);
     }

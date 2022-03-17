@@ -43,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
     };
     try {
       const response = await fetch(
-        "http://aa17-185-101-16-98.ngrok.io/api/user/login",
+        "http://b684-185-101-16-102.ngrok.io/api/user/login",
         {
           method: "POST",
           headers: {
@@ -52,20 +52,36 @@ const LoginScreen = ({ navigation }) => {
           body: JSON.stringify({ email, password }),
         }
       );
-      dispatch(login(user));
-      formikActions.resetForm();
-      formikActions.setSubmitting(false);
-      showMessage({
-        message: "Logged In Successfully",
-        type: "success",
-        style: {
-          borderRadius: 20,
-        },
-      });
-      navigation.navigate({
-        name: "Explore",
-      });
+      console.log("response.status ", response.status);
       const responseData = await response.json();
+      console.log("message ", responseData.message);
+
+      if (response.status === 200) {
+        dispatch(login(user));
+        formikActions.resetForm();
+        formikActions.setSubmitting(false);
+        showMessage({
+          message: "Logged In Successfully",
+          type: "success",
+          style: {
+            borderRadius: 20,
+          },
+        });
+        navigation.navigate({
+          name: "Explore",
+        });
+      } else {
+        const errorMessage = responseData.message;
+        showMessage({
+          message: errorMessage,
+          color: "white",
+          backgroundColor: "red",
+          type: "default",
+          style: {
+            borderRadius: 20,
+          },
+        });
+      }
     } catch (error) {
       console.log("error ", error);
     }
