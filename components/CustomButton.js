@@ -32,7 +32,7 @@ const CustomButton = React.forwardRef((props, ref) => {
     >
       <View style={[styles.buttonContainer, { opacity }]}>
         {submitting && <ActivityIndicator size={20} color="#0000ff" />}
-        {!submitting && <Text>{label}</Text>}
+        {!submitting && <Text style={{ color: "white" }}>{label}</Text>}
       </View>
     </TouchableComponent>
   );
@@ -44,10 +44,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 15,
     alignItems: "center",
-    backgroundColor: 10,
     padding: 15,
-
     backgroundColor: Colors.accentColor,
+    backgroundColor: "black",
   },
   button: {
     borderRadius: 10,
