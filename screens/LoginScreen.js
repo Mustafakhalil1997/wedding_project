@@ -43,7 +43,7 @@ const LoginScreen = ({ navigation }) => {
     };
     try {
       const response = await fetch(
-        "http://b684-185-101-16-102.ngrok.io/api/user/login",
+        "http://95fc-185-101-16-99.ngrok.io/api/user/login",
         {
           method: "POST",
           headers: {

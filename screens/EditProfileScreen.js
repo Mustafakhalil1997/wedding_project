@@ -10,12 +10,15 @@ import { Formik } from "formik";
 import CustomInput from "./../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
 import { editProfile } from "./../store/actions/Auth";
+import { showMessage } from "react-native-flash-message";
 
 const EditProfileScreen = (props) => {
   // save button should be on header right
 
   //   Image.getSize("../constants/images/Me.jpeg", imageSize);
   const { route, navigation } = props;
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -42,6 +45,7 @@ const EditProfileScreen = (props) => {
             title="Save"
             iconName="save-outline"
             onPress={saveClickHandler}
+            style={{ opacity: isSubmitting ? 0.3 : 1 }}
           />
         </HeaderButtons>
       ),
@@ -57,11 +61,49 @@ const EditProfileScreen = (props) => {
     // the other approach is setting a button down in the form and using a ref to call its onPress method from here when save button is clicked
   };
 
-  const handleSubmitForm = (values, formikActions) => {
+  const handleSubmitForm = async (values, formikActions) => {
     console.log("New Values ", values);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(
+        `http://95fc-185-101-16-99.ngrok.io/api/user/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+      const responseData = await response.json();
+
+      if (response.status === 200) {
+        dispatch(editProfile(values));
+        formikActions.setSubmitting(false);
+        const successMessage = responseData.message;
+        showMessage({
+          message: successMessage,
+          type: "success",
+          color: "white",
+          backgroundColor: "green",
+          style: { borderRadius: 20 },
+        });
+      } else {
+        const errorMessage = responseData.message;
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
+      }
+      setIsSubmitting(false);
+    } catch (err) {
+      setIsSubmitting(false);
+      console.log("error ", err);
+    }
     // send data to the server and update the store
-    dispatch(editProfile(values));
-    formikActions.setSubmitting(false);
   };
 
   return (

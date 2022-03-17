@@ -67,7 +67,7 @@ const SignupScreen = ({ navigation }) => {
     try {
       console.log("heree");
       const response = await fetch(
-        "http://b684-185-101-16-102.ngrok.io/api/user/signup",
+        "http://95fc-185-101-16-99.ngrok.io/api/user/signup",
         {
           method: "POST",
           headers: {
