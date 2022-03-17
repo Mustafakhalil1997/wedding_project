@@ -11,6 +11,7 @@ import { enableScreens } from "react-native-screens";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider, useSelector } from "react-redux";
+import { init } from "./helpers/db";
 
 import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";
@@ -22,6 +23,15 @@ import currentLocationReducer from "./store/reducers/Location";
 import AuthReducer from "./store/reducers/Auth";
 import UserTabNavigator from "./navigations/UserTabNavigation";
 import SwitchNavigation from "./navigations/SwitchNavigation";
+
+init()
+  .then(() => {
+    console.log("Initialized database");
+  })
+  .catch((err) => {
+    console.log("Initializeding db failed");
+    console.log(err);
+  });
 
 enableScreens();
 
