@@ -38,6 +38,9 @@ const HallList = (props) => {
 
   const [state, dispatchState] = useReducer(reducer, initialState);
 
+  const token = useSelector((state) => state.Auth.token);
+  console.log("the token is ", token);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
