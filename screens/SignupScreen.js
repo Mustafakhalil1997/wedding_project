@@ -81,7 +81,7 @@ const SignupScreen = ({ navigation }) => {
       console.log("reached heree");
 
       if (response.status === 200) {
-        dispatch(signUp(user));
+        dispatch(signUp("token", user));
         formikActions.resetForm();
         formikActions.setSubmitting(false);
         showMessage({

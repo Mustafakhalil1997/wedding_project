@@ -43,6 +43,7 @@ const LoginScreen = ({ navigation }) => {
       favorites: [],
     };
     try {
+      console.log("sending request to login");
       const response = await fetch(`${URL}/api/user/login`, {
         method: "POST",
         headers: {
@@ -55,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
       console.log("message ", responseData.message);
 
       if (response.status === 200) {
-        dispatch(login(user));
+        dispatch(login("token", user));
         formikActions.resetForm();
         formikActions.setSubmitting(false);
         showMessage({
