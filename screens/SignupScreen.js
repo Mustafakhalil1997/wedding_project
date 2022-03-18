@@ -20,6 +20,7 @@ import validationSchema from "./SignupSchema";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
 import { signUp } from "./../store/actions/Auth";
+import { URL } from "../helpers/url";
 
 // envelope // lock
 
@@ -66,16 +67,13 @@ const SignupScreen = ({ navigation }) => {
     console.log("user ", user);
     try {
       console.log("heree");
-      const response = await fetch(
-        "http://95fc-185-101-16-99.ngrok.io/api/user/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
+      const response = await fetch(`${URL}/api/user/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
       const responseData = await response.json();
       console.log(responseData);
 

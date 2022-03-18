@@ -16,6 +16,7 @@ import CustomButton from "./../components/CustomButton";
 import validationSchema from "./LoginSchema";
 import { useDispatch } from "react-redux";
 import { login } from "../store/actions/Auth";
+import { URL } from "./../helpers/url";
 
 // envelope // lock
 
@@ -42,16 +43,13 @@ const LoginScreen = ({ navigation }) => {
       favorites: [],
     };
     try {
-      const response = await fetch(
-        "http://95fc-185-101-16-99.ngrok.io/api/user/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${URL}/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
       console.log("response.status ", response.status);
       const responseData = await response.json();
       console.log("message ", responseData.message);
@@ -83,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
         });
       }
     } catch (error) {
-      console.log("error ", error);
+      console.log("errorR ", error);
     }
 
     // console.log("Formik acitons ", formikActions);

@@ -11,6 +11,7 @@ import CustomInput from "./../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
 import { editProfile } from "./../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
+import { URL } from "./../helpers/url";
 
 const EditProfileScreen = (props) => {
   // save button should be on header right
@@ -65,16 +66,13 @@ const EditProfileScreen = (props) => {
     console.log("New Values ", values);
     setIsSubmitting(true);
     try {
-      const response = await fetch(
-        `http://95fc-185-101-16-99.ngrok.io/api/user/${id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
+      const response = await fetch(`${URL}/api/user/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
       const responseData = await response.json();
 
       if (response.status === 200) {
