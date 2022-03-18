@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Animated, Easing } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -10,8 +10,9 @@ import { StatusBar } from "expo-status-bar";
 import { enableScreens } from "react-native-screens";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider, useSelector } from "react-redux";
-import { init } from "./helpers/db";
+import { Provider, useSelector, useDispatch } from "react-redux";
+import { getToken, init } from "./helpers/db";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";
@@ -23,6 +24,14 @@ import currentLocationReducer from "./store/reducers/Location";
 import AuthReducer from "./store/reducers/Auth";
 import UserTabNavigator from "./navigations/UserTabNavigation";
 import SwitchNavigation from "./navigations/SwitchNavigation";
+import { setToken } from "./store/actions/Auth";
+
+const date = new Date();
+setTimeout(() => {
+  const date1 = new Date();
+  console.log("compare dates ", date1 > date);
+}, 5000);
+console.log(date);
 
 init()
   .then(() => {
@@ -64,6 +73,8 @@ export default function App() {
       />
     );
   }
+
+  store.dispatch(setToken());
 
   return (
     <Provider store={store}>
