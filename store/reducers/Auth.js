@@ -1,6 +1,7 @@
 import {
   LOGIN,
   SET_TOKEN,
+  REMOVE_TOKEN,
   SIGNUP,
   EDIT_PROFILE,
   TOGGLE_USER_FAVORITE,
@@ -33,6 +34,14 @@ const AuthReducer = (state = initialState, action) => {
         userInfo: action.userInfo,
       };
     case LOGOUT:
+      return {
+        ...state,
+        token: null,
+        userInfo: {},
+        hallInfo: {},
+      };
+    case REMOVE_TOKEN:
+      console.log("settttingggg token ", action.token);
       return {
         ...state,
         token: null,
