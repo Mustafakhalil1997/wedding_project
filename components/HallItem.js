@@ -24,7 +24,7 @@ if (Platform.OS === "android") {
 console.log("OS ", android);
 
 const HallItem = (props) => {
-  const { navigation, item, favoriteNavigation, isFavorite } = props;
+  const { navigation, item, isFavorite } = props;
 
   const { id, name, email, location, number, images } = item;
 
@@ -38,9 +38,9 @@ const HallItem = (props) => {
 
   const handleHallClick = () => {
     let customNavigation = navigation;
-    if (favoriteNavigation) {
-      customNavigation = favoriteNavigation;
-    }
+    // if (favoriteNavigation) {
+    //   customNavigation = favoriteNavigation;
+    // }
     customNavigation.navigate({
       name: "HallDetail",
       params: {

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "./../../store/actions/HallList";
 import { addFavorite } from "./../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
@@ -23,10 +24,7 @@ const ImageSlider = (props) => {
 
   const [dimensions, setDimensions] = useState(0);
 
-  const hallList = useSelector((state) => state.halls.hallList);
   const token = useSelector((state) => state.Auth.token);
-
-  const [isHallFavorite, setIsHallFavorite] = useState(isFavorite);
 
   const ref = useRef(null);
 
