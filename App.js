@@ -33,14 +33,14 @@ setTimeout(() => {
 }, 5000);
 console.log(date);
 
-init()
-  .then(() => {
-    console.log("Initialized database");
-  })
-  .catch((err) => {
-    console.log("Initializeding db failed");
-    console.log(err);
-  });
+// init()
+//   .then(() => {
+//     console.log("Initialized database");
+//   })
+//   .catch((err) => {
+//     console.log("Initializeding db failed");
+//     console.log(err);
+//   });
 
 enableScreens();
 
