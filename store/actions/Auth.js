@@ -30,6 +30,27 @@ export const login = (token, userInfo) => {
   };
 };
 
+export const signUp = (token, userInfo) => {
+  // get token
+  const currentDate = new Date();
+  const expirationDate = new Date(currentDate.getTime() + 1 * 60000);
+  const tokenObject = {
+    token: token,
+    userInfo: userInfo,
+    expirationDate: expirationDate,
+  };
+  return async (dispatch) => {
+    try {
+      const jsonValue = JSON.stringify(tokenObject);
+      await AsyncStorage.setItem("@token", jsonValue);
+      dispatch({ type: SIGNUP, token: token, userInfo: userInfo });
+    } catch (e) {
+      console.log("signup error ", e);
+      // error reading value
+    }
+  };
+};
+
 export const setToken = (myToken = null) => {
   // if (myToken === null) {
   return async (dispatch) => {
@@ -49,8 +70,10 @@ export const setToken = (myToken = null) => {
             console.log("token removed");
             dispatch({ type: REMOVE_TOKEN });
           } else {
-            // dispatch({ type: SET_TOKEN, token: token });
-            dispatch({ type: LOGIN, token: token, userInfo: userInfo });
+            console.log("userInfooooo ", userInfo);
+            if (userInfo)
+              dispatch({ type: LOGIN, token: token, userInfo: userInfo });
+            else dispatch({ type: LOGIN, token: token, userInfo: {} });
           }
         }
       });
@@ -67,26 +90,6 @@ export const setToken = (myToken = null) => {
     //       // error reading value
     //     }
     //   };
-  };
-};
-
-export const signUp = (token, userInfo) => {
-  // call to the server here
-  // send userInfo
-  // get token
-  const tokenObject = {
-    token: token,
-    userInfo: userInfo,
-    expirationDate: expirationDate,
-  };
-  return async (dispatch) => {
-    try {
-      const jsonValue = JSON.stringify(tokenObject);
-      await AsyncStorage.setItem("@token", jsonValue);
-      dispatch({ type: SIGNUP, token: token, userInfo: userInfo });
-    } catch (e) {
-      // error reading value
-    }
   };
 };
 

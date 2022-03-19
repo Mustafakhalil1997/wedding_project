@@ -9,6 +9,7 @@ import {
   SWITCH_PROFILE,
   EDIT_HALL_INFO,
 } from "./../actions/Auth";
+import { AsyncStorage } from "@react-native-async-storage/async-storage";
 
 const initialState = {
   //  token: null,
@@ -79,9 +80,12 @@ const AuthReducer = (state = initialState, action) => {
       if (index < 0) {
         const newFavorites = [...state.userInfo.favorites, action.hallId];
         console.log("newFavorites ", newFavorites);
+        console.log("state.userInfo ", state.userInfo);
+        const newUserInfo = { ...state.userInfo, favorites: newFavorites };
         return {
           ...state,
-          userInfo: { ...state.userInfo, favorites: newFavorites },
+          // userInfo: { ...state.userInfo, favorites: newFavorites },
+          userInfo: newUserInfo,
         };
       } else {
         const newFavorites = [...state.userInfo.favorites];
