@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = (token, userInfo) => {
   const currentDate = new Date();
-  const expirationDate = new Date(currentDate.getTime() + 1 * 60000);
+  const expirationDate = new Date(currentDate.getTime() + 5 * 60000); // 5 minutes
 
   const tokenObject = {
     token: token,
@@ -22,6 +22,7 @@ export const login = (token, userInfo) => {
   return async (dispatch) => {
     try {
       const jsonValue = JSON.stringify(tokenObject);
+      console.log("jsonValue ", jsonValue);
       await AsyncStorage.setItem("@token", jsonValue);
       dispatch({ type: LOGIN, token: token, userInfo: userInfo });
     } catch (e) {

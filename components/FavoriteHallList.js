@@ -39,9 +39,6 @@ const FavoriteHallList = (props) => {
   const [state, dispatchState] = useReducer(reducer, initialState);
 
   const token = useSelector((state) => state.Auth.token);
-  console.log("the token is ", token);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
@@ -86,6 +83,23 @@ const FavoriteHallList = (props) => {
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.primaryColor} />
         <Text>Loading</Text>
+      </View>
+    );
+  }
+
+  const goToLogin = () => {
+    navigation.navigate({ name: "Auth" });
+  };
+
+  if (!token) {
+    return (
+      <View style={styles.noFavorites}>
+        <DefaultText styles={styles.noFavoritesText}>
+          Login to see your favorites
+        </DefaultText>
+        <DefaultText onPress={goToLogin} styles={{ color: "blue" }}>
+          Go to Login
+        </DefaultText>
       </View>
     );
   }
