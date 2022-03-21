@@ -1,5 +1,13 @@
-import React, { createRef, useLayoutEffect, useState } from "react";
-import { View, StyleSheet, ScrollView, Image, Button } from "react-native";
+import React, { createRef, useLayoutEffect, useState, useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Button,
+  Text,
+  Alert,
+} from "react-native";
 import { Avatar } from "react-native-paper";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,14 +20,24 @@ import CustomButton from "./../components/CustomButton";
 import { editProfile } from "./../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
 import { URL } from "./../helpers/url";
+import DefaultText from "./../components/DefaultText";
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const EditProfileScreen = (props) => {
   // save button should be on header right
 
-  //   Image.getSize("../constants/images/Me.jpeg", imageSize);
   const { route, navigation } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [profileImagePicked, setProfileImagePicked] = useState();
+
+  console.log("profileImagePicked ", profileImagePicked);
+  if (profileImagePicked) {
+    console.log("uri ", profileImagePicked.uri);
+    console.log("type ", profileImagePicked.type);
+    console.log("name ", profileImagePicked.name);
+  }
 
   const dispatch = useDispatch();
 
@@ -27,6 +45,9 @@ const EditProfileScreen = (props) => {
 
   const { id, firstName, lastName, email, password, profileImage } = userInfo;
 
+  const [loading, setLoading] = useState();
+
+  console.log("profileImagee ", URL + "/" + profileImage);
   const buttonRef = createRef();
 
   const userInfoBasic = {
@@ -34,6 +55,33 @@ const EditProfileScreen = (props) => {
     lastName: lastName,
     email: email,
     password: password,
+  };
+
+  const pickProfileImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission denied",
+        "Allow access to camera in your settings"
+      );
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      base64: true,
+      quality: 1,
+    });
+    console.log("result ", result);
+    if (!result.cancelled) {
+      const imageSize = result.base64.length * (3 / 4) - 2;
+      console.log("imageSize ", imageSize);
+      if (imageSize > 1000000) {
+        console.log("Big Image");
+      }
+      setProfileImagePicked(result);
+    }
   };
 
   useLayoutEffect(() => {
@@ -55,6 +103,9 @@ const EditProfileScreen = (props) => {
 
   let submitForm;
 
+  const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+  console.log("convertedImageUrl ", convertedImageUrl);
+
   const saveClickHandler = () => {
     // buttonRef.current.props.onPress();
     submitForm();
@@ -64,14 +115,36 @@ const EditProfileScreen = (props) => {
 
   const handleSubmitForm = async (values, formikActions) => {
     console.log("New Values ", values);
+
+    const { email, firstName, lastName, password } = values;
+
+    let newUserInfo = {
+      email,
+      firstName,
+      lastName,
+      password,
+      profileImage: profileImagePicked ? profileImagePicked : "",
+    };
+
     setIsSubmitting(true);
     try {
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("password", password);
+      formData.append("profileImage", {
+        name: new Date() + "_profile",
+        uri: profileImagePicked.uri,
+        type: "image/jpg" || "image/png" || "image/jpeg",
+      });
       const response = await fetch(`${URL}/api/user/${id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify(values),
+        body: formData,
       });
       const responseData = await response.json();
 
@@ -99,7 +172,14 @@ const EditProfileScreen = (props) => {
       setIsSubmitting(false);
     } catch (err) {
       setIsSubmitting(false);
-      console.log("error ", err);
+      showMessage({
+        message: err.message || "An unknown error occured, Please try again",
+        type: "default",
+        color: "white",
+        backgroundColor: "red",
+        style: { borderRadius: 20 },
+      });
+      console.log("errorrr ", err);
     }
     // send data to the server and update the store
   };
@@ -107,15 +187,42 @@ const EditProfileScreen = (props) => {
   return (
     <View style={styles.screenContainer}>
       <View style={styles.imageContainer}>
-        <Image
-          source={require("../constants/images/Me.jpeg")}
-          style={{
-            aspectRatio: 1.8 / 1.8,
-            width: "100%",
-            height: "100%",
-          }}
-        />
+        <View style={styles.imageCircleContainer}>
+          {!profileImagePicked && (
+            <Avatar.Image
+              size={240}
+              source={{
+                uri: convertedImageUrl,
+              }}
+            />
+          )}
+          {profileImagePicked && (
+            <Avatar.Image
+              size={240}
+              source={{
+                uri: profileImagePicked.uri,
+              }}
+            />
+          )}
+          {/* {!profileImagePicked ? (
+            <Avatar.Image
+              size={240}
+              source={require("../constants/images/Roger.jpg")}
+            />
+          ) : null}
+          {profileImagePicked ? (
+            <Avatar.Image size={240} source={{ uri: profileImagePicked.uri }} />
+          ) : null} */}
+        </View>
+        <View style={styles.imagePickerContainer}>
+          <Ionicons
+            name="md-camera-outline"
+            size={30}
+            onPress={pickProfileImage}
+          />
+        </View>
       </View>
+
       <ScrollView>
         <Formik
           initialValues={userInfoBasic}
@@ -213,9 +320,23 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   imageContainer: {
-    backgroundColor: "#EBEAE8",
-    height: 220,
     alignItems: "center",
+    justifyContent: "center",
+  },
+
+  imageCircleContainer: {
+    borderRadius: 120,
+    backgroundColor: "gray",
+  },
+  imagePickerContainer: {
+    position: "absolute",
+    bottom: 20,
+    right: 70,
+    backgroundColor: "white",
+    borderRadius: 25,
+    borderColor: "gray",
+    borderWidth: 0.5,
+    padding: 3,
   },
   inputsContainer: {
     flex: 1,

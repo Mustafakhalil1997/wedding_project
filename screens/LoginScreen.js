@@ -53,10 +53,12 @@ const LoginScreen = ({ navigation }) => {
       });
       console.log("response.status ", response.status);
       const responseData = await response.json();
+      const { userInfo } = responseData;
+      console.log("responseData ", responseData);
       console.log("message ", responseData.message);
 
       if (response.status === 200) {
-        dispatch(login("token", user));
+        dispatch(login("token", userInfo));
         formikActions.resetForm();
         formikActions.setSubmitting(false);
         showMessage({
@@ -82,6 +84,15 @@ const LoginScreen = ({ navigation }) => {
         });
       }
     } catch (error) {
+      showMessage({
+        message: "An unknown error occurred, please try again",
+        color: "white",
+        backgroundColor: "red",
+        type: "default",
+        style: {
+          borderRadius: 20,
+        },
+      });
       console.log("errorR ", error);
     }
 
@@ -168,7 +179,8 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
-    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: "white",
   },
 
   inputsContainer: {

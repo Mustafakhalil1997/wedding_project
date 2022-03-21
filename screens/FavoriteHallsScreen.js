@@ -3,7 +3,7 @@ import HallList from "../components/HallList";
 import FavoriteHallList from "./../components/FavoriteHallList";
 
 const FavoriteHallsScreen = ({ navigation }) => {
-  return <FavoriteHallList navigation />;
+  return <FavoriteHallList navigation={navigation} />;
   return <HallList favorite favoriteNavigation={navigation} />;
 };
 

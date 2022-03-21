@@ -60,8 +60,10 @@ const SignupScreen = ({ navigation }) => {
       lastName: last,
       email,
       password,
-      profileImage: "myImage",
+      profileImage: "",
       favorites: [],
+      hallId: null,
+      booking: null,
     };
 
     console.log("user ", user);
