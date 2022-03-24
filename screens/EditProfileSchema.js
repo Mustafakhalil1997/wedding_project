@@ -6,11 +6,7 @@ export default Yup.object().shape({
     .trim()
     .min(3, "Invalid name!")
     .required("Name is required!"),
-  lastName: Yup.string()
-    .label("lastName")
-    .trim()
-    .min(1, "Invalid name!")
-    .required("Last name is required"),
+  lastName: Yup.string().label("lastName").trim(),
   email: Yup.string()
     .label("email")
     .trim()

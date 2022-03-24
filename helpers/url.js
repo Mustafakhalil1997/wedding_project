@@ -1,1 +1,1 @@
-export const URL = "http://8a0a-185-101-16-103.ngrok.io";
+export const URL = "https://wedding-project-backend.herokuapp.com";

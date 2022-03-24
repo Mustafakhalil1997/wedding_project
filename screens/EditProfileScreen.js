@@ -31,12 +31,13 @@ const EditProfileScreen = (props) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [profileImagePicked, setProfileImagePicked] = useState();
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   console.log("profileImagePicked ", profileImagePicked);
   if (profileImagePicked) {
-    console.log("uri ", profileImagePicked.uri);
-    console.log("type ", profileImagePicked.type);
-    console.log("name ", profileImagePicked.name);
+    console.log("uri ", profileImagePicked);
+    // console.log("type ", profileImagePicked.type);
+    // console.log("name ", profileImagePicked.name);
   }
 
   const dispatch = useDispatch();
@@ -57,6 +58,30 @@ const EditProfileScreen = (props) => {
     password: password,
   };
 
+  // useEffect(() => {
+  //   navigation.addListener("beforeRemove", (e) => {
+  //     if (!hasUnsavedChanges) {
+  //       return;
+  //     }
+
+  //     // Prevent default behavior of leaving the screen
+  //     e.preventDefault();
+
+  //     Alert.alert(
+  //       "Discard changes?",
+  //       "You have unsaved changes. Are you sure you want to discard them?",
+  //       [
+  //         { text: "Dont't leave", style: "cancel", onPress: () => {} },
+  //         {
+  //           text: "Discard",
+  //           style: "destructive",
+  //           onPress: () => navigation.dispatch(e.data.action),
+  //         },
+  //       ]
+  //     );
+  //   });
+  // }, [navigation, hasUnsavedChanges]);
+
   const pickProfileImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -70,17 +95,18 @@ const EditProfileScreen = (props) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 4],
-      base64: true,
+      // base64: true,
       quality: 1,
     });
     console.log("result ", result);
     if (!result.cancelled) {
-      const imageSize = result.base64.length * (3 / 4) - 2;
-      console.log("imageSize ", imageSize);
-      if (imageSize > 1000000) {
-        console.log("Big Image");
-      }
-      setProfileImagePicked(result);
+      // const imageSize = result.base64.length * (3 / 4) - 2;
+      // console.log("imageSize ", imageSize);
+      // if (imageSize > 1000000) {
+      //   console.log("Big Image");
+      // }
+      setProfileImagePicked(result.uri);
+      setHasUnsavedChanges(true);
     }
   };
 
@@ -135,7 +161,7 @@ const EditProfileScreen = (props) => {
       formData.append("password", password);
       formData.append("profileImage", {
         name: new Date() + "_profile",
-        uri: profileImagePicked.uri,
+        uri: profileImagePicked,
         type: "image/jpg" || "image/png" || "image/jpeg",
       });
       const response = await fetch(`${URL}/api/user/${id}`, {
@@ -147,9 +173,12 @@ const EditProfileScreen = (props) => {
         body: formData,
       });
       const responseData = await response.json();
-
+      console.log("values ", values);
+      console.log("responseData ", responseData);
+      const newUserInfo = responseData.user;
+      console.log("newUserInfo ", newUserInfo);
       if (response.status === 200) {
-        dispatch(editProfile(values));
+        dispatch(editProfile(newUserInfo));
         formikActions.setSubmitting(false);
         const successMessage = responseData.message;
         showMessage({
@@ -159,6 +188,7 @@ const EditProfileScreen = (props) => {
           backgroundColor: "green",
           style: { borderRadius: 20 },
         });
+        setHasUnsavedChanges(false);
       } else {
         const errorMessage = responseData.message;
         showMessage({
@@ -184,26 +214,41 @@ const EditProfileScreen = (props) => {
     // send data to the server and update the store
   };
 
+  console.log("profileImage ", profileImage && "hello");
+  console.log("profileImagePicked ", !profileImagePicked);
+
+  const showImage = () => {
+    if (profileImage && !profileImagePicked) {
+      console.log("I have a profile image");
+      return convertedImageUrl;
+    }
+    if (profileImagePicked) {
+      console.log("I have a picked image");
+      return profileImagePicked;
+    }
+    return null;
+  };
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.imageContainer}>
         <View style={styles.imageCircleContainer}>
-          {!profileImagePicked && (
+          {!profileImage && !profileImagePicked && (
+            <Avatar.Image
+              size={240}
+              source={require("../constants/images/Roger.jpg")}
+            />
+          )}
+
+          {showImage() && (
             <Avatar.Image
               size={240}
               source={{
-                uri: convertedImageUrl,
+                uri: showImage(),
               }}
             />
           )}
-          {profileImagePicked && (
-            <Avatar.Image
-              size={240}
-              source={{
-                uri: profileImagePicked.uri,
-              }}
-            />
-          )}
+
           {/* {!profileImagePicked ? (
             <Avatar.Image
               size={240}
@@ -246,6 +291,7 @@ const EditProfileScreen = (props) => {
             //   buttonDisabled = false;
             // }
             submitForm = handleSubmit;
+
             return (
               <View style={styles.inputsContainer}>
                 <CustomInput
