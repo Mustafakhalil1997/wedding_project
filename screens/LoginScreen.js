@@ -93,7 +93,7 @@ const LoginScreen = ({ navigation }) => {
           borderRadius: 20,
         },
       });
-      console.log("errorR ", error);
+      console.log("errorR ", error.message);
     }
 
     // console.log("Formik acitons ", formikActions);

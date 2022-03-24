@@ -48,11 +48,14 @@ const SignupScreen = ({ navigation }) => {
     const arraySize = nameArray.length;
     console.log("full name ", nameArray);
     let first = nameArray[0];
-    for (let i = 1; i < arraySize - 1; i++) {
+    console.log("first ", first);
+    console.log();
+    for (let i = 1; i < arraySize; i++) {
       console.log(nameArray[i]);
       first = first + " " + nameArray[i];
     }
-    const last = nameArray[arraySize - 1];
+    let last = "";
+    if (arraySize > 1) last = nameArray[arraySize - 1];
 
     const user = {
       id: "u1",

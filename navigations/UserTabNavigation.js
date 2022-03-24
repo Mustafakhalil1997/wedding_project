@@ -103,6 +103,9 @@ const UserTabNavigator = () => {
               component={EditProfileScreen}
               options={{
                 title: "",
+                headerStyle: {
+                  backgroundColor: "white",
+                },
               }}
             />
           </>
