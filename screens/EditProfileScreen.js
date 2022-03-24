@@ -154,29 +154,51 @@ const EditProfileScreen = (props) => {
 
     setIsSubmitting(true);
     try {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("firstName", firstName);
-      formData.append("lastName", lastName);
-      formData.append("password", password);
-      formData.append("profileImage", {
-        name: new Date() + "_profile",
-        uri: profileImagePicked,
-        type: "image/jpg" || "image/png" || "image/jpeg",
-      });
+      if (profileImagePicked) {
+        console.log();
+        const imageData = new FormData();
+        imageData.append("profileImage", {
+          name: new Date() + "_profile",
+          uri: profileImagePicked,
+          type: "image/jpg" || "image/png" || "image/jpeg",
+        });
+
+        const res = await fetch(`${URL}/api/user/addImage/${id}`, {
+          method: "PATCH",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+          body: imageData,
+        });
+        const resData = await res.json();
+        if (res.status !== 200) {
+          const errorMessage = resData.message;
+          showMessage({
+            message: errorMessage,
+            type: "default",
+            color: "white",
+            backgroundColor: "red",
+            style: { borderRadius: 20 },
+          });
+        }
+      }
+
+      const newUser = {
+        email,
+        firstName,
+        lastName,
+        password,
+      };
       const response = await fetch(`${URL}/api/user/${id}`, {
         method: "PATCH",
         headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify(newUser),
       });
       const responseData = await response.json();
-      console.log("values ", values);
-      console.log("responseData ", responseData);
       const newUserInfo = responseData.user;
-      console.log("newUserInfo ", newUserInfo);
       if (response.status === 200) {
         dispatch(editProfile(newUserInfo));
         formikActions.setSubmitting(false);
