@@ -26,7 +26,10 @@ const ProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo", userInfo);
 
-  const { fullName, email, id, profileImage } = userInfo;
+  const { firstName, lastName, email, id, profileImage } = userInfo;
+
+  const fullName = firstName + " " + lastName;
+  console.log("userInfo ", fullName);
 
   console.log("profileImage ", profileImage);
 
@@ -52,7 +55,14 @@ const ProfileScreen = (props) => {
       <ScrollView style={styles.profileContainer}>
         <View style={styles.header}>
           <View style={styles.imageCircleContainer}>
-            <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
+            {profileImage ? (
+              <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
+            ) : (
+              <Avatar.Image
+                size={60}
+                source={require("../constants/images/Roger.jpg")}
+              />
+            )}
           </View>
           {/* <View></View> */}
           <TouchableOpacity style={{}} onPress={logoutClickHandler}>
@@ -67,7 +77,7 @@ const ProfileScreen = (props) => {
             fontFamily: "acme-regular",
           }}
         >
-          {fullName || "Mustafa Khalil"}
+          {fullName}
         </DefaultText>
         <TouchableOpacity onPress={editProfileClickHandler}>
           <DefaultText
