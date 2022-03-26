@@ -16,6 +16,7 @@ import { Avatar } from "react-native-paper";
 import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
 import { logout, switchProfile } from "./../store/actions/Auth";
+import { URL } from "../helpers/url";
 
 const HostProfileScreen = (props) => {
   const { navigation } = props;
@@ -26,6 +27,8 @@ const HostProfileScreen = (props) => {
   console.log("userInfo", userInfo);
 
   const { fullName, email, id, profileImage } = userInfo;
+
+  const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
   const editProfileClickHandler = () => {
     console.log("clicked");
@@ -53,14 +56,14 @@ const HostProfileScreen = (props) => {
       <ScrollView style={styles.profileContainer}>
         <View style={styles.header}>
           <View style={styles.imageCircleContainer}>
-            {/* <Avatar.Image
-          size={60}
-          source={require("../constants/images/profile-icon-avatar.png")}
-        /> */}
-            <Avatar.Image
-              size={60}
-              source={require("../constants/images/Roger.jpg")}
-            />
+            {profileImage ? (
+              <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
+            ) : (
+              <Avatar.Image
+                size={60}
+                source={require("../constants/images/Roger.jpg")}
+              />
+            )}
           </View>
           {/* <View></View> */}
           <TouchableOpacity style={{}} onPress={logoutClickHandler}>

@@ -14,7 +14,7 @@ import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
 import validationSchema from "./LoginSchema";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/actions/Auth";
 import { URL } from "./../helpers/url";
 
@@ -27,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const dispatch = useDispatch();
+  const userType = useSelector((state) => state.Auth.userType);
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
@@ -68,9 +69,13 @@ const LoginScreen = ({ navigation }) => {
             borderRadius: 20,
           },
         });
-        navigation.navigate({
-          name: "Explore",
-        });
+        if (userType === "user") {
+          navigation.navigate({
+            name: "Explore",
+          });
+        } else {
+          navigation.navigate({ name: "Home" });
+        }
       } else {
         const errorMessage = responseData.message;
         showMessage({
