@@ -43,6 +43,7 @@ const EditProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const token = useSelector((state) => state.Auth.token);
 
   const { id, firstName, lastName, email, password, profileImage } = userInfo;
 
@@ -168,6 +169,7 @@ const EditProfileScreen = (props) => {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + token,
           },
           body: imageData,
         });
@@ -194,6 +196,7 @@ const EditProfileScreen = (props) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
         body: JSON.stringify(newUser),
       });

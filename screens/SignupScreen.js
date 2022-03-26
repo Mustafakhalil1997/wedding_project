@@ -58,7 +58,7 @@ const SignupScreen = ({ navigation }) => {
     if (arraySize > 1) last = nameArray[arraySize - 1];
 
     const user = {
-      id: "u1",
+      // id: "u1",
       firstName: first,
       lastName: last,
       email,
@@ -80,13 +80,15 @@ const SignupScreen = ({ navigation }) => {
         body: JSON.stringify(user),
       });
       const responseData = await response.json();
-      console.log(responseData);
+      console.log("responseData signup ", responseData);
+
+      const { userInfo, token } = responseData;
 
       console.log("res.status ", response.status);
       console.log("reached heree");
 
       if (response.status === 200) {
-        dispatch(signUp("token", user));
+        dispatch(signUp(token, userInfo));
         formikActions.resetForm();
         formikActions.setSubmitting(false);
         showMessage({

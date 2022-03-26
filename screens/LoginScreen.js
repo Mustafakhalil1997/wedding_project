@@ -53,12 +53,12 @@ const LoginScreen = ({ navigation }) => {
       });
       console.log("response.status ", response.status);
       const responseData = await response.json();
-      const { userInfo } = responseData;
+      const { userInfo, token } = responseData;
       console.log("responseData ", responseData);
       console.log("message ", responseData.message);
 
       if (response.status === 200) {
-        dispatch(login("token", userInfo));
+        dispatch(login(token, userInfo));
         formikActions.resetForm();
         formikActions.setSubmitting(false);
         showMessage({
