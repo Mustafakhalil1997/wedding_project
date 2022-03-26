@@ -70,6 +70,7 @@ export const setToken = (myToken = null) => {
             await AsyncStorage.removeItem("@token");
             console.log("token removed");
             dispatch({ type: REMOVE_TOKEN });
+            dispatch({ type: SWITCH_PROFILE });
           } else {
             console.log("userInfooooo ", userInfo);
             if (userInfo)

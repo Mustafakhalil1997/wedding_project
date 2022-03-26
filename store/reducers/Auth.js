@@ -35,8 +35,10 @@ const AuthReducer = (state = initialState, action) => {
         userInfo: action.userInfo,
       };
     case LOGOUT:
+      let switchType = state.userType === "user" ? "host" : "user";
       return {
         ...state,
+        userType: switchType,
         token: null,
         userInfo: {},
         hallInfo: {},
@@ -50,7 +52,7 @@ const AuthReducer = (state = initialState, action) => {
         hallInfo: {},
       };
     case SWITCH_PROFILE:
-      const switchType = state.userType === "user" ? "host" : "user";
+      switchType = state.userType === "user" ? "host" : "user";
       return {
         ...state,
         userType: switchType,
