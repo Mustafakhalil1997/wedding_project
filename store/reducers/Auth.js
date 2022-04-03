@@ -35,7 +35,8 @@ const AuthReducer = (state = initialState, action) => {
         userInfo: action.userInfo,
       };
     case LOGOUT:
-      let switchType = state.userType === "user" ? "host" : "user";
+      // let switchType = state.userType === "user" ? "host" : "user";
+      let switchType = "user";
       return {
         ...state,
         userType: switchType,
