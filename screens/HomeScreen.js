@@ -7,7 +7,7 @@ const HomeScreen = (props) => {
 
   const goToName = () => {
     navigation.navigate({
-      name: "completeHostProfileScreen",
+      name: "completeProfile",
     });
   };
 
