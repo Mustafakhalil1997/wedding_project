@@ -10,13 +10,15 @@ export const EDIT_HALL_INFO = "EDIT_HALL_INFO";
 export const REMOVE_TOKEN = "REMOVE_TOKEN";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const login = (token, userInfo) => {
+export const login = (token, userInfo, hallInfo) => {
   const currentDate = new Date();
-  const expirationDate = new Date(currentDate.getTime() + 5 * 60000); // 5 minutes
+  const expirationDate = new Date(currentDate.getTime() + 10 * 60000); // 10 minutes      // 24 hours or 1440 minutes
 
   const tokenObject = {
     token: token,
     userInfo: userInfo,
+    hallInfo: hallInfo,
+    userType: "user",
     expirationDate: expirationDate,
   };
   return async (dispatch) => {
@@ -24,7 +26,12 @@ export const login = (token, userInfo) => {
       const jsonValue = JSON.stringify(tokenObject);
       console.log("jsonValue ", jsonValue);
       await AsyncStorage.setItem("@token", jsonValue);
-      dispatch({ type: LOGIN, token: token, userInfo: userInfo });
+      dispatch({
+        type: LOGIN,
+        token: token,
+        userInfo: userInfo,
+        hallInfo: hallInfo,
+      });
     } catch (e) {
       // error reading value
     }
@@ -34,9 +41,10 @@ export const login = (token, userInfo) => {
 export const signUp = (token, userInfo) => {
   // get token
   const currentDate = new Date();
-  const expirationDate = new Date(currentDate.getTime() + 1 * 60000);
+  const expirationDate = new Date(currentDate.getTime() + 10 * 60000);
   const tokenObject = {
     token: token,
+    userType: "user",
     userInfo: userInfo,
     expirationDate: expirationDate,
   };
@@ -60,7 +68,10 @@ export const setToken = (myToken = null) => {
         if (val !== null) {
           const jsonValue = JSON.parse(val);
           console.log("valuee ", jsonValue);
-          const { token, expirationDate, userInfo } = jsonValue;
+          const { token, expirationDate, userInfo, hallInfo, userType } =
+            jsonValue;
+
+          console.log("hallInfooo ", hallInfo);
 
           const date = new Date();
           console.log("current date ", date);
@@ -70,12 +81,25 @@ export const setToken = (myToken = null) => {
             await AsyncStorage.removeItem("@token");
             console.log("token removed");
             dispatch({ type: REMOVE_TOKEN });
-            dispatch({ type: SWITCH_PROFILE });
+            // dispatch({ type: SWITCH_PROFILE });
           } else {
             console.log("userInfooooo ", userInfo);
             if (userInfo)
-              dispatch({ type: LOGIN, token: token, userInfo: userInfo });
-            else dispatch({ type: LOGIN, token: token, userInfo: {} });
+              dispatch({
+                type: LOGIN,
+                token: token,
+                userType: userType,
+                userInfo: userInfo,
+                hallInfo: hallInfo ? hallInfo : {},
+              });
+            else
+              dispatch({
+                type: LOGIN,
+                token: token,
+                userType: "user",
+                userInfo: {},
+                hallInfo: {},
+              });
           }
         }
       });
@@ -121,7 +145,28 @@ export const logout = () => {
 };
 
 export const switchProfile = () => {
-  return { type: SWITCH_PROFILE };
+  return async (dispatch) => {
+    try {
+      await AsyncStorage.getItem("@token", async (err, val) => {
+        if (val !== null) {
+          const jsonValue = JSON.parse(val);
+          console.log("valuee ", jsonValue);
+          const { token, expirationDate, userInfo, hallInfo, userType } =
+            jsonValue;
+          const newValue = {
+            ...jsonValue,
+            userType: userType === "user" ? "host" : "user",
+          };
+          const newJsonValue = JSON.stringify(newValue);
+          await AsyncStorage.setItem("@token", newJsonValue);
+          console.log("hallInfooo ", hallInfo);
+          dispatch({ type: SWITCH_PROFILE });
+        }
+      });
+    } catch (error) {
+      console.log("failed to save to async storage ", error);
+    }
+  };
 };
 
 export const editHall = (newData) => {

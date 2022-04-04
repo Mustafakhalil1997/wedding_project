@@ -26,7 +26,9 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         token: action.token,
+        userType: action.userType,
         userInfo: action.userInfo,
+        hallInfo: action.hallInfo,
       };
     case SIGNUP:
       return {
@@ -48,6 +50,7 @@ const AuthReducer = (state = initialState, action) => {
       console.log("settttingggg token ", action.token);
       return {
         ...state,
+        userType: "user",
         token: null,
         userInfo: {},
         hallInfo: {},
