@@ -5,14 +5,18 @@ import Colors from "../constants/Colors";
 import validationSchema from "./HallSchema";
 import CustomInput from "./../components/CustomInput";
 import CustomButton from "./../components/CustomButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { URL } from "./../helpers/url";
+import { editHall } from "./../store/actions/Auth";
 
-const CompleteHostProfileScreen = () => {
+const CompleteHostProfileScreen = (props) => {
+  const { navigation } = props;
   const hallInfo = {
     hallName: "",
     address: "",
   };
+
+  const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo ", userInfo);
@@ -49,6 +53,15 @@ const CompleteHostProfileScreen = () => {
         body: JSON.stringify(hallObject),
       });
       const responseData = await response.json();
+
+      const { hall } = responseData;
+      console.log("hall ", hall);
+
+      if (response.status === 200) {
+        dispatch(editHall(hall));
+        navigation.goBack();
+      }
+
       console.log(responseData);
     } catch (error) {
       console.log(error);
