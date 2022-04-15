@@ -29,6 +29,7 @@ export const login = (token, userInfo, hallInfo) => {
       dispatch({
         type: LOGIN,
         token: token,
+        userType: "user",
         userInfo: userInfo,
         hallInfo: hallInfo,
       });
@@ -84,7 +85,9 @@ export const setToken = (myToken = null) => {
             // dispatch({ type: SWITCH_PROFILE });
           } else {
             console.log("userInfooooo ", userInfo);
-            if (userInfo)
+            console.log(Object.keys(userInfo).length);
+            if (Object.keys(userInfo).length !== 0) {
+              console.log("here man");
               dispatch({
                 type: LOGIN,
                 token: token,
@@ -92,7 +95,7 @@ export const setToken = (myToken = null) => {
                 userInfo: userInfo,
                 hallInfo: hallInfo ? hallInfo : {},
               });
-            else
+            } else
               dispatch({
                 type: LOGIN,
                 token: token,

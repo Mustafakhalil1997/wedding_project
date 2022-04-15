@@ -6,6 +6,7 @@ import {
   Dimensions,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,15 @@ const ImageSlider = (props) => {
   const token = useSelector((state) => state.Auth.token);
 
   const ref = useRef(null);
+
+  const scrollRef = useRef();
+
+  // const goToNext = () => {
+  //   scrollRef.current.scrollTo({
+  //     x: 360,
+  //     animated: true,
+  //   });
+  // };
 
   const dispatch = useDispatch();
 
@@ -65,8 +75,10 @@ const ImageSlider = (props) => {
       onLayout={onLayout}
     >
       <ScrollView
+        ref={scrollRef}
         pagingEnabled
         horizontal
+        // scrollEnabled={false}
         onMomentumScrollEnd={scrollingHandler}
         // scrollEventThrottle={changeNumber}
         // onScrollEndDrag={changeNumber}
@@ -133,6 +145,11 @@ const ImageSlider = (props) => {
           <Text style={{ fontSize: 20, color: "white" }}>{imageNumber}</Text>
         </View>
       )}
+      {/* <View style={{ position: "absolute", bottom: 4, left: 15 }}>
+        <TouchableOpacity onPress={goToNext}>
+          <Text style={{ fontSize: 20, color: "white" }}>Next</Text>
+        </TouchableOpacity>
+      </View> */}
     </View>
   );
 };
