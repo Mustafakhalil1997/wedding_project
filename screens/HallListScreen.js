@@ -9,6 +9,9 @@ const HallListScreen = ({ navigation }) => {
   const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
+  console.log("userInfo in hallList ", userInfo);
+  console.log("hallInfo in hallList", hallInfo);
 
   // still can't decide the right place for calling this method, maybe app.js would be better
   // this doesn't work in app.js as the file only runs once when the app is loaded

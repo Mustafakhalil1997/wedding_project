@@ -33,6 +33,7 @@ const HomeScreen = (props) => {
   const [address, setAddress] = useState();
   const [imageSelected, setImageSelected] = useState();
   const [location, setLocation] = useState();
+  const [mobileNumber, setMobileNumber] = useState();
   const [pageNum, setPageNum] = useState(1);
 
   const scrollRef = useRef();
@@ -56,6 +57,10 @@ const HomeScreen = (props) => {
 
   const addressChange = (value) => {
     setAddress(value);
+  };
+
+  const mobileNumberChange = (value) => {
+    setMobileNumber(value);
   };
 
   const pickImage = async () => {
@@ -116,6 +121,7 @@ const HomeScreen = (props) => {
         ownerId: id,
         hallName,
         email,
+        mobileNumber,
         address,
         location: {
           lat: location.latitude,
@@ -197,6 +203,14 @@ const HomeScreen = (props) => {
   // if (imageSelected) {
   // }
 
+  if (hallInfo) {
+    return (
+      <View>
+        <DefaultText>Welcome.. You already have a hall</DefaultText>
+      </View>
+    );
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.screenContainer}>
       <View style={styles.header}>
@@ -253,6 +267,21 @@ const HomeScreen = (props) => {
               onChangeText={addressChange}
             />
           </View>
+          <View
+            style={{
+              width: width,
+              backgroundColor: "blue",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="mobile number"
+              value={mobileNumber}
+              onChangeText={mobileNumberChange}
+            />
+          </View>
           <Map getLocation={getLocation} />
           <View
             style={{
@@ -298,15 +327,15 @@ const HomeScreen = (props) => {
             <DefaultText>Previous</DefaultText>
           </View>
         </TouchableOpacity>
-        {pageNum !== 4 ? (
+        {pageNum !== 5 ? (
           <TouchableOpacity
             onPress={goToNext}
-            disabled={pageNum === 4 ? true : false}
+            disabled={pageNum === 5 ? true : false}
           >
             <View
               style={{
                 backgroundColor: "red",
-                opacity: pageNum === 4 ? 0.4 : 1,
+                opacity: pageNum === 5 ? 0.4 : 1,
                 alignSelf: "flex-end",
                 margin: 10,
                 padding: 10,
