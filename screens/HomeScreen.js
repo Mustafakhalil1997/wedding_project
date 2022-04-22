@@ -5,27 +5,57 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  TextInput,
 } from "react-native";
 import DefaultText from "../components/DefaultText";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
+import Map from "./../components/Map";
+import { editHall } from "./../store/actions/Auth";
+import { showMessage } from "react-native-flash-message";
+import { URL } from "./../helpers/url";
 
 const { width } = Dimensions.get("window");
 
 const HomeScreen = (props) => {
   const { navigation } = props;
 
-  const hallInfo = useSelector((state) => state.Auth.hallInfo);
+  const dispatch = useDispatch();
 
-  const [profileImagePicked, setProfileImagePicked] = useState();
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
+  console.log("hallInfo ", hallInfo);
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+  const token = useSelector((state) => state.Auth.token);
+
+  const { id, firstName, lastName, email, password, profileImage } = userInfo;
+
+  const [hallName, setHallName] = useState();
+  const [address, setAddress] = useState();
+  const [imageSelected, setImageSelected] = useState();
+  const [location, setLocation] = useState();
   const [pageNum, setPageNum] = useState(1);
 
   const scrollRef = useRef();
+
+  console.log("hallName ", hallName);
 
   const goToName = () => {
     navigation.navigate({
       name: "completeProfile",
     });
+  };
+
+  const getLocation = (location) => {
+    setLocation(location);
+    console.log("location ", location);
+  };
+
+  const hallNameChange = (value) => {
+    setHallName(value);
+  };
+
+  const addressChange = (value) => {
+    setAddress(value);
   };
 
   const pickImage = async () => {
@@ -51,8 +81,8 @@ const HomeScreen = (props) => {
       // if (imageSize > 1000000) {
       //   console.log("Big Image");
       // }
-      setProfileImagePicked(result.uri);
-      setHasUnsavedChanges(true);
+      setImageSelected(result.uri);
+      // setHasUnsavedChanges(true);
     }
   };
 
@@ -74,8 +104,98 @@ const HomeScreen = (props) => {
     });
   };
 
-  if (profileImagePicked) {
-  }
+  const submitValues = async () => {
+    try {
+      // add hall
+
+      // hallName, address, imageSelected, location
+
+      // a side note: add the token for authorization to heroku
+
+      const newHall = {
+        ownerId: id,
+        hallName,
+        email,
+        address,
+        location: {
+          lat: location.latitude,
+          lng: location.longitude,
+        },
+      };
+
+      console.log("sending request");
+
+      const response = await fetch(`${URL}/api/hall/createHall`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(newHall),
+      });
+
+      console.log("request sent");
+
+      const responseData = await response.json();
+      const newHallInfo = responseData.hall;
+      console.log("newHallInfo ", newHallInfo);
+      // to be saved inside the store
+
+      if (response.status === 200) {
+        dispatch(editHall(newHallInfo));
+      } else {
+        const errorMessage = responseData.message;
+        console.log("errorMessage ", errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
+      }
+
+      const imageData = new FormData();
+      imageData.append("profileImage", {
+        name: new Date() + "_profile",
+        uri: imageSelected,
+        type: "image/jpg" || "image/png" || "image/jpeg",
+      });
+
+      const res = await fetch(`${URL}/api/hall/addImage/${newHallInfo.id}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+        body: imageData,
+      });
+      const resData = await res.json();
+      if (res.status !== 200) {
+        const errorMessage = resData.message;
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
+      }
+    } catch (err) {
+      showMessage({
+        message: err.message || "An unknown error occured, Please try again",
+        type: "default",
+        color: "white",
+        backgroundColor: "red",
+        style: { borderRadius: 20 },
+      });
+      console.log("errorrr ", err);
+    }
+  };
+
+  // if (imageSelected) {
+  // }
 
   return (
     <ScrollView contentContainerStyle={styles.screenContainer}>
@@ -87,13 +207,7 @@ const HomeScreen = (props) => {
             </DefaultText>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={pickImage}>
-          <View style={styles.buttonTextStyle}>
-            <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
-              Pick images
-            </DefaultText>
-          </View>
-        </TouchableOpacity>
+
         {/* <ImageBrowser
           max={4}
           onChange={(num, onSubmit) => {}}
@@ -109,12 +223,60 @@ const HomeScreen = (props) => {
           showsHorizontalScrollIndicator={false}
           decelerationRate={0.1}
         >
-          <View style={{ width: width, backgroundColor: "green" }}>
-            <DefaultText>hello</DefaultText>
+          <View
+            style={{
+              width: width,
+              backgroundColor: "yellow",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="North Hall"
+              value={hallName}
+              onChangeText={hallNameChange}
+            />
           </View>
-          <View style={{ width: width, backgroundColor: "pink" }}>
-            <DefaultText>Heyy</DefaultText>
+          <View
+            style={{
+              width: width,
+              backgroundColor: "pink",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="address"
+              value={address}
+              onChangeText={addressChange}
+            />
           </View>
+          <Map getLocation={getLocation} />
+          <View
+            style={{
+              width: width,
+              backgroundColor: "pink",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity onPress={pickImage}>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 60,
+                  paddingVertical: 45,
+                  paddingHorizontal: 5,
+                  backgroundColor: "white",
+                }}
+              >
+                <DefaultText>Upload Images</DefaultText>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Map />
         </ScrollView>
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -136,24 +298,41 @@ const HomeScreen = (props) => {
             <DefaultText>Previous</DefaultText>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={goToNext}
-          disabled={pageNum === 2 ? true : false}
-        >
-          <View
-            style={{
-              backgroundColor: "red",
-              opacity: pageNum === 2 ? 0.4 : 1,
-              alignSelf: "flex-end",
-              margin: 10,
-              padding: 10,
-              paddingHorizontal: 20,
-              borderRadius: 10,
-            }}
+        {pageNum !== 4 ? (
+          <TouchableOpacity
+            onPress={goToNext}
+            disabled={pageNum === 4 ? true : false}
           >
-            <DefaultText>Next</DefaultText>
-          </View>
-        </TouchableOpacity>
+            <View
+              style={{
+                backgroundColor: "red",
+                opacity: pageNum === 4 ? 0.4 : 1,
+                alignSelf: "flex-end",
+                margin: 10,
+                padding: 10,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+              }}
+            >
+              <DefaultText>Next</DefaultText>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={submitValues}>
+            <View
+              style={{
+                backgroundColor: "red",
+                alignSelf: "flex-end",
+                margin: 10,
+                padding: 10,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+              }}
+            >
+              <DefaultText>Submit</DefaultText>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -174,6 +353,13 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: "white",
     alignSelf: "flex-start",
+  },
+  hallNameInput: {
+    borderColor: "gray",
+    width: "100%",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
   },
 });
 
