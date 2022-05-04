@@ -50,12 +50,14 @@ const SignupScreen = ({ navigation }) => {
     let first = nameArray[0];
     console.log("first ", first);
     console.log();
-    for (let i = 1; i < arraySize; i++) {
+    for (let i = 1; i < arraySize - 1; i++) {
       console.log(nameArray[i]);
       first = first + " " + nameArray[i];
+      console.log("total first name ", first);
     }
     let last = "";
     if (arraySize > 1) last = nameArray[arraySize - 1];
+    console.log("last name ", last);
 
     const user = {
       // id: "u1",
