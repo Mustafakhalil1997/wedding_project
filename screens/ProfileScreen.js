@@ -24,14 +24,13 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo in profileScreen ", userInfo);
+  console.log("userInfo in profileScreenn ", userInfo);
 
   const { firstName, lastName, email, id, profileImage } = userInfo;
 
   const fullName = firstName + " " + lastName;
-  console.log("userInfo ", fullName);
-
-  console.log("profileImage ", profileImage);
+  console.log("fullName in profileScreen", fullName);
+  console.log("profileImage in profileScreen ", profileImage);
 
   let convertedImageUrl = "";
   if (profileImage)
