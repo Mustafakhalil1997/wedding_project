@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -14,6 +14,7 @@ import Map from "./../components/Map";
 import { editHall } from "./../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
 import { URL } from "./../helpers/url";
+import { setCurrentLocation } from "../store/actions/Location";
 
 const { width } = Dimensions.get("window");
 
@@ -37,6 +38,13 @@ const HomeScreen = (props) => {
   const [pageNum, setPageNum] = useState(1);
 
   const scrollRef = useRef();
+
+  useEffect(() => {
+    const loadCurrentLocation = async () => {
+      dispatch(setCurrentLocation());
+    };
+    loadCurrentLocation();
+  }, [dispatch]);
 
   console.log("hallName ", hallName);
 
