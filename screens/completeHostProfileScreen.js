@@ -1,162 +1,380 @@
-import React from "react";
-import { View, Text, ScrollView, StyleSheet, SafeAreaView } from "react-native";
-import { Formik } from "formik";
-import Colors from "../constants/Colors";
-import validationSchema from "./HallSchema";
-import CustomInput from "./../components/CustomInput";
-import CustomButton from "./../components/CustomButton";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  TextInput,
+  ImageBackground,
+} from "react-native";
+import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
-import { URL } from "./../helpers/url";
+import * as ImagePicker from "expo-image-picker";
+import Map from "./../components/Map";
 import { editHall } from "./../store/actions/Auth";
+import { showMessage } from "react-native-flash-message";
+import { URL } from "./../helpers/url";
+import { setCurrentLocation } from "../store/actions/Location";
+
+const { width } = Dimensions.get("window");
 
 const CompleteHostProfileScreen = (props) => {
   const { navigation } = props;
-  const hallInfo = {
-    hallName: "",
-    address: "",
-  };
 
   const dispatch = useDispatch();
 
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
+  console.log("hallInfo ", hallInfo);
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo ", userInfo);
-  const { email, id } = userInfo;
+  const token = useSelector((state) => state.Auth.token);
 
-  const handleSubmitForm = async (values, formikActions) => {
-    const { hallName, address } = values;
-    console.log(hallName, address);
+  const { id, firstName, lastName, email, password, profileImage } = userInfo;
 
-    const hallObject = {
-      email,
-      hallName,
-      address,
-      location: {
-        lat: 33.900863,
-        lng: 36.019428,
-      },
-      ownerId: id,
+  const [hallName, setHallName] = useState();
+  const [address, setAddress] = useState();
+  const [imageSelected, setImageSelected] = useState();
+  const [location, setLocation] = useState();
+  const [mobileNumber, setMobileNumber] = useState();
+  const [pageNum, setPageNum] = useState(1);
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    const loadCurrentLocation = async () => {
+      dispatch(setCurrentLocation());
     };
+    loadCurrentLocation();
+  }, [dispatch]);
 
+  console.log("hallName ", hallName);
+
+  const getLocation = (location) => {
+    setLocation(location);
+    console.log("location ", location);
+  };
+
+  const hallNameChange = (value) => {
+    setHallName(value);
+  };
+
+  const addressChange = (value) => {
+    setAddress(value);
+  };
+
+  const mobileNumberChange = (value) => {
+    setMobileNumber(value);
+  };
+
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission denied",
+        "Allow access to camera in your settings"
+      );
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 4],
+      // base64: true,
+      quality: 1,
+    });
+    console.log("result ", result);
+    if (!result.cancelled) {
+      // const imageSize = result.base64.length * (3 / 4) - 2;
+      // console.log("imageSize ", imageSize);
+      // if (imageSize > 1000000) {
+      //   console.log("Big Image");
+      // }
+      setImageSelected(result.uri);
+      // setHasUnsavedChanges(true);
+    }
+  };
+
+  const goToNext = () => {
+    const newPageNum = pageNum + 1;
+    setTimeout(() => {
+      setPageNum(newPageNum);
+    }, 200);
+
+    scrollRef.current.scrollTo({
+      x: 360 * (newPageNum - 1),
+      animated: true,
+    });
+  };
+
+  const goToPrevious = () => {
+    const newPageNum = pageNum - 1;
+    setTimeout(() => {
+      setPageNum(newPageNum);
+    }, 200);
+    scrollRef.current.scrollTo({
+      x: 360 * (newPageNum - 1),
+      animated: true,
+    });
+  };
+
+  const submitValues = async () => {
     try {
-      // const response = await fetch(`${URL}/api/user/signup`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(user),
-      // });
+      // add hall
+
+      // hallName, address, imageSelected, location
+
+      // a side note: add the token for authorization to heroku
+
+      const newHall = {
+        ownerId: id,
+        hallName,
+        email,
+        mobileNumber,
+        address,
+        location: {
+          lat: location.latitude,
+          lng: location.longitude,
+        },
+      };
+
+      console.log("sending request");
+
       const response = await fetch(`${URL}/api/hall/createHall`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // Authorization: "Bearer " + token,
         },
-        body: JSON.stringify(hallObject),
+        body: JSON.stringify(newHall),
       });
-      const responseData = await response.json();
 
-      const { hall } = responseData;
-      console.log("hall ", hall);
+      console.log("request sent");
+
+      const responseData = await response.json();
+      const newHallInfo = responseData.hall;
+      console.log("newHallInfo ", newHallInfo);
+      // to be saved inside the store
 
       if (response.status === 200) {
-        dispatch(editHall(hall));
-        navigation.goBack();
+        dispatch(editHall(newHallInfo));
+      } else {
+        const errorMessage = responseData.message;
+        console.log("errorMessage ", errorMessage);
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
       }
 
-      console.log(responseData);
-    } catch (error) {
-      console.log(error);
+      const imageData = new FormData();
+      imageData.append("profileImage", {
+        name: new Date() + "_profile",
+        uri: imageSelected,
+        type: "image/jpg" || "image/png" || "image/jpeg",
+      });
+
+      const res = await fetch(`${URL}/api/hall/addImage/${newHallInfo.id}`, {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + token,
+        },
+        body: imageData,
+      });
+      const resData = await res.json();
+      if (res.status !== 200) {
+        const errorMessage = resData.message;
+        showMessage({
+          message: errorMessage,
+          type: "default",
+          color: "white",
+          backgroundColor: "red",
+          style: { borderRadius: 20 },
+        });
+      }
+    } catch (err) {
+      showMessage({
+        message: err.message || "An unknown error occured, Please try again",
+        type: "default",
+        color: "white",
+        backgroundColor: "red",
+        style: { borderRadius: 20 },
+      });
+      console.log("errorrr ", err);
     }
   };
 
-  return (
-    <SafeAreaView style={styles.formContainer}>
-      {/* <StatusBar style="auto" /> */}
-      <Formik
-        initialValues={hallInfo}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmitForm}
-      >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-          touched,
-          handleBlur,
-          errors,
-          isSubmitting,
-        }) => {
-          let buttonDisabled = true;
-          if (
-            Object.keys(errors).length == 0 &&
-            Object.keys(touched).length != 0
-          ) {
-            buttonDisabled = false;
-          }
+  // if (imageSelected) {
+  // }
 
-          return (
-            <View style={styles.inputsContainer}>
-              <CustomInput
-                iconName="envelope"
-                iconSize={32}
-                value={values.hallName}
-                label="Hall Name"
-                keyboardType="default"
-                placeholder="north hall"
-                onChangeText={handleChange("hallName")}
-                onBlur={handleBlur("hallName")}
-                error={touched.hallName && errors.hallName}
-              />
-              <CustomInput
-                iconName="lock"
-                iconSize={32}
-                value={values.address}
-                label="Hall Address"
-                keyboardType="default"
-                placeholder="hall address"
-                onChangeText={handleChange("address")}
-                onBlur={handleBlur("address")}
-                error={touched.address && errors.address}
-              />
-              <CustomButton
-                buttonDisabled={buttonDisabled}
-                handleSubmit={handleSubmit}
-                submitting={isSubmitting}
-                label="Finish"
-              />
+  if (hallInfo) {
+    return (
+      <View>
+        <DefaultText>Welcome.. You already have a hall</DefaultText>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView contentContainerStyle={styles.screenContainer}>
+      <View style={styles.header}>
+        <ImageBackground
+          source={require("../constants/images/Roger.jpg")}
+          resizeMode="cover"
+          style={styles.backgroundImage}
+        ></ImageBackground>
+
+        {/* <ImageBrowser
+          max={4}
+          onChange={(num, onSubmit) => {}}
+          callback={(callback) => {}}
+        /> */}
+      </View>
+      <View style={{ height: pageNum > 3 ? 250 : 150 }}>
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          pagingEnabled
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          decelerationRate={0.1}
+        >
+          <View style={[styles.textInputContainerStyle]}>
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="North Hall"
+              value={hallName}
+              onChangeText={hallNameChange}
+            />
+          </View>
+          <View style={styles.textInputContainerStyle}>
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="address"
+              value={address}
+              onChangeText={addressChange}
+            />
+          </View>
+          <View style={styles.textInputContainerStyle}>
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="mobile number"
+              value={mobileNumber}
+              onChangeText={mobileNumberChange}
+            />
+          </View>
+          <Map getLocation={getLocation} />
+          <View style={styles.textInputContainerStyle}>
+            <TouchableOpacity onPress={pickImage}>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderRadius: 60,
+                  paddingVertical: 45,
+                  paddingHorizontal: 5,
+                }}
+              >
+                <DefaultText>Upload Images</DefaultText>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Map />
+        </ScrollView>
+      </View>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <TouchableOpacity
+          onPress={goToPrevious}
+          disabled={pageNum === 1 ? true : false}
+        >
+          <View
+            style={{
+              opacity: pageNum === 1 ? 0.4 : 1,
+              ...styles.buttonContainerStyle,
+            }}
+          >
+            <DefaultText>Previous</DefaultText>
+          </View>
+        </TouchableOpacity>
+        {pageNum !== 5 ? (
+          <TouchableOpacity
+            onPress={goToNext}
+            disabled={pageNum === 5 ? true : false}
+          >
+            <View
+              style={{
+                opacity: pageNum === 5 ? 0.4 : 1,
+                ...styles.buttonContainerStyle,
+              }}
+            >
+              <DefaultText>Next</DefaultText>
             </View>
-          );
-        }}
-      </Formik>
-    </SafeAreaView>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={submitValues}>
+            <View
+              style={{
+                backgroundColor: "red",
+                alignSelf: "flex-end",
+                margin: 10,
+                padding: 10,
+                paddingHorizontal: 20,
+                borderRadius: 10,
+              }}
+            >
+              <DefaultText>Submit</DefaultText>
+            </View>
+          </TouchableOpacity>
+        )}
+      </View>
+    </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
-  formContainer: {
+  screenContainer: {
     flex: 1,
-    // marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: "white",
   },
-
-  inputsContainer: {
-    flex: 1,
-    // paddingLeft: 20,
-    // paddingRight: 20,
+  header: {
+    height: 250,
+    justifyContent: "flex-end",
+  },
+  textInputContainerStyle: {
+    width: width,
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "center",
+    padding: 10,
+    // backgroundColor: "pink",
+    justifyContent: "center",
   },
-
-  buttonContainer: {
-    width: "80%",
-    marginTop: 20,
-    borderRadius: 15,
-    alignItems: "center",
-    backgroundColor: 10,
-    padding: 15,
-
-    backgroundColor: Colors.accentColor,
+  buttonTextStyle: {
+    padding: 7,
+    borderRadius: 7,
+    backgroundColor: "white",
+    alignSelf: "flex-start",
   },
-  button: {
+  hallNameInput: {
+    borderColor: "black",
+    width: "100%",
+    borderWidth: 3,
     borderRadius: 10,
+    padding: 10,
+  },
+  buttonContainerStyle: {
+    backgroundColor: "red",
+    alignSelf: "flex-end",
+    margin: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: 20,
   },
 });
 

@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   TextInput,
+  ImageBackground,
 } from "react-native";
 import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
@@ -222,13 +223,19 @@ const HomeScreen = (props) => {
   return (
     <ScrollView contentContainerStyle={styles.screenContainer}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={goToName}>
-          <View style={styles.buttonTextStyle}>
-            <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
-              COMPLETE YOUR PROFILE
-            </DefaultText>
-          </View>
-        </TouchableOpacity>
+        <ImageBackground
+          source={require("../constants/images/Roger.jpg")}
+          resizeMode="cover"
+          style={styles.backgroundImage}
+        >
+          <TouchableOpacity onPress={goToName}>
+            <View style={styles.buttonTextStyle}>
+              <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
+                COMPLETE YOUR PROFILE
+              </DefaultText>
+            </View>
+          </TouchableOpacity>
+        </ImageBackground>
 
         {/* <ImageBrowser
           max={4}
@@ -236,141 +243,7 @@ const HomeScreen = (props) => {
           callback={(callback) => {}}
         /> */}
       </View>
-      <View style={{ height: 250 }}>
-        <ScrollView
-          ref={scrollRef}
-          horizontal
-          pagingEnabled
-          scrollEnabled={false}
-          showsHorizontalScrollIndicator={false}
-          decelerationRate={0.1}
-        >
-          <View
-            style={{
-              width: width,
-              backgroundColor: "yellow",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TextInput
-              style={styles.hallNameInput}
-              placeholder="North Hall"
-              value={hallName}
-              onChangeText={hallNameChange}
-            />
-          </View>
-          <View
-            style={{
-              width: width,
-              backgroundColor: "pink",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TextInput
-              style={styles.hallNameInput}
-              placeholder="address"
-              value={address}
-              onChangeText={addressChange}
-            />
-          </View>
-          <View
-            style={{
-              width: width,
-              backgroundColor: "blue",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TextInput
-              style={styles.hallNameInput}
-              placeholder="mobile number"
-              value={mobileNumber}
-              onChangeText={mobileNumberChange}
-            />
-          </View>
-          <Map getLocation={getLocation} />
-          <View
-            style={{
-              width: width,
-              backgroundColor: "pink",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TouchableOpacity onPress={pickImage}>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 60,
-                  paddingVertical: 45,
-                  paddingHorizontal: 5,
-                  backgroundColor: "white",
-                }}
-              >
-                <DefaultText>Upload Images</DefaultText>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <Map />
-        </ScrollView>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <TouchableOpacity
-          onPress={goToPrevious}
-          disabled={pageNum === 1 ? true : false}
-        >
-          <View
-            style={{
-              backgroundColor: "red",
-              opacity: pageNum === 1 ? 0.4 : 1,
-              alignSelf: "flex-end",
-              margin: 10,
-              padding: 10,
-              paddingHorizontal: 20,
-              borderRadius: 10,
-            }}
-          >
-            <DefaultText>Previous</DefaultText>
-          </View>
-        </TouchableOpacity>
-        {pageNum !== 5 ? (
-          <TouchableOpacity
-            onPress={goToNext}
-            disabled={pageNum === 5 ? true : false}
-          >
-            <View
-              style={{
-                backgroundColor: "red",
-                opacity: pageNum === 5 ? 0.4 : 1,
-                alignSelf: "flex-end",
-                margin: 10,
-                padding: 10,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-              }}
-            >
-              <DefaultText>Next</DefaultText>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={submitValues}>
-            <View
-              style={{
-                backgroundColor: "red",
-                alignSelf: "flex-end",
-                margin: 10,
-                padding: 10,
-                paddingHorizontal: 20,
-                borderRadius: 10,
-              }}
-            >
-              <DefaultText>Submit</DefaultText>
-            </View>
-          </TouchableOpacity>
-        )}
-      </View>
+      <View style={{ height: 250 }}></View>
     </ScrollView>
   );
 };
@@ -380,10 +253,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: "black",
     height: 250,
     justifyContent: "flex-end",
-    padding: 30,
   },
   buttonTextStyle: {
     padding: 7,
@@ -397,6 +268,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: 20,
   },
 });
 
