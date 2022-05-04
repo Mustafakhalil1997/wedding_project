@@ -24,10 +24,11 @@ const HostProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo", userInfo);
+  console.log("userInfo in hostProfileScreen ", userInfo);
 
-  const { fullName, email, id, profileImage } = userInfo;
+  const { firstName, lastName, email, id, profileImage } = userInfo;
 
+  const fullName = firstName + " " + lastName;
   const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
   const editProfileClickHandler = () => {
