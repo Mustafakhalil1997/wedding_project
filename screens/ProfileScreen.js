@@ -24,7 +24,7 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo", userInfo);
+  console.log("userInfo in profileScreen ", userInfo);
 
   const { firstName, lastName, email, id, profileImage } = userInfo;
 
@@ -33,7 +33,9 @@ const ProfileScreen = (props) => {
 
   console.log("profileImage ", profileImage);
 
-  const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+  let convertedImageUrl = "";
+  if (profileImage)
+    convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
   const editProfileClickHandler = () => {
     console.log("clicked");
