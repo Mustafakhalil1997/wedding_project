@@ -26,8 +26,18 @@ console.log("OS ", android);
 const HallItem = (props) => {
   const { navigation, item, isFavorite } = props;
 
-  const { id, name, email, location, number, images } = item;
+  const {
+    id,
+    hallName,
+    email,
+    location,
+    mobileNumber,
+    images,
+    bookings,
+    ownerId,
+  } = item;
 
+  console.log("hallNamee ", hallName);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -45,11 +55,12 @@ const HallItem = (props) => {
       name: "HallDetail",
       params: {
         hallId: id,
-        name,
+        name: hallName,
         email,
         location,
-        number,
+        number: mobileNumber,
         images,
+        bookings,
         // isFavorite: isFavorite, // when isFavorite is changed in the store, route parameters don't get updated unless they are revisited, so I can't pass isFavorite in here instead I have to directly access it from the store in HallDetailScreen
       },
     });
@@ -88,7 +99,7 @@ const HallItem = (props) => {
                 </DefaultText>
               </View>
               {/* <DefaultText>{email}</DefaultText> */}
-              <DefaultText>{number}</DefaultText>
+              <DefaultText>{mobileNumber}</DefaultText>
             </View>
           </View>
         </TouchableComponent>
