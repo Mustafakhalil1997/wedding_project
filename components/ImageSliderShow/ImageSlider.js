@@ -68,6 +68,8 @@ const ImageSlider = (props) => {
     setImageNumber(pageNum + 1);
   };
 
+  console.log("imagess ", images);
+
   return (
     <View
       style={{ flex: 1, backgroundColor: "red" }}
@@ -88,7 +90,7 @@ const ImageSlider = (props) => {
         {images.map((image, index) => (
           <Image
             key={index}
-            source={image}
+            source={{ uri: image }}
             style={{
               ...styles.image,
               width: dimensions.width,

@@ -13,6 +13,7 @@ import ImageSlider from "./ImageSliderShow/ImageSlider";
 import { useSelector } from "react-redux";
 import Card from "./Card";
 import { findDistanceBetween } from "./../constants/FindDistance";
+import { URL } from "./../helpers/url";
 
 let TouchableComponent = TouchableOpacity;
 let android = false;
@@ -30,6 +31,7 @@ const HallItem = (props) => {
     id,
     hallName,
     email,
+    address,
     location,
     mobileNumber,
     images,
@@ -57,6 +59,7 @@ const HallItem = (props) => {
         hallId: id,
         name: hallName,
         email,
+        address,
         location,
         number: mobileNumber,
         images,
@@ -68,6 +71,12 @@ const HallItem = (props) => {
 
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
   const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
+
+  const convertedImagesUrl = images.map(
+    (image) => URL + "/" + image.replace(/\\/g, "/")
+  );
+
+  console.log("images in hallItem ", convertedImagesUrl);
 
   return (
     <Card>
@@ -83,7 +92,7 @@ const HallItem = (props) => {
             <View style={styles.imageContainer}>
               <ImageSlider
                 dot
-                images={[source, source1, source]}
+                images={convertedImagesUrl}
                 hallId={id}
                 isFavorite={isFavorite}
               />

@@ -15,11 +15,21 @@ import MapViewer from "./MapViewer";
 import { useSelector, useDispatch } from "react-redux";
 import { reserveHall } from "../store/actions/HallList";
 import { showMessage } from "react-native-flash-message";
+import { URL } from "./../helpers/url";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
-  const { hallId, name, email, location, number, images } = route.params;
+  const { hallId, name, email, address, location, number, images } =
+    route.params;
+
+  const convertedImagesUrl = images.map(
+    (image) => URL + "/" + image.replace(/\\/g, "/")
+  );
+
+  console.log("converted Images ", convertedImagesUrl);
+
+  // convertedImagesUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
   const dispatch = useDispatch();
 
@@ -89,7 +99,8 @@ const HallDetailScreen = (props) => {
       <View style={styles.screenContainer}>
         <View style={styles.imagesContainer}>
           <ImageSlider
-            images={[source, source1, source]}
+            // images={[source, source1, source]}
+            images={[...convertedImagesUrl]}
             hallId={hallId}
             isFavorite={favorite()}
           />
@@ -100,9 +111,7 @@ const HallDetailScreen = (props) => {
               {name}
             </DefaultText>
             <View style={styles.location}>
-              <DefaultText styles={{ fontSize: 14 }}>
-                Abu samra, Tripoli, Lebanon
-              </DefaultText>
+              <DefaultText styles={{ fontSize: 14 }}>{address}</DefaultText>
 
               <TouchableOpacity onPress={mapIconClickHandler}>
                 <Feather name="map-pin" size={22} color="green" />

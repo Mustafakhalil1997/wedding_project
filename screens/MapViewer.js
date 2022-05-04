@@ -4,26 +4,26 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useSelector } from "react-redux";
 
-const locations = [
-  {
-    hallId: "h1",
-    title: "North Hall",
-    lat: 34.431093869627254,
-    lng: 35.8377506411768,
-  },
-  {
-    hallId: "h2",
-    title: "West Hall",
-    lat: 34.15550968858545,
-    lng: 35.64338541736089,
-  },
-  {
-    hallId: "h3",
-    title: "5 Star Hall",
-    lat: 39.92801442507861,
-    lng: 32.83767491273409,
-  },
-];
+// const locations = [
+//   {
+//     hallId: "h1",
+//     title: "North Hall",
+//     lat: 34.431093869627254,
+//     lng: 35.8377506411768,
+//   },
+//   {
+//     hallId: "h2",
+//     title: "West Hall",
+//     lat: 34.15550968858545,
+//     lng: 35.64338541736089,
+//   },
+//   {
+//     hallId: "h3",
+//     title: "5 Star Hall",
+//     lat: 39.92801442507861,
+//     lng: 32.83767491273409,
+//   },
+// ];
 
 const MapViewer = ({ route, navigation }) => {
   // const [currentLocation, setCurrentLocation] = useState(null);
@@ -32,6 +32,14 @@ const MapViewer = ({ route, navigation }) => {
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
   );
+
+  let hallList = useSelector((state) => state.halls.hallList);
+  hallList = hallList.halls;
+  const locations = hallList.map((hall) => {
+    return { ...hall.location, hallName: hall.hallName, hallId: hall.id };
+  });
+
+  console.log("locations ", locations);
 
   let title;
   let lat;
@@ -48,11 +56,21 @@ const MapViewer = ({ route, navigation }) => {
     }
   }
 
-  const markerClickHandler = () => {
+  const markerClickHandler = (hallId) => {
+    const hall = hallList.find((hall) => hall.id === hallId);
+    console.log("hall ", hall);
+    const { hallName, email, address, location, mobileNumber, images } = hall;
+    console.log;
     navigation.navigate({
       name: "HallDetail",
       params: {
-        hallId: "h3",
+        hallId: hallId,
+        name: hallName,
+        email,
+        address,
+        location,
+        number: mobileNumber,
+        images,
       },
     });
   };
@@ -86,13 +104,15 @@ const MapViewer = ({ route, navigation }) => {
           }
         >
           {locations.map((location, index) => {
-            const { title, lat, lng } = location;
+            const { hallId, hallName, lat, lng } = location;
             return (
               <Marker
                 key={index}
                 pinColor="green"
-                title={title}
-                onPress={markerClickHandler}
+                title={hallName}
+                onPress={() => {
+                  markerClickHandler(hallId);
+                }}
                 coordinate={{ latitude: lat, longitude: lng }}
               />
             );
