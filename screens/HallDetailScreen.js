@@ -56,7 +56,6 @@ const HallDetailScreen = (props) => {
   const userId = userInfo.id;
 
   let halls = useSelector((state) => state.halls.hallList);
-  halls = halls.halls;
   console.log("halls ", halls);
   const hall = halls.find((h) => h.id === hallId);
   console.log("hall ", hall);
