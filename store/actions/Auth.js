@@ -49,6 +49,7 @@ export const signUp = (token, userInfo) => {
     token: token,
     userType: "user",
     userInfo: userInfo,
+    hallInfo: null,
     expirationDate: expirationDate,
   };
   return async (dispatch) => {

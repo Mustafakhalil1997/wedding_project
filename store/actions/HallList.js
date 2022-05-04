@@ -72,7 +72,7 @@ export const setHallList = () => {
       const responseData = await response.json();
       console.log("responseDataa ", responseData.halls);
       console.log("dummyList ", DUMMY_HALLLIST);
-      dispatch({ type: SET_LIST, hallList: responseData });
+      dispatch({ type: SET_LIST, hallList: responseData.halls });
     } catch (err) {
       console.log("could not get list");
     }

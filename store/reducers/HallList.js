@@ -23,6 +23,7 @@ const hallListReducer = (state = initialState, action) => {
       );
       const updatedFavoriteList = [...state.favoritesList];
       const updatedHallsList = [...state.hallList];
+      console.log("hallId in reducer ", action.hallId);
       const hallItemInListIndex = state.hallList.findIndex((hallItem) => {
         console.log(hallItem.id, action.hallId);
         return hallItem.id === action.hallId;
@@ -32,7 +33,6 @@ const hallListReducer = (state = initialState, action) => {
         console.log("removing");
         updatedHallsList[hallItemInListIndex].isFavorite = false;
         updatedFavoriteList.splice(existingIndex, 1);
-        console.log(state.hallList);
       } else {
         console.log("adding");
         updatedHallsList[hallItemInListIndex].isFavorite = true;
