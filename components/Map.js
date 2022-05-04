@@ -4,27 +4,6 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useSelector } from "react-redux";
 
-const locations = [
-  {
-    hallId: "h1",
-    title: "North Hall",
-    lat: 34.431093869627254,
-    lng: 35.8377506411768,
-  },
-  {
-    hallId: "h2",
-    title: "West Hall",
-    lat: 34.15550968858545,
-    lng: 35.64338541736089,
-  },
-  {
-    hallId: "h3",
-    title: "5 Star Hall",
-    lat: 39.92801442507861,
-    lng: 32.83767491273409,
-  },
-];
-
 const Map = ({ route, navigation, getLocation }) => {
   // const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -35,6 +14,11 @@ const Map = ({ route, navigation, getLocation }) => {
   console.log("currentLocationnn ", Object.keys(currentLocation).length);
 
   const [selectedLocation, setSelectedLocation] = useState();
+
+  const hallList = useSelector((state) => state.halls.hallList);
+  const locations = hallList.map((hall) => {
+    return { ...hall.location, hallName: hall.hallName, hallId: hall.id };
+  });
 
   let title;
   let lat;
@@ -68,7 +52,7 @@ const Map = ({ route, navigation, getLocation }) => {
           }}
         >
           {locations.map((location, index) => {
-            const { title, lat, lng } = location;
+            const { lat, lng } = location;
             return (
               <Marker
                 key={index}
@@ -79,11 +63,11 @@ const Map = ({ route, navigation, getLocation }) => {
               />
             );
           })}
-          {/* <Marker
+          <Marker
             draggable
             coordinate={{ latitude: lat, longitude: lng }}
             onDragEnd={getDragLocation}
-          /> */}
+          />
           {/* {route.params && (
           <Marker
             pinColor="green"
