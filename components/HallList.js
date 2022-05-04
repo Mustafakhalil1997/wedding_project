@@ -64,7 +64,6 @@ const HallList = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo in hallList ", userInfo);
   DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
-  DUMMY_HALLLIST = DUMMY_HALLLIST.halls;
   console.log("DUMMY LISTT ", DUMMY_HALLLIST);
   const allList = useSelector((state) => state.halls.hallList);
 
