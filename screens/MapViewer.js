@@ -33,8 +33,7 @@ const MapViewer = ({ route, navigation }) => {
     (state) => state.location.currentLocation
   );
 
-  let hallList = useSelector((state) => state.halls.hallList);
-  hallList = hallList.halls;
+  const hallList = useSelector((state) => state.halls.hallList);
   const locations = hallList.map((hall) => {
     return { ...hall.location, hallName: hall.hallName, hallId: hall.id };
   });
