@@ -32,15 +32,20 @@ const Map = ({ route, navigation, getLocation }) => {
     (state) => state.location.currentLocation
   );
 
+  console.log("currentLocationnn ", Object.keys(currentLocation).length);
+
   const [selectedLocation, setSelectedLocation] = useState();
 
   let title;
   let lat;
   let lng;
 
-  console.log("currentLocation ", currentLocation);
-  lat = currentLocation.latitude;
-  lng = currentLocation.longitude;
+  console.log("currentLocationn ", currentLocation);
+  if (Object.keys(currentLocation).length !== 0) {
+    console.log("currentLocation set");
+    lat = currentLocation.latitude;
+    lng = currentLocation.longitude;
+  }
 
   const getDragLocation = (values) => {
     console.log("values ", values.nativeEvent.coordinate);
@@ -52,7 +57,7 @@ const Map = ({ route, navigation, getLocation }) => {
 
   return (
     <View style={styles.container}>
-      {currentLocation && (
+      {Object.keys(currentLocation).length !== 0 && (
         <MapView
           style={styles.map}
           region={{
@@ -74,11 +79,11 @@ const Map = ({ route, navigation, getLocation }) => {
               />
             );
           })}
-          <Marker
+          {/* <Marker
             draggable
             coordinate={{ latitude: lat, longitude: lng }}
             onDragEnd={getDragLocation}
-          />
+          /> */}
           {/* {route.params && (
           <Marker
             pinColor="green"
