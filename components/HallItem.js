@@ -100,8 +100,14 @@ const HallItem = (props) => {
             </View>
             <View style={styles.infoContainer}>
               <View>
-                <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
-                  Tripoli, Lebanon
+                <DefaultText
+                  styles={{
+                    fontFamily: "open-sans-bold",
+                    width: 230,
+                  }}
+                  numberOfLines={1}
+                >
+                  {address}
                 </DefaultText>
                 <DefaultText styles={{ color: "gray" }}>
                   {kmAway} km away
