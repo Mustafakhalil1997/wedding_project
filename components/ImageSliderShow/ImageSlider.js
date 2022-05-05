@@ -14,6 +14,7 @@ import { toggleFavorite } from "./../../store/actions/HallList";
 import { addFavorite } from "./../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { URL } from "./../../helpers/url";
 
 // let { width } = Dimensions.get("window");
 // const height = (width * 100) / 60; //60%
@@ -25,11 +26,13 @@ const ImageSlider = (props) => {
 
   const [dimensions, setDimensions] = useState(0);
 
-  const token = useSelector((state) => state.Auth.token);
-
   const ref = useRef(null);
 
   const scrollRef = useRef();
+
+  const token = useSelector((state) => state.Auth.token);
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+  const userId = userInfo.id;
 
   // const goToNext = () => {
   //   scrollRef.current.scrollTo({
@@ -46,17 +49,38 @@ const ImageSlider = (props) => {
     setDimensions({ width: width, height: height });
   };
 
-  const favoriteIconClickHandler = () => {
+  const favoriteIconClickHandler = async () => {
     if (token) {
+      const requestBody = {
+        hallId,
+        userId,
+      };
+
+      try {
+        const response = await fetch(`${URL}/api/user/addFavorite`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        const responseData = await response.json();
+        console.log("responseData in imageSlider ", responseData);
+      } catch (err) {
+        console.log("error ", err);
+      }
+
       dispatch(toggleFavorite(hallId));
       dispatch(addFavorite(hallId));
-    } else {
-      showMessage({
-        message: "To add favorites, sign in!",
-        type: "success",
-        style: { backgroundColor: "black" },
-      });
+      return;
     }
+    showMessage({
+      message: "To add favorites, sign in!",
+      type: "success",
+      style: { backgroundColor: "black" },
+    });
   };
 
   const source = "img/tiny_logo.png";
