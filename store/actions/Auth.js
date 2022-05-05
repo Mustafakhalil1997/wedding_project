@@ -112,23 +112,10 @@ export const setToken = (myToken = null) => {
     } catch (e) {
       // error reading value
     }
-    // };
-    // } else {
-    //   return async (dispatch) => {
-    //     try {
-    //       await AsyncStorage.setItem("@token", myToken);
-    //       dispatch({ type: SET_TOKEN, token: myToken });
-    //     } catch (e) {
-    //       // error reading value
-    //     }
-    //   };
   };
 };
 
 export const editProfile = (newData) => {
-  // call to the server here
-  // send new info the server
-
   return { type: EDIT_PROFILE, newData: newData };
 };
 
@@ -176,8 +163,6 @@ export const switchProfile = () => {
 };
 
 export const editHall = (newData) => {
-  //call to the server here
-  // send new info to the server
   console.log("this is edit halllll ", newData);
   return { type: EDIT_HALL_INFO, newData: newData };
 };
