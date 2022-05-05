@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import ImageSlider from "./../components/ImageSliderShow/ImageSlider";
 import DefaultText from "./../components/DefaultText";
@@ -16,6 +17,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { reserveHall } from "../store/actions/HallList";
 import { showMessage } from "react-native-flash-message";
 import { URL } from "./../helpers/url";
+import { Calendar } from "react-native-calendars";
+import CalendarReserve from "./../components/CalendarReserve";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
@@ -23,24 +26,25 @@ const HallDetailScreen = (props) => {
   const { hallId, name, email, address, location, number, images } =
     route.params;
 
+  // convertedImagesUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+
+  // const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
+  // const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
+  // const source2 = require("../constants/images/pexels-jeremy-wong-1035665.jpg");
+  // const source3 = require("../constants/images/pexels-logan-rhoads-10905822.jpg");
+
   const convertedImagesUrl = images.map(
     (image) => URL + "/" + image.replace(/\\/g, "/")
   );
 
   console.log("converted Images ", convertedImagesUrl);
 
-  // convertedImagesUrl = URL + "/" + profileImage.replace(/\\/g, "/");
-
   const dispatch = useDispatch();
 
   // const { hallId } = route.params;
   console.log("location ", location);
   const [openMap, setOpenMap] = useState(false);
-
-  const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
-  const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
-  const source2 = require("../constants/images/pexels-jeremy-wong-1035665.jpg");
-  const source3 = require("../constants/images/pexels-logan-rhoads-10905822.jpg");
+  const [openCalendar, setOpenCalendar] = useState(false);
 
   const mapIconClickHandler = () => {
     navigation.navigate({
@@ -74,23 +78,14 @@ const HallDetailScreen = (props) => {
         style: { backgroundColor: "black" },
       });
     } else {
-      const reservation = {
-        id: "r1",
-        userId: userId,
-        hallId: hallId,
-        date: "15/3/2022",
-        price: 100,
-      };
-      dispatch(reserveHall(reservation));
-      // send to the server
-      // update the reservations of each hall
-      // insure each date is unique for a reservation
+      setOpenCalendar(true);
+      // dispatch(reserveHall(reservation));
     }
   };
 
-  // if (openMap) {
-  //   // return <MapViewer location={location} name={name} />;
-  // }
+  if (openCalendar) {
+    return <CalendarReserve hallId={hallId} userId={userId} />;
+  }
 
   return (
     <ScrollView>
@@ -138,27 +133,9 @@ const HallDetailScreen = (props) => {
 
           <TouchableOpacity
             onPress={reserveClickHandler}
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              paddingVertical: 12,
-              paddingHorizontal: 32,
-              borderRadius: 4,
-              elevation: 3,
-              backgroundColor: "black",
-            }}
+            style={styles.reserveButtonContainer}
           >
-            <DefaultText
-              styles={{
-                fontSize: 16,
-                lineHeight: 21,
-                fontWeight: "bold",
-                letterSpacing: 0.25,
-                color: "white",
-              }}
-            >
-              RESERVE
-            </DefaultText>
+            <DefaultText styles={styles.reserveButtonText}>RESERVE</DefaultText>
           </TouchableOpacity>
         </View>
       </View>
@@ -199,6 +176,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
+  },
+  reserveButtonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: "black",
+  },
+  reserveButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
   },
 });
 
