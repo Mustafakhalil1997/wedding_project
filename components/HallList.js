@@ -65,20 +65,7 @@ const HallList = (props) => {
   console.log("userInfo in hallList ", userInfo);
   DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
   console.log("DUMMY LISTT ", DUMMY_HALLLIST);
-  const allList = useSelector((state) => state.halls.hallList);
-
-  // if (favorite) {
-  //   console.log("favorite userInfo ", userInfo);
-  //   if (Object.keys(userInfo).length === 0) {
-  //     DUMMY_HALLLIST = [];
-  //   } else {
-  //     const favoritesIds = userInfo.favorites;
-  //     console.log("favoritesIds ", favoritesIds);
-  //     const favoritesList = allList.filter((h) => favoritesIds.includes(h.id));
-  //     DUMMY_HALLLIST = favoritesList;
-  //     // DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
-  //   }
-  // }
+  // const allList = useSelector((state) => state.halls.hallList);
 
   const isItemFavorite = (id) => {
     console.log("isItemFavoite userInfo ", userInfo);

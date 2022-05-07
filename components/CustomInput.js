@@ -19,6 +19,8 @@ const CustomInput = (props) => {
     setTogglePass((prevState) => !prevState);
   };
 
+  console.log("text input");
+
   return (
     <View style={styles.inputLabelContainer}>
       <View
@@ -62,6 +64,8 @@ const CustomInput = (props) => {
     </View>
   );
 };
+
+console.log("text inputt");
 
 const styles = StyleSheet.create({
   inputLabelContainer: {

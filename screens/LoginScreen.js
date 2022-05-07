@@ -6,6 +6,7 @@ import {
   StyleSheet,
   SafeAreaView,
   Platform,
+  TextInput,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
@@ -25,6 +26,8 @@ const LoginScreen = ({ navigation }) => {
     email: "",
     password: "",
   };
+
+  console.log("this is login screen");
 
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.Auth.userType);
@@ -105,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.formContainer}>
+    <View style={styles.formContainer}>
       {/* <StatusBar style="auto" /> */}
       <Formik
         initialValues={userInfo}
@@ -142,6 +145,7 @@ const LoginScreen = ({ navigation }) => {
                 onBlur={handleBlur("email")}
                 error={touched.email && errors.email}
               />
+
               <CustomInput
                 iconName="lock"
                 iconSize={32}
@@ -154,6 +158,7 @@ const LoginScreen = ({ navigation }) => {
                 onBlur={handleBlur("password")}
                 error={touched.password && errors.password}
               />
+
               <CustomButton
                 buttonDisabled={buttonDisabled}
                 handleSubmit={handleSubmit}
@@ -177,7 +182,7 @@ const LoginScreen = ({ navigation }) => {
           );
         }}
       </Formik>
-    </SafeAreaView>
+    </View>
   );
 };
 
