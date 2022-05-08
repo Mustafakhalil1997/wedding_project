@@ -9,6 +9,8 @@ import { Calendar } from "react-native-calendars";
 import DefaultText from "./DefaultText";
 import { URL } from "./../helpers/url";
 import { showMessage } from "react-native-flash-message";
+import { useSelector, useDispatch } from "react-redux";
+import { editProfile } from "./../store/actions/Auth";
 
 const CalendarReserve = (props) => {
   const { hallId, userId } = props;
@@ -16,7 +18,31 @@ const CalendarReserve = (props) => {
   const [daySelected, setDaySelected] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+  const { reservation } = userInfo;
+
+  const hallList = useSelector((state) => state.halls.hallList);
+  const hall = hallList.find((hall) => hallId === hall.id);
+
+  const datesReserved = hall.bookings.map((booking) =>
+    booking.date.substring(0, 10)
+  );
+
+  console.log("datesReserved ", datesReserved);
+  console.log("reservation ", reservation);
+
   const confirmReservationClickHandler = async () => {
+    if (reservation) {
+      showMessage({
+        message: "Cannot Reserve",
+        description: "you already have a reservation",
+        style: { backgroundColor: "black" },
+      });
+      return;
+    }
+
     const booking = {
       hallId,
       userId,
@@ -36,8 +62,12 @@ const CalendarReserve = (props) => {
 
       const responseData = await response.json();
       console.log("responseData ", responseData);
+
+      const { userInfo: newUserInfo, message } = responseData;
+
       setIsSubmitting(false);
       if (response.status === 200) {
+        dispatch(editProfile(newUserInfo));
         showMessage({
           message: "Your Reservation was successfull!",
           type: "success",
@@ -51,7 +81,7 @@ const CalendarReserve = (props) => {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <View style={styles.screenContainer}>
       <Calendar
         style={{ height: 350 }}
         onDayPress={(day) => {
@@ -68,10 +98,16 @@ const CalendarReserve = (props) => {
         onMonthChange={(month) => {
           console.log("month changed", month);
         }}
-        markedDates={{
-          [daySelected]: { selected: true },
-          // "2022-05-10": { marked: true, selected: true },
-        }}
+        markedDates={
+          {
+            // [daySelected]: { selected: true },
+            // "2022-05-10": { selected: true },
+            // "2022-05-15": { selected: true },
+            // "2022-05-16": { selected: true },
+            // "2022-05-12": { selected: true },
+            // "2022-05-10": { marked: true, selected: true },
+          }
+        }
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={true}
       />
@@ -102,6 +138,12 @@ const CalendarReserve = (props) => {
 };
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+
   reserveButtonContainer: {
     alignItems: "center",
     justifyContent: "center",
