@@ -57,7 +57,8 @@ const HallDetailScreen = (props) => {
   };
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  const userId = userInfo.id;
+  // const userId = userInfo.id;
+  const { id: userId, reservation } = userInfo;
 
   let halls = useSelector((state) => state.halls.hallList);
   console.log("halls ", halls);
@@ -77,10 +78,19 @@ const HallDetailScreen = (props) => {
         type: "success",
         style: { backgroundColor: "black" },
       });
-    } else {
-      setOpenCalendar(true);
-      // dispatch(reserveHall(reservation));
+      return;
     }
+    if (reservation) {
+      showMessage({
+        message: "Cannot Reserve",
+        description: "you already have a reservation",
+        style: { backgroundColor: "black" },
+      });
+      return;
+    }
+
+    setOpenCalendar(true);
+    // dispatch(reserveHall(reservation));
   };
 
   if (openCalendar) {

@@ -26,7 +26,7 @@ const CalendarReserve = (props) => {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch(`${URL}/api/hall/createBooking`, {
+      const response = await fetch(`${URL}/api/booking/createBooking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,11 +37,13 @@ const CalendarReserve = (props) => {
       const responseData = await response.json();
       console.log("responseData ", responseData);
       setIsSubmitting(false);
-      showMessage({
-        message: "Your Reservation was successfull!",
-        type: "success",
-        style: { backgroundColor: "green" },
-      });
+      if (response.status === 200) {
+        showMessage({
+          message: "Your Reservation was successfull!",
+          type: "success",
+          style: { backgroundColor: "green" },
+        });
+      }
     } catch (err) {
       setIsSubmitting(false);
       console.log(err);
