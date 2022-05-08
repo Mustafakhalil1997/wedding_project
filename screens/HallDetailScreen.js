@@ -80,14 +80,14 @@ const HallDetailScreen = (props) => {
       });
       return;
     }
-    if (reservation) {
-      showMessage({
-        message: "Cannot Reserve",
-        description: "you already have a reservation",
-        style: { backgroundColor: "black" },
-      });
-      return;
-    }
+    // if (reservation) {
+    //   showMessage({
+    //     message: "Cannot Reserve",
+    //     description: "you already have a reservation",
+    //     style: { backgroundColor: "black" },
+    //   });
+    //   return;
+    // }
 
     setOpenCalendar(true);
     // dispatch(reserveHall(reservation));
