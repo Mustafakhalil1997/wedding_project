@@ -49,7 +49,7 @@ const HomeScreen = (props) => {
 
   console.log("hallName ", hallName);
 
-  const goToName = () => {
+  const goToCompleteProfile = () => {
     navigation.navigate({
       name: "completeProfile",
     });
@@ -228,7 +228,7 @@ const HomeScreen = (props) => {
           resizeMode="cover"
           style={styles.backgroundImage}
         >
-          <TouchableOpacity onPress={goToName}>
+          <TouchableOpacity onPress={goToCompleteProfile}>
             <View style={styles.buttonTextStyle}>
               <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
                 COMPLETE YOUR PROFILE
