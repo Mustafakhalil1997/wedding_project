@@ -26,12 +26,40 @@ const CalendarReserve = (props) => {
   const hallList = useSelector((state) => state.halls.hallList);
   const hall = hallList.find((hall) => hallId === hall.id);
 
+  console.log("hall ", hall);
   const datesReserved = hall.bookings.map((booking) =>
     booking.date.substring(0, 10)
   );
 
   console.log("datesReserved ", datesReserved);
-  console.log("reservation ", reservation);
+  console.log("reservationnn ", reservation);
+
+  let calendarDates = {};
+  for (let i = 0; i < datesReserved.length; i++) {
+    console.log(" i", i);
+    const calendarDate = {
+      [datesReserved[i]]: {
+        selected: true,
+        customStyles: {
+          container: {
+            backgroundColor: "red",
+          },
+        },
+      },
+    };
+    calendarDates = { ...calendarDates, ...Object.assign(calendarDate) };
+    console.log("calendarDates ", calendarDates);
+  }
+
+  // [daySelected] : { selected: true},
+  // [daySelected]: {
+  //   selected: true,
+  //   customStyles: {
+  //     container: {
+  //       backgroundColor: "black",
+  //     },
+  //   },
+  // },
 
   const confirmReservationClickHandler = async () => {
     if (reservation) {
@@ -73,6 +101,7 @@ const CalendarReserve = (props) => {
           type: "success",
           style: { backgroundColor: "green" },
         });
+        return;
       }
     } catch (err) {
       setIsSubmitting(false);
@@ -98,16 +127,27 @@ const CalendarReserve = (props) => {
         onMonthChange={(month) => {
           console.log("month changed", month);
         }}
-        markedDates={
-          {
-            // [daySelected]: { selected: true },
-            // "2022-05-10": { selected: true },
-            // "2022-05-15": { selected: true },
-            // "2022-05-16": { selected: true },
-            // "2022-05-12": { selected: true },
-            // "2022-05-10": { marked: true, selected: true },
-          }
-        }
+        markingType={"custom"}
+        markedDates={{
+          ...calendarDates,
+          [daySelected]: {
+            selected: true,
+            customStyles: {
+              container: {
+                backgroundColor: "black",
+              },
+            },
+          },
+          // "2022-05-10": {
+          //   selected: true,
+          //   marked: true,
+          //   customStyles: {
+          //     container: {
+          //       backgroundColor: "red",
+          //     },
+          //   },
+          // },
+        }}
         // Enable the option to swipe between months. Default = false
         enableSwipeMonths={true}
       />
