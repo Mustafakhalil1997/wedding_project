@@ -36,6 +36,7 @@ const CompleteHostProfileScreen = (props) => {
   const [imageSelected, setImageSelected] = useState();
   const [location, setLocation] = useState();
   const [mobileNumber, setMobileNumber] = useState();
+  const [pricePerPerson, setPricePerPerson] = useState();
   const [pageNum, setPageNum] = useState(1);
 
   const scrollRef = useRef();
@@ -64,6 +65,10 @@ const CompleteHostProfileScreen = (props) => {
 
   const mobileNumberChange = (value) => {
     setMobileNumber(value);
+  };
+
+  const pricePerPersonChange = (value) => {
+    setPricePerPerson(value);
   };
 
   const pickImage = async () => {
@@ -135,6 +140,7 @@ const CompleteHostProfileScreen = (props) => {
           lat: location.latitude,
           lng: location.longitude,
         },
+        price: pricePerPerson,
       };
 
       console.log("sending request");
@@ -234,7 +240,7 @@ const CompleteHostProfileScreen = (props) => {
           callback={(callback) => {}}
         /> */}
       </View>
-      <View style={{ height: pageNum > 3 ? 250 : 150 }}>
+      <View style={{ height: pageNum > 4 ? 250 : 150 }}>
         <ScrollView
           ref={scrollRef}
           horizontal
@@ -267,6 +273,14 @@ const CompleteHostProfileScreen = (props) => {
               onChangeText={mobileNumberChange}
             />
           </View>
+          <View style={styles.textInputContainerStyle}>
+            <TextInput
+              style={styles.hallNameInput}
+              placeholder="price per person"
+              value={pricePerPerson}
+              onChangeText={pricePerPersonChange}
+            />
+          </View>
           <Map getLocation={getLocation} />
           <View style={styles.textInputContainerStyle}>
             <TouchableOpacity onPress={pickImage}>
@@ -296,21 +310,21 @@ const CompleteHostProfileScreen = (props) => {
               ...styles.buttonContainerStyle,
             }}
           >
-            <DefaultText>Previous</DefaultText>
+            <DefaultText style={{ color: "white" }}>Previous</DefaultText>
           </View>
         </TouchableOpacity>
-        {pageNum !== 5 ? (
+        {pageNum !== 6 ? (
           <TouchableOpacity
             onPress={goToNext}
-            disabled={pageNum === 5 ? true : false}
+            disabled={pageNum === 6 ? true : false}
           >
             <View
               style={{
-                opacity: pageNum === 5 ? 0.4 : 1,
+                opacity: pageNum === 6 ? 0.4 : 1,
                 ...styles.buttonContainerStyle,
               }}
             >
-              <DefaultText>Next</DefaultText>
+              <DefaultText style={{ color: "white" }}>Next</DefaultText>
             </View>
           </TouchableOpacity>
         ) : (
@@ -325,7 +339,7 @@ const CompleteHostProfileScreen = (props) => {
                 borderRadius: 10,
               }}
             >
-              <DefaultText>Submit</DefaultText>
+              <DefaultText style={{ color: "white" }}>Submit</DefaultText>
             </View>
           </TouchableOpacity>
         )}
@@ -364,7 +378,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonContainerStyle: {
-    backgroundColor: "red",
+    backgroundColor: "black",
+
     alignSelf: "flex-end",
     margin: 10,
     padding: 10,
