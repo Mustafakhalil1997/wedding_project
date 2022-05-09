@@ -17,6 +17,7 @@ import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
 import { logout, switchProfile } from "./../store/actions/Auth";
 import { URL } from "./../helpers/url";
+import { showMessage } from "react-native-flash-message";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -26,7 +27,8 @@ const ProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   console.log("userInfo in profileScreenn ", userInfo);
 
-  const { firstName, lastName, email, id, profileImage } = userInfo;
+  const { firstName, lastName, email, id, profileImage, reservation } =
+    userInfo;
 
   const fullName = firstName + " " + lastName;
   console.log("fullName in profileScreen", fullName);
@@ -49,6 +51,18 @@ const ProfileScreen = (props) => {
 
   const switchProfileClickHandler = () => {
     dispatch(switchProfile());
+  };
+
+  const goToMyReservation = () => {
+    if (!reservation) {
+      showMessage({
+        message: "Reserve a venue to see details here",
+      });
+      return;
+    }
+    navigation.navigate({
+      name: "MyReservation",
+    });
   };
 
   return (
@@ -99,6 +113,12 @@ const ProfileScreen = (props) => {
           <ProfileElement iconName="md-card-outline">Payments</ProfileElement>
           <ProfileElement iconName="document-text-outline">
             Terms and conditions
+          </ProfileElement>
+          <ProfileElement
+            onPress={goToMyReservation}
+            iconName={reservation ? "bookmarks" : "bookmarks-outline"}
+          >
+            Check Your Reservation
           </ProfileElement>
         </View>
         <DefaultText styles={styles.contentTitle}>Host a Wedding?</DefaultText>
