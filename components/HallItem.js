@@ -37,7 +37,9 @@ const HallItem = (props) => {
     images,
     bookings,
     ownerId,
+    price,
   } = item;
+  console.log("price in hallItem ", price);
 
   console.log("hallNamee ", hallName);
   // const { lat, lng } = location;
@@ -64,6 +66,7 @@ const HallItem = (props) => {
         number: mobileNumber,
         images,
         bookings,
+        price,
         // isFavorite: isFavorite, // when isFavorite is changed in the store, route parameters don't get updated unless they are revisited, so I can't pass isFavorite in here instead I have to directly access it from the store in HallDetailScreen
       },
     });
@@ -103,7 +106,7 @@ const HallItem = (props) => {
                 <DefaultText
                   styles={{
                     fontFamily: "open-sans-bold",
-                    width: 230,
+                    width: 200,
                   }}
                   numberOfLines={1}
                 >
@@ -114,7 +117,15 @@ const HallItem = (props) => {
                 </DefaultText>
               </View>
               {/* <DefaultText>{email}</DefaultText> */}
-              <DefaultText>{mobileNumber}</DefaultText>
+              <View style={{ alignItems: "flex-end" }}>
+                <DefaultText>{mobileNumber}</DefaultText>
+                <DefaultText>
+                  <DefaultText style={{ fontFamily: "open-sans-bold" }}>
+                    {price}${" "}
+                  </DefaultText>
+                  per person
+                </DefaultText>
+              </View>
             </View>
           </View>
         </TouchableComponent>
