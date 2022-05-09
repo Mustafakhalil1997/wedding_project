@@ -16,6 +16,7 @@ import MapViewer from "../screens/MapViewer";
 import ProfileScreen from "../screens/ProfileScreen";
 import ChatScreen from "../screens/ChatScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
+import ReservationScreen from "../screens/ReservationScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,19 +60,19 @@ const UserTabNavigator = () => {
     );
   };
 
-  //   const MapStack = () => {
-  //     return (
-  //       <Stack.Navigator
-  //         screenOptions={{
-  //           headerTitleAlign: "center",
-  //           headerShown: false,
-  //         }}
-  //       >
-  //         <Stack.Screen name="Map" component={MapViewer} />
-  //         {/* <Stack.Screen component={HallDetailScreen} /> */}
-  //       </Stack.Navigator>
-  //     );
-  //   };
+  const MapStack = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+          // headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Map" component={MapViewer} />
+        <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+      </Stack.Navigator>
+    );
+  };
 
   const AuthStack = () => {
     const token = useSelector((state) => state.Auth.token);
@@ -108,6 +109,17 @@ const UserTabNavigator = () => {
                 },
               }}
             />
+            <Stack.Screen
+              name="MyReservation"
+              component={ReservationScreen}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "white",
+                },
+              }}
+            />
+            <Stack.Screen name="HallDetail" component={HallDetailScreen} />
           </>
         )}
       </Stack.Navigator>
@@ -185,7 +197,7 @@ const UserTabNavigator = () => {
     >
       <Tab.Screen name="Explore" component={HomeStack} />
       <Tab.Screen name="Favorites" component={FavoriteStack} />
-      <Tab.Screen name="MapView" component={MapViewer} />
+      <Tab.Screen name="MapView" component={MapStack} />
       <Tab.Screen
         name="Chats"
         component={ChatScreen}
