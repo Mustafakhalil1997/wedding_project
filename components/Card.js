@@ -11,7 +11,7 @@ const Card = (props) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flex: 1,
+    // flex: 1,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.26,
