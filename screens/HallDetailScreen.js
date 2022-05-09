@@ -23,8 +23,10 @@ import CalendarReserve from "./../components/CalendarReserve";
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
 
-  const { hallId, name, email, address, location, number, images } =
+  const { hallId, name, email, address, location, number, images, price } =
     route.params;
+
+  console.log("pricee ", price);
 
   // convertedImagesUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
@@ -126,17 +128,24 @@ const HallDetailScreen = (props) => {
           <View style={styles.priceContainer}>
             <DefaultText styles={{ fontSize: 24 }}>Prices</DefaultText>
             <View style={styles.offer}>
-              <Text style={{ width: "70%" }}>
+              <DefaultText styles={{ width: "70%" }}>
+                We offer one of the best services there is, let us handle
+                everything for you and you won't regret it
+              </DefaultText>
+              <Text style={{ alignSelf: "center" }}>{price}$ per person</Text>
+            </View>
+            <View style={styles.offer}>
+              <DefaultText styles={{ width: "70%" }}>
                 Our Premium Offer. Our best offer with the North hall, let
                 everything be on us and have a beautiful nice wedding
-              </Text>
+              </DefaultText>
               <Text style={{ alignSelf: "center" }}>2000$</Text>
             </View>
             <View style={styles.offer}>
-              <Text style={{ width: "70%" }}>
+              <DefaultText style={{ width: "70%" }}>
                 Our Premium ooOffer. Our best offer with the North hall, let
                 everything be on us and have a beautiful nice wedding
-              </Text>
+              </DefaultText>
               <Text style={{ alignSelf: "center" }}>2000$</Text>
             </View>
           </View>
