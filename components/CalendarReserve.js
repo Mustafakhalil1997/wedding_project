@@ -42,7 +42,7 @@ const CalendarReserve = (props) => {
         selected: true,
         customStyles: {
           container: {
-            backgroundColor: "red",
+            backgroundColor: "green",
           },
         },
       },
