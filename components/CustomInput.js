@@ -48,6 +48,7 @@ const CustomInput = (props) => {
         <View style={styles.input}>
           <TextInput
             {...props}
+            style={{ flex: 1 }}
             secureTextEntry={secureTextEntry ? togglePass : false}
           />
           {type && (
