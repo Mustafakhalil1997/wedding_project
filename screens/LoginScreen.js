@@ -157,6 +157,7 @@ const LoginScreen = ({ navigation }) => {
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 error={touched.password && errors.password}
+                type="password"
               />
 
               <CustomButton
