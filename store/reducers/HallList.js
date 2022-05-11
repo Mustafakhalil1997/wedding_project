@@ -2,9 +2,11 @@ import {
   SET_LIST,
   TOGGLE_FAVORITE,
   CREATE_RESERVATION,
+  SET_STATUS,
 } from "../actions/HallList";
 
 const initialState = {
+  status: 100,
   hallList: [],
   favoritesList: [],
 };
@@ -14,7 +16,13 @@ const hallListReducer = (state = initialState, action) => {
     case SET_LIST:
       return {
         ...state,
+        status: 200,
         hallList: action.hallList,
+      };
+    case SET_STATUS:
+      return {
+        ...state,
+        status: action.status,
       };
     case TOGGLE_FAVORITE:
       const favoriteId = action.hallId;

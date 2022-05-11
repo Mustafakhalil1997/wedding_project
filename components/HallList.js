@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHallList } from "../store/actions/HallList";
@@ -12,60 +13,65 @@ import HallItem from "./HallItem";
 import { setCurrentLocation } from "./../store/actions/Location";
 import Colors from "../constants/Colors";
 import DefaultText from "./DefaultText";
+import { Ionicons } from "@expo/vector-icons";
+import { setStatus } from "./../store/actions/HallList";
 
-const initialState = { mockList: [], loading: false };
+// const initialState = { mockList: [], loading: false };
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "setList":
-      return {
-        ...state,
-        mockList: action.list,
-        loading: false,
-      };
-    case "setLoading":
-      return {
-        ...state,
-        loading: action.loading,
-      };
-    default:
-      return state;
-  }
-};
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "setList":
+//       return {
+//         ...state,
+//         mockList: action.list,
+//         loading: false,
+//       };
+//     case "setLoading":
+//       return {
+//         ...state,
+//         loading: action.loading,
+//       };
+//     default:
+//       return state;
+//   }
+// };
 
 const HallList = (props) => {
   const { navigation } = props;
 
-  const [state, dispatchState] = useReducer(reducer, initialState);
+  // const [state, dispatchState] = useReducer(reducer, initialState);
+
+  const [loading, setLoading] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
-  console.log("the token is ", token);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    setTimeout(() => {
-      dispatchState({ type: "setLoading", loading: false });
-    }, 1000);
-  }, [state.list]);
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+  const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
+  const status = useSelector((state) => state.halls.status);
 
   useEffect(() => {
-    const loadCurrentLocation = async () => {
+    const loadListAndCurrentLocation = async () => {
       dispatch(setCurrentLocation());
       dispatch(setHallList());
     };
-    dispatchState({ type: "setLoading", loading: true });
-    loadCurrentLocation();
-  }, [dispatch]);
-  let DUMMY_HALLLIST;
+    if (status === 100) {
+      setLoading(true);
+      // dispatchState({ type: "setLoading", loading: true });
+      loadListAndCurrentLocation();
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    console.log("status ", status);
+    if (status !== 100) {
+      setLoading(false);
+      // dispatchState({ type: "setLoading", loading: false });
+    }
+  }, [status]);
 
   // let usedList = DUMMY_HALLLIST;
-
-  const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo in hallList ", userInfo);
-  DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
-  console.log("DUMMY LISTT ", DUMMY_HALLLIST);
-  // const allList = useSelector((state) => state.halls.hallList);
 
   const isItemFavorite = (id) => {
     console.log("isItemFavoite userInfo ", userInfo);
@@ -74,23 +80,9 @@ const HallList = (props) => {
     return false;
   };
 
-  // if (state.mockList !== DUMMY_HALLLIST && DUMMY_HALLLIST.length !== 0) {
-  //   console.log("hereee");
-  //   console.log("state.list ", state.mockList);
-  //   console.log("DUMMY_HALLLIST ", DUMMY_HALLLIST);
-  //   dispatchState({ type: "setList", list: DUMMY_HALLLIST });
-  // }
-
-  // if (DUMMY_HALLLIST.length === 0) {
-  //   return (
-  //     <View style={styles.noFavorites}>
-  //       <DefaultText styles={styles.noFavoritesText}>
-  //         You have no favorites.
-  //       </DefaultText>
-  //       <DefaultText>Why not add one?</DefaultText>
-  //     </View>
-  //   );
-  // }
+  const tryAgain = () => {
+    dispatch(setStatus(100));
+  };
 
   const renderHall = (itemData) => {
     const { item } = itemData;
@@ -102,11 +94,32 @@ const HallList = (props) => {
     );
   };
 
-  if (state.loading) {
+  if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View
+        style={[
+          styles.listContainer,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
         <ActivityIndicator size="large" color={Colors.primaryColor} />
         <Text>Loading</Text>
+      </View>
+    );
+  }
+
+  if (status === 500) {
+    return (
+      <View
+        style={[
+          styles.listContainer,
+          { alignItems: "center", justifyContent: "center" },
+        ]}
+      >
+        <TouchableOpacity onPress={tryAgain}>
+          <Ionicons name="reload" size={36} color="black" />
+        </TouchableOpacity>
+        <Text>Server Failed</Text>
       </View>
     );
   }
