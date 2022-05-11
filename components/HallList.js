@@ -119,7 +119,7 @@ const HallList = (props) => {
         <TouchableOpacity onPress={tryAgain}>
           <Ionicons name="reload" size={36} color="black" />
         </TouchableOpacity>
-        <Text>Server Failed</Text>
+        <Text>Reload</Text>
       </View>
     );
   }
