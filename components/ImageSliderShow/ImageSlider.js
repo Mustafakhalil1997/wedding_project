@@ -20,7 +20,7 @@ import { URL } from "./../../helpers/url";
 // const height = (width * 100) / 60; //60%
 
 const ImageSlider = (props) => {
-  const { images, newStyles, dot, hallId, isFavorite } = props;
+  const { images, newStyles, dot, hallId, isFavorite, scrollEnabled } = props;
 
   const [imageNumber, setImageNumber] = useState(1);
 
@@ -104,6 +104,7 @@ const ImageSlider = (props) => {
         ref={scrollRef}
         pagingEnabled
         horizontal
+        scrollEnabled={scrollEnabled}
         // scrollEnabled={false}
         onMomentumScrollEnd={scrollingHandler}
         // scrollEventThrottle={changeNumber}

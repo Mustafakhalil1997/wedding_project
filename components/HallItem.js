@@ -98,6 +98,7 @@ const HallItem = (props) => {
                 images={convertedImagesUrl}
                 hallId={id}
                 isFavorite={isFavorite}
+                scrollEnabled={false}
               />
               {/* <Image style={styles.image} source={source} /> */}
             </View>

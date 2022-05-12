@@ -109,6 +109,7 @@ const HallDetailScreen = (props) => {
             images={[...convertedImagesUrl]}
             hallId={hallId}
             isFavorite={favorite()}
+            scrollEnabled={true}
           />
         </View>
         <View style={styles.infoContainer}>
