@@ -7,6 +7,8 @@ import {
   Dimensions,
   TextInput,
   ImageBackground,
+  Image,
+  Pressable,
 } from "react-native";
 import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +18,7 @@ import { editHall } from "./../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
 import { URL } from "./../helpers/url";
 import { setCurrentLocation } from "../store/actions/Location";
+import { Avatar } from "react-native-paper";
 
 const { width } = Dimensions.get("window");
 
@@ -240,7 +243,13 @@ const CompleteHostProfileScreen = (props) => {
           callback={(callback) => {}}
         /> */}
       </View>
-      <View style={{ height: pageNum > 4 ? 250 : 150 }}>
+      <View
+        style={{
+          height: pageNum > 4 ? 250 : 70,
+          marginTop: pageNum > 4 ? 0 : 10,
+          // padding: 10,
+        }}
+      >
         <ScrollView
           ref={scrollRef}
           horizontal
@@ -283,7 +292,23 @@ const CompleteHostProfileScreen = (props) => {
           </View>
           <Map getLocation={getLocation} />
           <View style={styles.textInputContainerStyle}>
-            <TouchableOpacity onPress={pickImage}>
+            <Pressable onPress={pickImage}>
+              <Image
+                source={
+                  imageSelected
+                    ? { uri: imageSelected }
+                    : require("../constants/images/Roger.jpg")
+                }
+                style={{
+                  ...styles.image,
+                  width: "90%",
+                  height: "90%",
+                  aspectRatio: 3 / 2.3,
+                  resizeMode: "cover",
+                }}
+              />
+            </Pressable>
+            {/* <TouchableOpacity onPress={pickImage}>
               <View
                 style={{
                   borderWidth: 1,
@@ -294,7 +319,7 @@ const CompleteHostProfileScreen = (props) => {
               >
                 <DefaultText>Upload Images</DefaultText>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <Map />
         </ScrollView>
@@ -353,7 +378,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 250,
+    height: 200,
     justifyContent: "flex-end",
   },
   textInputContainerStyle: {
@@ -361,8 +386,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
+
     // backgroundColor: "pink",
-    justifyContent: "center",
   },
   buttonTextStyle: {
     padding: 7,
