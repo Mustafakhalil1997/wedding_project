@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState, useLayoutEffect } from "react";
 import {
   View,
   FlatList,
@@ -15,6 +15,8 @@ import Colors from "../constants/Colors";
 import DefaultText from "./DefaultText";
 import { Ionicons } from "@expo/vector-icons";
 import { setStatus } from "./../store/actions/HallList";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "./HeaderButton";
 
 // const initialState = { mockList: [], loading: false };
 
@@ -50,6 +52,18 @@ const HallList = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
   const status = useSelector((state) => state.halls.status);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        //   <Text>Save</Text>
+
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item title="Save" iconName="reload" onPress={tryAgain} />
+        </HeaderButtons>
+      ),
+    });
+  });
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
