@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
@@ -118,99 +119,101 @@ const SignupScreen = ({ navigation }) => {
 
   return (
     // <SafeAreaView style={[styles.formContainer]}>
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={50}
-      style={[styles.formContainer]}
-      // enabled={false}
-    >
-      <Formik
-        initialValues={userInfo}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmitForm}
-      >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-          touched,
-          handleBlur,
-          errors,
-          isSubmitting,
-        }) => {
-          let buttonDisabled = true;
-          if (
-            Object.keys(errors).length == 0 &&
-            Object.keys(touched).length != 0
-          ) {
-            buttonDisabled = false;
-          }
+    // <KeyboardAvoidingView
+    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
+    //   keyboardVerticalOffset={50}
+    //   style={[styles.formContainer]}
+    //   // enabled={false}
+    // >
+    <View style={styles.formContainer}>
+      <View style={{ marginBottom: "20%" }}></View>
 
-          return (
-            <View style={styles.inputsContainer}>
-              <CustomInput
-                iconName="user"
-                iconSize={32}
-                value={values.fullName}
-                label="Full Name"
-                placeholder="John Smith"
-                onChangeText={handleChange("fullName")}
-                onBlur={handleBlur("fullName")}
-                error={touched.fullName && errors.fullName}
-              />
-              <CustomInput
-                iconName="envelope"
-                iconSize={32}
-                value={values.email}
-                label="E-mail Address"
-                keyboardType="email-address"
-                placeholder="example@gmail.com"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                error={touched.email && errors.email}
-                autoCapitalize="none"
-              />
-              <CustomInput
-                iconName="lock"
-                iconSize={32}
-                value={values.password}
-                secureTextEntry
-                label="Password"
-                keyboardType="default"
-                placeholder="********"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                error={touched.password && errors.password}
-                type="password"
-              />
-              <CustomInput
-                iconName="lock"
-                iconSize={32}
-                value={values.confirmPassword}
-                secureTextEntry
-                label="Confirm Password"
-                keyboardType="default"
-                placeholder="********"
-                onChangeText={handleChange("confirmPassword")}
-                onBlur={handleBlur("confirmPassword")}
-                error={touched.confirmPassword && errors.confirmPassword}
-                type="password"
-              />
+      <ScrollView>
+        <Formik
+          initialValues={userInfo}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmitForm}
+        >
+          {({
+            values,
+            handleChange,
+            handleSubmit,
+            touched,
+            handleBlur,
+            errors,
+            isSubmitting,
+          }) => {
+            let buttonDisabled = true;
+            if (
+              Object.keys(errors).length == 0 &&
+              Object.keys(touched).length != 0
+            ) {
+              buttonDisabled = false;
+            }
 
-              <CustomButton
-                buttonDisabled={buttonDisabled}
-                handleSubmit={handleSubmit}
-                submitting={isSubmitting}
-                label="SIGN UP"
-              />
-            </View>
-          );
-        }}
-      </Formik>
-      {/* </View> */}
-      {/* </View> */}
-    </KeyboardAvoidingView>
-    // </SafeAreaView>
+            return (
+              <View style={styles.inputsContainer}>
+                <CustomInput
+                  iconName="user"
+                  iconSize={32}
+                  value={values.fullName}
+                  label="Full Name"
+                  placeholder="John Smith"
+                  onChangeText={handleChange("fullName")}
+                  onBlur={handleBlur("fullName")}
+                  error={touched.fullName && errors.fullName}
+                />
+                <CustomInput
+                  iconName="envelope"
+                  iconSize={32}
+                  value={values.email}
+                  label="E-mail Address"
+                  keyboardType="email-address"
+                  placeholder="example@gmail.com"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  error={touched.email && errors.email}
+                  autoCapitalize="none"
+                />
+                <CustomInput
+                  iconName="lock"
+                  iconSize={32}
+                  value={values.password}
+                  secureTextEntry
+                  label="Password"
+                  keyboardType="default"
+                  placeholder="********"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  error={touched.password && errors.password}
+                  type="password"
+                />
+                <CustomInput
+                  iconName="lock"
+                  iconSize={32}
+                  value={values.confirmPassword}
+                  secureTextEntry
+                  label="Confirm Password"
+                  keyboardType="default"
+                  placeholder="********"
+                  onChangeText={handleChange("confirmPassword")}
+                  onBlur={handleBlur("confirmPassword")}
+                  error={touched.confirmPassword && errors.confirmPassword}
+                  type="password"
+                />
+
+                <CustomButton
+                  buttonDisabled={buttonDisabled}
+                  handleSubmit={handleSubmit}
+                  submitting={isSubmitting}
+                  label="SIGN UP"
+                />
+              </View>
+            );
+          }}
+        </Formik>
+      </ScrollView>
+    </View>
   );
 };
 

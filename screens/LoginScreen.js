@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Platform,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
@@ -108,81 +109,85 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.formContainer}>
-      {/* <StatusBar style="auto" /> */}
-      <Formik
-        initialValues={userInfo}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmitForm}
-      >
-        {({
-          values,
-          handleChange,
-          handleSubmit,
-          touched,
-          handleBlur,
-          errors,
-          isSubmitting,
-        }) => {
-          let buttonDisabled = true;
-          if (
-            Object.keys(errors).length == 0 &&
-            Object.keys(touched).length != 0
-          ) {
-            buttonDisabled = false;
-          }
+    <View style={[styles.formContainer, {}]}>
+      <View style={{ marginBottom: "40%" }}></View>
 
-          return (
-            <View style={styles.inputsContainer}>
-              <CustomInput
-                iconName="envelope"
-                iconSize={32}
-                value={values.email}
-                label="E-mail Address"
-                keyboardType="email-address"
-                placeholder="example@gmail.com"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                error={touched.email && errors.email}
-              />
+      <ScrollView>
+        {/* <StatusBar style="auto" /> */}
+        <Formik
+          initialValues={userInfo}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmitForm}
+        >
+          {({
+            values,
+            handleChange,
+            handleSubmit,
+            touched,
+            handleBlur,
+            errors,
+            isSubmitting,
+          }) => {
+            let buttonDisabled = true;
+            if (
+              Object.keys(errors).length == 0 &&
+              Object.keys(touched).length != 0
+            ) {
+              buttonDisabled = false;
+            }
 
-              <CustomInput
-                iconName="lock"
-                iconSize={32}
-                value={values.password}
-                secureTextEntry
-                label="Password"
-                keyboardType="default"
-                placeholder="********"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                error={touched.password && errors.password}
-                type="password"
-              />
+            return (
+              <View style={styles.inputsContainer}>
+                <CustomInput
+                  iconName="envelope"
+                  iconSize={32}
+                  value={values.email}
+                  label="E-mail Address"
+                  keyboardType="email-address"
+                  placeholder="example@gmail.com"
+                  onChangeText={handleChange("email")}
+                  onBlur={handleBlur("email")}
+                  error={touched.email && errors.email}
+                />
 
-              <CustomButton
-                buttonDisabled={buttonDisabled}
-                handleSubmit={handleSubmit}
-                submitting={isSubmitting}
-                label="LOG IN"
-              />
-              <View>
-                <Text style={{ marginTop: 10 }}>
-                  Don't have an account?
-                  <Text
-                    style={{ color: "blue", textDecorationLine: "underline" }}
-                    onPress={() => {
-                      navigation.navigate("Signup");
-                    }}
-                  >
-                    Signup
+                <CustomInput
+                  iconName="lock"
+                  iconSize={32}
+                  value={values.password}
+                  secureTextEntry
+                  label="Password"
+                  keyboardType="default"
+                  placeholder="********"
+                  onChangeText={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  error={touched.password && errors.password}
+                  type="password"
+                />
+
+                <CustomButton
+                  buttonDisabled={buttonDisabled}
+                  handleSubmit={handleSubmit}
+                  submitting={isSubmitting}
+                  label="LOG IN"
+                />
+                <View>
+                  <Text style={{ marginTop: 10 }}>
+                    Don't have an account?
+                    <Text
+                      style={{ color: "blue", textDecorationLine: "underline" }}
+                      onPress={() => {
+                        navigation.navigate("Signup");
+                      }}
+                    >
+                      Signup
+                    </Text>
                   </Text>
-                </Text>
+                </View>
               </View>
-            </View>
-          );
-        }}
-      </Formik>
+            );
+          }}
+        </Formik>
+      </ScrollView>
     </View>
   );
 };
