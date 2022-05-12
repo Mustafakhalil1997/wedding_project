@@ -7,6 +7,7 @@ import {
   Button,
   Text,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { Avatar } from "react-native-paper";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -36,8 +37,6 @@ const EditProfileScreen = (props) => {
   console.log("profileImagePicked ", profileImagePicked);
   if (profileImagePicked) {
     console.log("uri ", profileImagePicked);
-    // console.log("type ", profileImagePicked.type);
-    // console.log("name ", profileImagePicked.name);
   }
 
   const dispatch = useDispatch();
@@ -45,9 +44,7 @@ const EditProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const token = useSelector((state) => state.Auth.token);
 
-  const { id, firstName, lastName, email, password, profileImage } = userInfo;
-
-  const [loading, setLoading] = useState();
+  const { id, firstName, lastName, email, profileImage } = userInfo;
 
   console.log("profileImagee ", URL + "/" + profileImage);
   const buttonRef = createRef();
@@ -56,32 +53,7 @@ const EditProfileScreen = (props) => {
     firstName: firstName,
     lastName: lastName,
     email: email,
-    password: password,
   };
-
-  // useEffect(() => {
-  //   navigation.addListener("beforeRemove", (e) => {
-  //     if (!hasUnsavedChanges) {
-  //       return;
-  //     }
-
-  //     // Prevent default behavior of leaving the screen
-  //     e.preventDefault();
-
-  //     Alert.alert(
-  //       "Discard changes?",
-  //       "You have unsaved changes. Are you sure you want to discard them?",
-  //       [
-  //         { text: "Dont't leave", style: "cancel", onPress: () => {} },
-  //         {
-  //           text: "Discard",
-  //           style: "destructive",
-  //           onPress: () => navigation.dispatch(e.data.action),
-  //         },
-  //       ]
-  //     );
-  //   });
-  // }, [navigation, hasUnsavedChanges]);
 
   const pickProfileImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -143,15 +115,7 @@ const EditProfileScreen = (props) => {
   const handleSubmitForm = async (values, formikActions) => {
     console.log("New Values ", values);
 
-    const { email, firstName, lastName, password } = values;
-
-    let newUserInfo = {
-      email,
-      firstName,
-      lastName,
-      password,
-      profileImage: profileImagePicked ? profileImagePicked : "",
-    };
+    const { email, firstName, lastName } = values;
 
     setIsSubmitting(true);
     try {
@@ -190,7 +154,6 @@ const EditProfileScreen = (props) => {
         email,
         firstName,
         lastName,
-        password,
       };
       const response = await fetch(`${URL}/api/user/${id}`, {
         method: "PATCH",
@@ -256,44 +219,34 @@ const EditProfileScreen = (props) => {
 
   return (
     <View style={styles.screenContainer}>
-      <View style={styles.imageContainer}>
-        <View style={styles.imageCircleContainer}>
-          {!profileImage && !profileImagePicked && (
-            <Avatar.Image
-              size={240}
-              source={require("../constants/images/Roger.jpg")}
-            />
-          )}
-
-          {showImage() && (
-            <Avatar.Image
-              size={240}
-              source={{
-                uri: showImage(),
-              }}
-            />
-          )}
-
-          {/* {!profileImagePicked ? (
-            <Avatar.Image
-              size={240}
-              source={require("../constants/images/Roger.jpg")}
-            />
-          ) : null}
-          {profileImagePicked ? (
-            <Avatar.Image size={240} source={{ uri: profileImagePicked.uri }} />
-          ) : null} */}
-        </View>
-        <View style={styles.imagePickerContainer}>
-          <Ionicons
-            name="md-camera-outline"
-            size={30}
-            onPress={pickProfileImage}
-          />
-        </View>
-      </View>
-
       <ScrollView>
+        <View style={styles.imageContainer}>
+          <View style={styles.imageCircleContainer}>
+            {!profileImage && !profileImagePicked && (
+              <Avatar.Image
+                size={240}
+                source={require("../constants/images/Roger.jpg")}
+              />
+            )}
+
+            {showImage() && (
+              <Avatar.Image
+                size={240}
+                source={{
+                  uri: showImage(),
+                }}
+              />
+            )}
+          </View>
+          <View style={styles.imagePickerContainer}>
+            <Ionicons
+              name="md-camera-outline"
+              size={30}
+              onPress={pickProfileImage}
+            />
+          </View>
+        </View>
+
         <Formik
           initialValues={userInfoBasic}
           validationSchema={validationSchema}
@@ -351,19 +304,6 @@ const EditProfileScreen = (props) => {
                   error={touched.email && errors.email}
                   autoCapitalize="none"
                 />
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.password}
-                  secureTextEntry
-                  label="Password"
-                  keyboardType="default"
-                  placeholder="********"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  error={touched.password && errors.password}
-                />
-
                 {/* <Button
                   title="Press me"
                   ref={buttonRef}
@@ -380,6 +320,26 @@ const EditProfileScreen = (props) => {
             );
           }}
         </Formik>
+        <TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: "black",
+              padding: 10,
+              width: "50%",
+              marginHorizontal: 20,
+              marginVertical: 10,
+              alignItems: "center",
+              borderRadius: 5,
+              alignSelf: "flex-end",
+            }}
+          >
+            <DefaultText
+              style={{ color: "white", fontFamily: "open-sans-bold" }}
+            >
+              Change Password
+            </DefaultText>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

@@ -12,9 +12,4 @@ export default Yup.object().shape({
     .trim()
     .email("Invalid email!")
     .required("Email is required"),
-  password: Yup.string()
-    .label("password")
-    .trim()
-    .min(8, "Password is too short!")
-    .required("Password is required"),
 });
