@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
-  StatusBar,
   View,
-  Text,
   StyleSheet,
   SafeAreaView,
   Dimensions,
   Platform,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
   ScrollView,
+  BackHandler,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
@@ -18,10 +16,11 @@ import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import validationSchema from "./SignupSchema";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch } from "react-redux";
 import { signUp } from "./../store/actions/Auth";
 import { URL } from "../helpers/url";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "./../components/HeaderButton";
 
 // envelope // lock
 
@@ -29,6 +28,53 @@ const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
 const SignupScreen = ({ navigation }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Save"
+            iconName="arrow-back"
+            onPress={() => {
+              if (!isSubmitting) {
+                navigation.goBack(null);
+              }
+            }}
+            style={{ opacity: isSubmitting ? 0.3 : 1 }}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [isSubmitting]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isSubmitting) return true;
+      }
+    );
+
+    if (isSubmitting) {
+      navigation.setOptions({
+        gestureEnabled: false,
+      });
+    }
+
+    if (!isSubmitting) {
+      navigation.setOptions({
+        gestureEnabled: true,
+      });
+    }
+
+    return () => {
+      console.log("useEffect returned");
+      backHandler.remove();
+    };
+  }, [isSubmitting]);
+
   const userInfo = {
     fullName: "",
     email: "",
@@ -61,7 +107,6 @@ const SignupScreen = ({ navigation }) => {
     console.log("last name ", last);
 
     const user = {
-      // id: "u1",
       firstName: first,
       lastName: last,
       email,
@@ -72,9 +117,8 @@ const SignupScreen = ({ navigation }) => {
       booking: null,
     };
 
-    console.log("user ", user);
     try {
-      console.log("heree");
+      setIsSubmitting(true);
       const response = await fetch(`${URL}/api/user/signup`, {
         method: "POST",
         headers: {
@@ -83,12 +127,11 @@ const SignupScreen = ({ navigation }) => {
         body: JSON.stringify(user),
       });
       const responseData = await response.json();
-      console.log("responseData signup ", responseData);
+      // console.log("responseData signup ", responseData);
 
       const { userInfo, token } = responseData;
 
       console.log("res.status ", response.status);
-      console.log("reached heree");
 
       if (response.status === 200) {
         dispatch(signUp(token, userInfo));
@@ -99,7 +142,6 @@ const SignupScreen = ({ navigation }) => {
           type: "success",
           style: { borderRadius: 20 },
         });
-        console.log("in hereeeeee");
       } else {
         const errorMessage = responseData.message;
         showMessage({
@@ -110,8 +152,10 @@ const SignupScreen = ({ navigation }) => {
           style: { borderRadius: 20 },
         });
       }
+      setIsSubmitting(false);
     } catch (error) {
       console.log("error ", error);
+      setIsSubmitting(false);
     }
 
     // }, 2000);
