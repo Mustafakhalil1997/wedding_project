@@ -25,6 +25,8 @@ const { width } = Dimensions.get("window");
 const CompleteHostProfileScreen = (props) => {
   const { navigation } = props;
 
+  console.log("width ", width);
+
   const dispatch = useDispatch();
 
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
@@ -55,7 +57,7 @@ const CompleteHostProfileScreen = (props) => {
 
   const getLocation = (location) => {
     setLocation(location);
-    console.log("location ", location);
+    // console.log("location ", location);
   };
 
   const hallNameChange = (value) => {
@@ -109,7 +111,7 @@ const CompleteHostProfileScreen = (props) => {
     }, 200);
 
     scrollRef.current.scrollTo({
-      x: 360 * (newPageNum - 1),
+      x: width * (newPageNum - 1),
       animated: true,
     });
   };
@@ -161,7 +163,7 @@ const CompleteHostProfileScreen = (props) => {
 
       const responseData = await response.json();
       const newHallInfo = responseData.hall;
-      console.log("newHallInfo ", newHallInfo);
+      // console.log("newHallInfo ", newHallInfo);
       // to be saved inside the store
 
       if (response.status === 200) {
@@ -258,7 +260,12 @@ const CompleteHostProfileScreen = (props) => {
           showsHorizontalScrollIndicator={false}
           decelerationRate={0.1}
         >
-          <View style={[styles.textInputContainerStyle]}>
+          <View
+            style={[
+              styles.textInputContainerStyle,
+              { backgroundColor: "pink" },
+            ]}
+          >
             <TextInput
               style={styles.hallNameInput}
               placeholder="North Hall"
