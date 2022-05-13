@@ -49,8 +49,8 @@ const HallDetailScreen = (props) => {
   const [openCalendar, setOpenCalendar] = useState(false);
 
   const mapIconClickHandler = () => {
-    navigation.navigate({
-      name: "MapView",
+    navigation.navigate("MapView", {
+      screen: "Map",
       params: {
         location: location,
         title: name,
