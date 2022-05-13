@@ -28,14 +28,23 @@ const ReservationScreen = (props) => {
 
   const { hallId, date } = reservation;
 
+  const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallList = useSelector((state) => state.halls.hallList);
 
   const hall = hallList.find((hall) => hall.id === hallId);
-  console.log("hall ", hall);
   const newDate = new Date(date);
 
   const month = monthNames[newDate.getMonth()];
   const day = newDate.getDay();
+
+  const isItemFavorite = (id) => {
+    console.log("isItemFavoite userInfo ", userInfo);
+    if (Object.keys(userInfo).length === 0) return false;
+    if (userInfo.favorites.includes(id)) return true;
+    return false;
+  };
+
+  const isFavorite = isItemFavorite(hall.id);
 
   return (
     <View style={styles.screenContainer}>
@@ -53,7 +62,7 @@ const ReservationScreen = (props) => {
         </DefaultText>
       </DefaultText>
 
-      <HallItem isFavorite={false} item={hall} navigation={navigation} />
+      <HallItem isFavorite={isFavorite} item={hall} navigation={navigation} />
     </View>
   );
 };
