@@ -40,18 +40,17 @@ const MapViewer = ({ route, navigation }) => {
     return { ...hall.location, hallName: hall.hallName, hallId: hall.id };
   });
 
-  console.log("locations ", locations);
+  // console.log("locations ", locations);
 
   let title;
-  let lat;
-  let lng;
+  let lat = 0;
+  let lng = 0;
   if (route.params) {
     title = route.params.title;
     lat = route.params.location.lat;
     lng = route.params.location.lng;
   } else {
-    if (currentLocation) {
-      console.log("currentLocation ", currentLocation);
+    if (Object.keys(currentLocation).length !== 0) {
       lat = currentLocation.latitude;
       lng = currentLocation.longitude;
     }
@@ -114,36 +113,33 @@ const MapViewer = ({ route, navigation }) => {
                 // onPress={() => {
                 //   markerClickHandler(hallId);
                 // }}
+                onCalloutPress={() => {
+                  markerClickHandler(hallId);
+                }}
                 coordinate={{ latitude: lat, longitude: lng }}
               >
                 <Ionicons name="md-location-sharp" size={32} color="green" />
+
                 <Callout tooltip>
                   <View>
-                    <Pressable
-                      onPress={() => {
-                        console.log("byee");
-                        markerClickHandler(hallId);
+                    <View
+                      style={{
+                        backgroundColor: "#fff",
+                        width: 150,
+                        alignItems: "center",
+                        borderColor: "black",
+                        borderWidth: 0.5,
+                        borderRadius: 3,
                       }}
                     >
-                      <View
-                        style={{
-                          backgroundColor: "#fff",
-                          width: 150,
-                          alignItems: "center",
-                          borderColor: "black",
-                          borderWidth: 0.5,
-                          borderRadius: 3,
-                        }}
-                      >
-                        <DefaultText>{hallName}</DefaultText>
-                      </View>
-                    </Pressable>
+                      <DefaultText>{hallName}</DefaultText>
+                    </View>
 
                     <View
                       style={{
                         backgroundColor: "transparent",
                         borderColor: "transparent",
-                        borderTopColor: "white",
+                        borderTopColor: "#fff",
                         borderWidth: 13,
                         alignSelf: "center",
                         marginTop: -0.5,
