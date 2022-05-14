@@ -33,9 +33,9 @@ const CalendarScreen = ({ navigation }) => {
             marginBottom: 10,
           }}
         >
-          No new messages
+          You Don't Have a Venue
         </DefaultText>
-        <DefaultText>When you have a message, it will appear here</DefaultText>
+        <DefaultText>Register Your Venue, to See Your Calendar</DefaultText>
       </View>
     );
   }
