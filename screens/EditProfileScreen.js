@@ -7,6 +7,7 @@ import {
   Button,
   Text,
   Alert,
+  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import { Avatar } from "react-native-paper";
@@ -25,8 +26,11 @@ import DefaultText from "./../components/DefaultText";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
+const { width } = Dimensions.get("window");
+
 const EditProfileScreen = (props) => {
   // save button should be on header right
+  console.log("wdith ", width);
 
   const { route, navigation } = props;
 
@@ -34,7 +38,6 @@ const EditProfileScreen = (props) => {
   const [profileImagePicked, setProfileImagePicked] = useState();
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  console.log("profileImagePicked ", profileImagePicked);
   if (profileImagePicked) {
     console.log("uri ", profileImagePicked);
   }
@@ -73,11 +76,6 @@ const EditProfileScreen = (props) => {
     });
     console.log("result ", result);
     if (!result.cancelled) {
-      // const imageSize = result.base64.length * (3 / 4) - 2;
-      // console.log("imageSize ", imageSize);
-      // if (imageSize > 1000000) {
-      //   console.log("Big Image");
-      // }
       setProfileImagePicked(result.uri);
       setHasUnsavedChanges(true);
     }
@@ -103,7 +101,6 @@ const EditProfileScreen = (props) => {
   let submitForm;
 
   const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
-  console.log("convertedImageUrl ", convertedImageUrl);
 
   const saveClickHandler = () => {
     // buttonRef.current.props.onPress();
@@ -201,9 +198,6 @@ const EditProfileScreen = (props) => {
     }
     // send data to the server and update the store
   };
-
-  console.log("profileImage ", profileImage && "hello");
-  console.log("profileImagePicked ", !profileImagePicked);
 
   const showImage = () => {
     if (profileImage && !profileImagePicked) {
@@ -364,7 +358,7 @@ const styles = StyleSheet.create({
     // bottom: 20,
     bottom: "8%",
     // right: 70,
-    right: "20%",
+    right: (width - 240) / 2 + 10,
     backgroundColor: "white",
     borderRadius: 25,
     borderColor: "gray",
