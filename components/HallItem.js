@@ -41,7 +41,6 @@ const HallItem = (props) => {
   } = item;
   console.log("price in hallItem ", price);
 
-  console.log("hallNamee ", hallName);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -52,9 +51,6 @@ const HallItem = (props) => {
 
   const handleHallClick = () => {
     let customNavigation = navigation;
-    // if (favoriteNavigation) {
-    //   customNavigation = favoriteNavigation;
-    // }
     customNavigation.navigate({
       name: "HallDetail",
       params: {
@@ -72,14 +68,9 @@ const HallItem = (props) => {
     });
   };
 
-  const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
-  const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
-
   const convertedImagesUrl = images.map(
     (image) => URL + "/" + image.replace(/\\/g, "/")
   );
-
-  console.log("images in hallItem ", convertedImagesUrl);
 
   return (
     <Card>

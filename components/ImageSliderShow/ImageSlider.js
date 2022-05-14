@@ -65,9 +65,8 @@ const ImageSlider = (props) => {
           },
           body: JSON.stringify(requestBody),
         });
-
         const responseData = await response.json();
-        console.log("responseData in imageSlider ", responseData);
+        // console.log("responseData in imageSlider ", responseData);
       } catch (err) {
         console.log("error ", err);
       }
@@ -91,8 +90,6 @@ const ImageSlider = (props) => {
     const pageNum = parseInt(offset / 360);
     setImageNumber(pageNum + 1);
   };
-
-  console.log("imagess ", images);
 
   return (
     <View

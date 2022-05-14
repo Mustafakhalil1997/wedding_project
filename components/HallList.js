@@ -88,7 +88,6 @@ const HallList = (props) => {
   // let usedList = DUMMY_HALLLIST;
 
   const isItemFavorite = (id) => {
-    console.log("isItemFavoite userInfo ", userInfo);
     if (Object.keys(userInfo).length === 0) return false;
     if (userInfo.favorites.includes(id)) return true;
     return false;
