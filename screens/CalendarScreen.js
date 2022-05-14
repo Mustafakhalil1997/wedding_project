@@ -21,8 +21,26 @@ const CalendarScreen = ({ navigation }) => {
   const [bookingsWithUsers, setBookingsWithUsers] = useState({});
 
   const token = useSelector((state) => state.Auth.token);
-  const { bookings } = useSelector((state) => state.Auth.hallInfo);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
+  if (!hallInfo) {
+    return (
+      <View style={[styles.screenContainer, { alignItems: "center" }]}>
+        <DefaultText
+          styles={{
+            fontSize: 18,
+            fontFamily: "open-sans-bold",
+            marginBottom: 10,
+          }}
+        >
+          No new messages
+        </DefaultText>
+        <DefaultText>When you have a message, it will appear here</DefaultText>
+      </View>
+    );
+  }
+
+  const bookings = hallInfo.bookings;
   const bookingIds = bookings.map((booking) => booking.id);
 
   const datesReserved = bookings.map((booking) =>
