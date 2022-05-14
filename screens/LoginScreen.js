@@ -74,9 +74,8 @@ const LoginScreen = ({ navigation }) => {
           },
         });
         if (userType === "user") {
-          navigation.navigate({
-            name: "Explore",
-          });
+          console.log("going back");
+          navigation.goBack();
         } else {
           navigation.navigate({ name: "Home" });
         }
@@ -109,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.formContainer, {}]}>
+    <View style={[styles.formContainer]}>
       <View style={{ marginBottom: "40%" }}></View>
 
       <ScrollView>

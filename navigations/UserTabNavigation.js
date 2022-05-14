@@ -14,9 +14,9 @@ import LoginScreen from "../screens/LoginScreen";
 import SignupScreen from "../screens/SignupScreen";
 import MapViewer from "../screens/MapViewer";
 import ProfileScreen from "../screens/ProfileScreen";
-import ChatScreen from "../screens/ChatScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ReservationScreen from "../screens/ReservationScreen";
+import ChatsScreen from "./../screens/ChatsScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -65,11 +65,30 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
-          // headerShown: false,
         }}
       >
-        <Stack.Screen name="Map" component={MapViewer} />
+        <Stack.Screen
+          name="Map"
+          component={MapViewer}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const ChatStack = () => {
+    const token = useSelector((state) => state.Auth.token);
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <Stack.Screen name="Chats" component={ChatsScreen} />
+        {/* {token && <Stack.Screen name="Chat" component={ChatScreen} />} */}
       </Stack.Navigator>
     );
   };
@@ -162,7 +181,7 @@ const UserTabNavigator = () => {
             case "MapView":
               label = "Map";
               break;
-            case "Chats":
+            case "ChatStack":
               label = "Chats";
               break;
             case "Auth":
@@ -187,7 +206,7 @@ const UserTabNavigator = () => {
           } else if (route.name === "MapView") {
             iconName = "map-pin";
             return <Feather name={iconName} size={22} color={iconColor} />;
-          } else if (route.name === "Chats") {
+          } else if (route.name === "ChatStack") {
             iconName = "chatbox-outline";
             return <Ionicons name={iconName} size={22} color={iconColor} />;
           }
@@ -198,13 +217,7 @@ const UserTabNavigator = () => {
       <Tab.Screen name="Explore" component={HomeStack} />
       <Tab.Screen name="Favorites" component={FavoriteStack} />
       <Tab.Screen name="MapView" component={MapStack} />
-      <Tab.Screen
-        name="Chats"
-        component={ChatScreen}
-        options={{
-          headerShown: true,
-        }}
-      />
+      <Tab.Screen name="ChatStack" component={ChatStack} />
       <Tab.Screen name="Auth" component={AuthStack} />
     </Tab.Navigator>
   );

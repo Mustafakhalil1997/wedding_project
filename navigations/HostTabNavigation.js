@@ -12,11 +12,11 @@ import EditProfileScreen from "./../screens/EditProfileScreen";
 import { useSelector } from "react-redux";
 import Colors from "../constants/Colors";
 import HomeScreen from "./../screens/HomeScreen";
-import ChatScreen from "../screens/ChatScreen";
 import CalendarScreen from "./../screens/CalendarScreen";
 import HostProfileScreen from "./../screens/HostProfileScreen";
 import EditHallScreen from "./../screens/EditHallScreen";
 import CompleteHostProfileScreen from "./../screens/CompleteHostProfileScreen";
+import ChatsScreen from "./../screens/ChatsScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,6 +77,18 @@ const HostTabNavigator = () => {
     );
   };
 
+  const ChatStack = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+        }}
+      >
+        <Stack.Screen name="Chats" component={ChatsScreen} />
+      </Stack.Navigator>
+    );
+  };
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -109,7 +121,7 @@ const HostTabNavigator = () => {
             case "Home":
               label = "Home";
               break;
-            case "Chats":
+            case "ChatStack":
               label = "Chats";
               break;
             case "Calendar":
@@ -130,7 +142,7 @@ const HostTabNavigator = () => {
           let iconColor = focused ? Colors.accentColor : "black";
           if (route.name === "Home") {
             iconName = "home-outline";
-          } else if (route.name === "Chats") {
+          } else if (route.name === "ChatStack") {
             iconName = "chatbox-outline";
           } else if (route.name === "Calendar") {
             iconName = "calendar-outline";
@@ -149,7 +161,7 @@ const HostTabNavigator = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen name="Chats" component={ChatScreen} />
+      <Tab.Screen name="ChatStack" component={ChatStack} />
       <Tab.Screen name="Calendar" component={CalendarScreen} />
       <Tab.Screen name="Auth" component={AuthStack} />
     </Tab.Navigator>
