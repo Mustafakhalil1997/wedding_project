@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -38,8 +38,6 @@ const HomeScreen = (props) => {
   const [mobileNumber, setMobileNumber] = useState();
   const [pageNum, setPageNum] = useState(1);
 
-  const scrollRef = useRef();
-
   useEffect(() => {
     const loadCurrentLocation = async () => {
       dispatch(setCurrentLocation());
@@ -53,160 +51,6 @@ const HomeScreen = (props) => {
     navigation.navigate({
       name: "completeProfile",
     });
-  };
-
-  const getLocation = (location) => {
-    setLocation(location);
-    console.log("location ", location);
-  };
-
-  const hallNameChange = (value) => {
-    setHallName(value);
-  };
-
-  const addressChange = (value) => {
-    setAddress(value);
-  };
-
-  const mobileNumberChange = (value) => {
-    setMobileNumber(value);
-  };
-
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission denied",
-        "Allow access to camera in your settings"
-      );
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 4],
-      // base64: true,
-      quality: 1,
-    });
-    console.log("result ", result);
-    if (!result.cancelled) {
-      // const imageSize = result.base64.length * (3 / 4) - 2;
-      // console.log("imageSize ", imageSize);
-      // if (imageSize > 1000000) {
-      //   console.log("Big Image");
-      // }
-      setImageSelected(result.uri);
-      // setHasUnsavedChanges(true);
-    }
-  };
-
-  const goToNext = () => {
-    const newPageNum = pageNum + 1;
-    setPageNum(newPageNum);
-    scrollRef.current.scrollTo({
-      x: 360 * (newPageNum - 1),
-      animated: true,
-    });
-  };
-
-  const goToPrevious = () => {
-    const newPageNum = pageNum - 1;
-    setPageNum(newPageNum);
-    scrollRef.current.scrollTo({
-      x: 360 * (newPageNum - 1),
-      animated: true,
-    });
-  };
-
-  const submitValues = async () => {
-    try {
-      // add hall
-
-      // hallName, address, imageSelected, location
-
-      // a side note: add the token for authorization to heroku
-
-      const newHall = {
-        ownerId: id,
-        hallName,
-        email,
-        mobileNumber,
-        address,
-        location: {
-          lat: location.latitude,
-          lng: location.longitude,
-        },
-      };
-
-      console.log("sending request");
-
-      const response = await fetch(`${URL}/api/hall/createHall`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(newHall),
-      });
-
-      console.log("request sent");
-
-      const responseData = await response.json();
-      const newHallInfo = responseData.hall;
-      console.log("newHallInfo ", newHallInfo);
-      // to be saved inside the store
-
-      if (response.status === 200) {
-        dispatch(editHall(newHallInfo));
-      } else {
-        const errorMessage = responseData.message;
-        console.log("errorMessage ", errorMessage);
-        showMessage({
-          message: errorMessage,
-          type: "default",
-          color: "white",
-          backgroundColor: "red",
-          style: { borderRadius: 20 },
-        });
-      }
-
-      const imageData = new FormData();
-      imageData.append("profileImage", {
-        name: new Date() + "_profile",
-        uri: imageSelected,
-        type: "image/jpg" || "image/png" || "image/jpeg",
-      });
-
-      const res = await fetch(`${URL}/api/hall/addImage/${newHallInfo.id}`, {
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-        body: imageData,
-      });
-      const resData = await res.json();
-      if (res.status !== 200) {
-        const errorMessage = resData.message;
-        showMessage({
-          message: errorMessage,
-          type: "default",
-          color: "white",
-          backgroundColor: "red",
-          style: { borderRadius: 20 },
-        });
-      }
-    } catch (err) {
-      showMessage({
-        message: err.message || "An unknown error occured, Please try again",
-        type: "default",
-        color: "white",
-        backgroundColor: "red",
-        style: { borderRadius: 20 },
-      });
-      console.log("errorrr ", err);
-    }
   };
 
   // if (imageSelected) {
