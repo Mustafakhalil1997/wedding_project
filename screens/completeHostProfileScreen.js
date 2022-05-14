@@ -115,7 +115,6 @@ const CompleteHostProfileScreen = (props) => {
       animated: true,
     });
   };
-  console.log("testing");
 
   const goToPrevious = () => {
     const newPageNum = pageNum - 1;

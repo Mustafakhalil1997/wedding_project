@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { View, StyleSheet, Dimensions, Pressable } from "react-native";
+import MapView, { Callout, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useSelector } from "react-redux";
+import DefaultText from "../components/DefaultText";
+import { Ionicons } from "@expo/vector-icons";
 
 // const locations = [
 //   {
@@ -107,13 +109,60 @@ const MapViewer = ({ route, navigation }) => {
             return (
               <Marker
                 key={index}
-                pinColor="green"
+                // pinColor="green"
                 title={hallName}
-                onPress={() => {
-                  markerClickHandler(hallId);
-                }}
+                // onPress={() => {
+                //   markerClickHandler(hallId);
+                // }}
                 coordinate={{ latitude: lat, longitude: lng }}
-              />
+              >
+                <Ionicons name="md-location-sharp" size={32} color="green" />
+                <Callout tooltip>
+                  <View>
+                    <Pressable
+                      onPress={() => {
+                        console.log("byee");
+                        markerClickHandler(hallId);
+                      }}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          width: 150,
+                          alignItems: "center",
+                          borderColor: "black",
+                          borderWidth: 0.5,
+                          borderRadius: 3,
+                        }}
+                      >
+                        <DefaultText>{hallName}</DefaultText>
+                      </View>
+                    </Pressable>
+
+                    <View
+                      style={{
+                        backgroundColor: "transparent",
+                        borderColor: "transparent",
+                        borderTopColor: "white",
+                        borderWidth: 13,
+                        alignSelf: "center",
+                        marginTop: -0.5,
+                        // marginBottom: -15
+                      }}
+                    />
+                    {/* <View
+                      style={{
+                        backgroundColor: "transparent",
+                        borderColor: "transparent",
+                        borderTopColor: "#fff",
+                        borderWidth: 16,
+                        alignSelf: "center",
+                        marginTop: -32,
+                      }}
+                    /> */}
+                  </View>
+                </Callout>
+              </Marker>
             );
           })}
           {/* {route.params && (
