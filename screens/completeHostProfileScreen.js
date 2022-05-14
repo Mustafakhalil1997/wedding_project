@@ -122,7 +122,7 @@ const CompleteHostProfileScreen = (props) => {
       setPageNum(newPageNum);
     }, 200);
     scrollRef.current.scrollTo({
-      x: 360 * (newPageNum - 1),
+      x: width * (newPageNum - 1),
       animated: true,
     });
   };
