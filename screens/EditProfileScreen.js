@@ -361,8 +361,10 @@ const styles = StyleSheet.create({
   },
   imagePickerContainer: {
     position: "absolute",
-    bottom: 20,
-    right: 70,
+    // bottom: 20,
+    bottom: "8%",
+    // right: 70,
+    right: "20%",
     backgroundColor: "white",
     borderRadius: 25,
     borderColor: "gray",
