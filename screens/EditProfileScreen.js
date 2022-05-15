@@ -314,25 +314,21 @@ const EditProfileScreen = (props) => {
             );
           }}
         </Formik>
-        <TouchableOpacity>
-          <View
-            style={{
-              backgroundColor: "black",
-              padding: 10,
-              width: "50%",
-              marginHorizontal: 20,
-              marginVertical: 10,
-              alignItems: "center",
-              borderRadius: 5,
-              alignSelf: "flex-end",
-            }}
-          >
-            <DefaultText
-              style={{ color: "white", fontFamily: "open-sans-bold" }}
-            >
-              Change Password
-            </DefaultText>
-          </View>
+        <TouchableOpacity
+          style={{
+            width: "50%",
+            alignSelf: "flex-end",
+            marginHorizontal: 20,
+            marginVertical: 10,
+            backgroundColor: "black",
+            padding: 10,
+            borderRadius: 5,
+            alignItems: "center",
+          }}
+        >
+          <DefaultText style={{ color: "white", fontFamily: "open-sans-bold" }}>
+            Change Password
+          </DefaultText>
         </TouchableOpacity>
       </ScrollView>
     </View>
