@@ -38,17 +38,6 @@ const ChatsScreen = (props) => {
     );
   }
 
-  // <DefaultText
-  //         styles={{
-  //           fontSize: 18,
-  //           fontFamily: "open-sans-bold",
-  //           marginBottom: 10,
-  //         }}
-  //       >
-  //         No new messages
-  //       </DefaultText>
-  //       <DefaultText>When you have a message, it will appear here</DefaultText>
-
   return (
     <View style={styles.screenContainer}>
       <ScrollView>

@@ -17,6 +17,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import ReservationScreen from "../screens/ReservationScreen";
 import ChatsScreen from "./../screens/ChatsScreen";
+import ChatScreen from "./../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,7 +89,7 @@ const UserTabNavigator = () => {
         }}
       >
         <Stack.Screen name="Chats" component={ChatsScreen} />
-        {/* {token && <Stack.Screen name="Chat" component={ChatScreen} />} */}
+        {token && <Stack.Screen name="Chat" component={ChatScreen} />}
       </Stack.Navigator>
     );
   };
