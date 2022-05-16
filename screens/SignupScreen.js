@@ -10,7 +10,9 @@ import {
   BackHandler,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
-import { Formik } from "formik";
+import { Formik, setIn } from "formik";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
 
 import Colors from "../constants/Colors";
 import CustomInput from "../components/CustomInput";
@@ -27,8 +29,64 @@ import CustomHeaderButton from "./../components/HeaderButton";
 const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
+// WebBrowser.maybeCompleteAuthSession();
+// GoogleSignin.configure({
+//   webClientId: "",
+//   offlineAccess: true,
+// });
+
 const SignupScreen = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [accessToken, setAccessToken] = useState();
+  const [userInfo, setUserInfo] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    expoClientId:
+      "275837775568-u8k7ihqr2gau5e5jrglsdg9v373ivqen.apps.googleusercontent.com",
+  });
+
+  useEffect(() => {
+    console.log("tryingg");
+    if (response?.type === "success") {
+      console.log("successs");
+      setAccessToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (accessToken) {
+      getUserData();
+    }
+  }, [accessToken]);
+
+  const getUserData = async () => {
+    const userInfoResponse = await fetch(
+      "https://www.googleapis.com/userinfo/v2/me",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const responseData = await userInfoResponse.json();
+    console.log("responseData here ", responseData);
+
+    const { name, email } = responseData;
+
+    const newUserInfo = {
+      fullName: name,
+      email: email,
+      password: "",
+      confirmPassword: "",
+    };
+    setUserInfo(newUserInfo);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -74,13 +132,6 @@ const SignupScreen = ({ navigation }) => {
       backHandler.remove();
     };
   }, [isSubmitting]);
-
-  const userInfo = {
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  };
 
   const dispatch = useDispatch();
 
@@ -177,6 +228,7 @@ const SignupScreen = ({ navigation }) => {
           initialValues={userInfo}
           validationSchema={validationSchema}
           onSubmit={handleSubmitForm}
+          enableReinitialize
         >
           {({
             values,
@@ -206,6 +258,7 @@ const SignupScreen = ({ navigation }) => {
                   onChangeText={handleChange("fullName")}
                   onBlur={handleBlur("fullName")}
                   error={touched.fullName && errors.fullName}
+                  editable={accessToken ? false : true}
                 />
                 <CustomInput
                   iconName="envelope"
@@ -218,6 +271,7 @@ const SignupScreen = ({ navigation }) => {
                   onBlur={handleBlur("email")}
                   error={touched.email && errors.email}
                   autoCapitalize="none"
+                  editable={accessToken ? false : true}
                 />
                 <CustomInput
                   iconName="lock"
@@ -256,6 +310,21 @@ const SignupScreen = ({ navigation }) => {
             );
           }}
         </Formik>
+        <View style={{ alignItems: "center" }}>
+          <CustomButton
+            buttonDisabled={false}
+            handleSubmit={
+              accessToken
+                ? getUserData
+                : () => {
+                    promptAsync({ showInRecents: true });
+                  }
+            }
+            submitting={false}
+            label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
+            style={{ backgroundColor: "red" }}
+          />
+        </View>
       </ScrollView>
     </View>
   );
