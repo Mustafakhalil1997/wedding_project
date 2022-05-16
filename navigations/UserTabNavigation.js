@@ -82,6 +82,7 @@ const UserTabNavigator = () => {
 
   const ChatStack = () => {
     const token = useSelector((state) => state.Auth.token);
+
     return (
       <Stack.Navigator
         screenOptions={{
@@ -153,6 +154,17 @@ const UserTabNavigator = () => {
         )}
       </Stack.Navigator>
     );
+  };
+
+  const getTabBarVisibility = (route) => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : "";
+
+    if (routeName === "Chat") {
+      return false;
+    }
+    return true;
   };
 
   return (
@@ -227,7 +239,13 @@ const UserTabNavigator = () => {
       <Tab.Screen name="Explore" component={HomeStack} />
       <Tab.Screen name="Favorites" component={FavoriteStack} />
       <Tab.Screen name="MapView" component={MapStack} />
-      <Tab.Screen name="ChatStack" component={ChatStack} />
+      <Tab.Screen
+        name="ChatStack"
+        component={ChatStack}
+        options={({ route }) => ({
+          tabBarVisible: getTabBarVisibility(route), // doesn't work
+        })}
+      />
       <Tab.Screen name="Auth" component={AuthStack} />
     </Tab.Navigator>
   );
