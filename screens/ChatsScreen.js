@@ -2,13 +2,56 @@ import React from "react";
 import {
   View,
   Text,
+  Button,
   StyleSheet,
+  FlatList,
   TouchableOpacity,
-  ScrollView,
+  Image,
 } from "react-native";
 import DefaultText from "../components/DefaultText";
-import { Avatar } from "react-native-paper";
 import { useSelector } from "react-redux";
+const Messages = [
+  {
+    id: "1",
+    userName: "Jenny Doe",
+    userImg: require("../assets/users/user-1.jpg"),
+    messageTime: "4 mins ago",
+    messageText:
+      "Hey there, this is my test for a post of my social app in React Native.",
+  },
+  {
+    id: "2",
+    userName: "John Doe",
+    userImg: require("../assets/users/user-2.jpg"),
+    messageTime: "2 hours ago",
+    messageText:
+      "Hey there, this is my test for a post of my social app in React Native.",
+  },
+  {
+    id: "3",
+    userName: "Ken William",
+    userImg: require("../assets/users/user-4.jpg"),
+    messageTime: "1 hours ago",
+    messageText:
+      "Hey there, this is my test for a post of my social app in React Native.",
+  },
+  {
+    id: "4",
+    userName: "Selina Paul",
+    userImg: require("../assets/users/user-6.jpg"),
+    messageTime: "1 day ago",
+    messageText:
+      "Hey there, this is my test for a post of my social app in React Native.",
+  },
+  {
+    id: "5",
+    userName: "Christy Alex",
+    userImg: require("../assets/users/user-7.jpg"),
+    messageTime: "2 days ago",
+    messageText:
+      "Hey there, this is my test for a post of my social app in React Native.",
+  },
+];
 
 const ChatsScreen = (props) => {
   const { navigation } = props;
@@ -17,6 +60,37 @@ const ChatsScreen = (props) => {
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });
+  };
+
+  const chatClickHandler = () => {
+    console.log("hello");
+    navigation.navigate("Chat", {});
+  };
+
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Chat", {
+            title: item.userName,
+          });
+        }}
+        style={styles.card}
+      >
+        <View style={styles.userInfo}>
+          <View style={styles.userImageWrapper}>
+            <Image source={item.userImg} style={styles.userImage} />
+          </View>
+          <View style={styles.textSection}>
+            <View style={styles.userInfoText}>
+              <DefaultText>{item.userName}</DefaultText>
+              <DefaultText>{item.messageTime}</DefaultText>
+            </View>
+            <DefaultText>{item.messageText}</DefaultText>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
   };
 
   if (!token) {
@@ -39,162 +113,71 @@ const ChatsScreen = (props) => {
   }
 
   return (
-    <View style={styles.screenContainer}>
-      <ScrollView>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.chatContainer}>
-            <View style={{ marginRight: 15 }}>
-              <Avatar.Image
-                size={40}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            </View>
-            <DefaultText>Full Name</DefaultText>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
+    <View>
+      <FlatList
+        data={Messages}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    backgroundColor: "white",
-  },
   notLoggedIn: {
     flex: 1,
-    backgroundColor: "white",
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "center",
   },
-  chatContainer: {
+  container: {
+    flex: 1,
+    paddingLeft: 20,
+    paddingRight: 20,
     alignItems: "center",
-    marginHorizontal: 15,
+    backgroundColor: "#ffffff",
+  },
+  card: {
+    width: "100%",
+  },
+  userInfo: {
     flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  userImageWrapper: {
+    paddingTop: 15,
+    paddingBottom: 15,
+  },
+  userImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  textSection: {
+    flexDirection: "column",
+    justifyContent: "center",
     padding: 15,
-    borderBottomWidth: 0.5,
+    paddingLeft: 0,
+    marginLeft: 10,
+    width: 300,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
+  userInfoText: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+  },
+  userName: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  postTime: {
+    fontSize: 12,
+    color: "#666",
+  },
+  messageText: {
+    fontSize: 14,
+    color: "#333333",
   },
 });
 

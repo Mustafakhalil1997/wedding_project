@@ -89,7 +89,16 @@ const UserTabNavigator = () => {
         }}
       >
         <Stack.Screen name="Chats" component={ChatsScreen} />
-        {token && <Stack.Screen name="Chat" component={ChatScreen} />}
+        {token && (
+          <Stack.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={({ route }) => ({
+              title: route.params.title,
+              headerBackTitleVisible: false, // for ios
+            })}
+          />
+        )}
       </Stack.Navigator>
     );
   };

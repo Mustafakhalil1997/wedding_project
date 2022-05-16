@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import DefaultText from "../components/DefaultText";
 
 const ChatScreen = (props) => {
+  const { route, navigation } = props;
+
   return (
     <View style={styles.screenContainer}>
       <DefaultText
