@@ -30,7 +30,7 @@ const CustomButton = React.forwardRef((props, ref) => {
       onPress={handleSubmit}
       //   background={TouchableNativeFeedback.Ripple("white", false)}
     >
-      <View style={[styles.buttonContainer, { opacity }]}>
+      <View style={[styles.buttonContainer, { opacity }, props.style]}>
         {submitting && <ActivityIndicator size={20} color="#0000ff" />}
         {!submitting && <Text style={{ color: "white" }}>{label}</Text>}
       </View>
