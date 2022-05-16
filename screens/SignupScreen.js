@@ -272,6 +272,7 @@ const SignupScreen = ({ navigation }) => {
                   error={touched.email && errors.email}
                   autoCapitalize="none"
                   editable={accessToken ? false : true}
+                  // selectTextOnFocus={true}
                 />
                 <CustomInput
                   iconName="lock"
@@ -310,21 +311,22 @@ const SignupScreen = ({ navigation }) => {
             );
           }}
         </Formik>
-        <View style={{ alignItems: "center" }}>
-          <CustomButton
-            buttonDisabled={false}
-            handleSubmit={
-              accessToken
-                ? getUserData
-                : () => {
-                    promptAsync({ showInRecents: true });
-                  }
-            }
-            submitting={false}
-            label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
-            style={{ backgroundColor: "red" }}
-          />
-        </View>
+
+        <CustomButton
+          buttonDisabled={false}
+          handleSubmit={
+            accessToken
+              ? getUserData
+              : () => {
+                  promptAsync({ showInRecents: true });
+                }
+          }
+          submitting={false}
+          label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
+          style={{
+            backgroundColor: "red",
+          }}
+        />
       </ScrollView>
     </View>
   );
