@@ -111,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
     <View style={[styles.formContainer]}>
       <View style={{ marginBottom: "40%" }}></View>
 
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         {/* <StatusBar style="auto" /> */}
         <Formik
           initialValues={userInfo}

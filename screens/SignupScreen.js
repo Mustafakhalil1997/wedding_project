@@ -223,7 +223,7 @@ const SignupScreen = ({ navigation }) => {
     <View style={styles.formContainer}>
       <View style={{ marginBottom: "20%" }}></View>
 
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps="handled">
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
