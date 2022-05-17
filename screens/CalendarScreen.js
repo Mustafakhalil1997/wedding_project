@@ -166,9 +166,7 @@ const CalendarScreen = ({ navigation }) => {
     }
 
     const chatIconClickHandler = () => {
-      navigation.navigate({
-        name: "Chats",
-      });
+      navigation.navigate("ChatStack");
     };
 
     return (

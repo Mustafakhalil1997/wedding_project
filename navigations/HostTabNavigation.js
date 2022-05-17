@@ -17,6 +17,7 @@ import HostProfileScreen from "./../screens/HostProfileScreen";
 import EditHallScreen from "./../screens/EditHallScreen";
 import CompleteHostProfileScreen from "./../screens/CompleteHostProfileScreen";
 import ChatsScreen from "./../screens/ChatsScreen";
+import ChatScreen from "./../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -78,6 +79,8 @@ const HostTabNavigator = () => {
   };
 
   const ChatStack = () => {
+    const token = useSelector((state) => state.Auth.token);
+
     return (
       <Stack.Navigator
         screenOptions={{
@@ -85,6 +88,16 @@ const HostTabNavigator = () => {
         }}
       >
         <Stack.Screen name="Chats" component={ChatsScreen} />
+        {token && (
+          <Stack.Screen
+            name="Chat"
+            component={ChatScreen}
+            options={({ route }) => ({
+              title: route.params.title,
+              headerBackTitleVisible: false, // for ios
+            })}
+          />
+        )}
       </Stack.Navigator>
     );
   };
