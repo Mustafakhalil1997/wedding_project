@@ -137,6 +137,22 @@ const HallList = (props) => {
     );
   }
 
+  if (DUMMY_HALLLIST.length === 0) {
+    return (
+      <View
+        style={[
+          styles.listContainer,
+          {
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        ]}
+      >
+        <DefaultText>There Are no Venues</DefaultText>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.listContainer}>
       <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
