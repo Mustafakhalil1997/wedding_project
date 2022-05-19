@@ -8,6 +8,7 @@ import {
   Platform,
   TextInput,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
@@ -19,6 +20,7 @@ import validationSchema from "./LoginSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/actions/Auth";
 import { URL } from "./../helpers/url";
+import DefaultText from "../components/DefaultText";
 
 // envelope // lock
 
@@ -107,6 +109,17 @@ const LoginScreen = ({ navigation }) => {
     // console.log("Formik acitons ", formikActions);
   };
 
+  const forgotPasswordHandler = async () => {
+    const response = await fetch(`${URL}/api/user/forgotPassword`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const responseData = await response.json();
+    console.log("responseData in forgotPassword ", responseData);
+  };
+
   return (
     <View style={[styles.formContainer]}>
       <View style={{ marginBottom: "40%" }}></View>
@@ -169,23 +182,28 @@ const LoginScreen = ({ navigation }) => {
                   submitting={isSubmitting}
                   label="LOG IN"
                 />
-                <View>
-                  <Text style={{ marginTop: 10 }}>
-                    Don't have an account?
-                    <Text
-                      style={{ color: "blue", textDecorationLine: "underline" }}
-                      onPress={() => {
-                        navigation.navigate("Signup");
-                      }}
-                    >
-                      Signup
-                    </Text>
-                  </Text>
-                </View>
               </View>
             );
           }}
         </Formik>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Signup");
+          }}
+        >
+          <View style={{ marginTop: 30, alignSelf: "center" }}>
+            <DefaultText styles={{ fontSize: 16, color: Colors.accentColor }}>
+              Don't have an account? Sign Up
+            </DefaultText>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={forgotPasswordHandler}>
+          <View style={{ marginTop: 20, alignSelf: "center" }}>
+            <DefaultText styles={{ fontSize: 16, color: "blue", opacity: 0.6 }}>
+              Forgot Password?
+            </DefaultText>
+          </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
