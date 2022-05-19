@@ -23,6 +23,7 @@ import { signUp } from "./../store/actions/Auth";
 import { URL } from "../helpers/url";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "./../components/HeaderButton";
+import DefaultText from "../components/DefaultText";
 
 // envelope // lock
 
@@ -30,10 +31,6 @@ const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
 // WebBrowser.maybeCompleteAuthSession();
-// GoogleSignin.configure({
-//   webClientId: "",
-//   offlineAccess: true,
-// });
 
 const SignupScreen = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,6 +45,11 @@ const SignupScreen = ({ navigation }) => {
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
       "275837775568-u8k7ihqr2gau5e5jrglsdg9v373ivqen.apps.googleusercontent.com",
+    iosClientId:
+      "275837775568-n3q6e3h0p8a4vgr8e1ttbfjovioolser.apps.googleusercontent.com",
+    androidClientId:
+      "275837775568-68ef1tkrabb6uvh83gcs06gq34gjp7lr.apps.googleusercontent.com",
+    scopes: ["profile", "email"],
   });
 
   useEffect(() => {
@@ -135,7 +137,12 @@ const SignupScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  // console.log("statusBar height", StatusBar.currentHeight);
+  const handleGoogleSignin = () => {
+    const config = {
+      iosClientId:
+        "275837775568-n3q6e3h0p8a4vgr8e1ttbfjovioolser.apps.googleusercontent.com",
+    };
+  };
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
@@ -221,9 +228,35 @@ const SignupScreen = ({ navigation }) => {
     //   // enabled={false}
     // >
     <View style={styles.formContainer}>
-      <View style={{ marginBottom: "20%" }}></View>
-
       <ScrollView keyboardShouldPersistTaps="handled">
+        <CustomButton
+          buttonDisabled={false}
+          // handleSubmit={
+          //   accessToken
+          //     ? getUserData
+          //     : () => {
+          //         promptAsync({ showInRecents: true });
+          //       }
+          // }
+
+          submitting={false}
+          label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
+          style={{
+            backgroundColor: "red",
+          }}
+        />
+
+        <View
+          style={{
+            alignItems: "center",
+            marginTop: 20,
+          }}
+        >
+          <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
+            OR
+          </DefaultText>
+        </View>
+
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
@@ -311,22 +344,6 @@ const SignupScreen = ({ navigation }) => {
             );
           }}
         </Formik>
-
-        <CustomButton
-          buttonDisabled={false}
-          handleSubmit={
-            accessToken
-              ? getUserData
-              : () => {
-                  promptAsync({ showInRecents: true });
-                }
-          }
-          submitting={false}
-          label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
-          style={{
-            backgroundColor: "red",
-          }}
-        />
       </ScrollView>
     </View>
   );
@@ -341,14 +358,11 @@ const styles = StyleSheet.create({
 
   formContentContainer: {
     flex: 1,
-    // backgroundColor: "pink",
   },
 
   inputsContainer: {
     flex: 1,
-    // marginTop: height * 0.08,
-    // marginBottom: height * 0.08,
-    // backgroundColor: "pink",
+
     justifyContent: "center",
     alignItems: "center",
   },
