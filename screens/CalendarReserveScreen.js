@@ -31,13 +31,13 @@ const CalendarReserveScreen = ({ route, navigation }) => {
   const hallList = useSelector((state) => state.halls.hallList);
   const hall = hallList.find((hall) => hallId === hall.id);
 
-  console.log("hall ", hall);
+  const today = new Date();
+
   const datesReserved = hall.bookings.map((booking) =>
     booking.date.substring(0, 10)
   );
 
   console.log("datesReserved ", datesReserved);
-  console.log("reservationnn ", reservation);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -86,7 +86,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
 
   let calendarDates = {};
   for (let i = 0; i < datesReserved.length; i++) {
-    console.log(" i", i);
     const calendarDate = {
       [datesReserved[i]]: {
         selected: true,
@@ -98,8 +97,8 @@ const CalendarReserveScreen = ({ route, navigation }) => {
       },
     };
     calendarDates = { ...calendarDates, ...Object.assign(calendarDate) };
-    console.log("calendarDates ", calendarDates);
   }
+  console.log("calendarDates ", calendarDates);
 
   // [daySelected] : { selected: true},
   // [daySelected]: {
@@ -110,6 +109,11 @@ const CalendarReserveScreen = ({ route, navigation }) => {
   //     },
   //   },
   // },
+
+  const dayPressHandler = (day) => {
+    console.log("selected day", day.dateString);
+    setDaySelected(day.dateString);
+  };
 
   const confirmReservationClickHandler = async () => {
     if (Object.keys(userInfo).length === 0) {
@@ -149,7 +153,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
       });
 
       const responseData = await response.json();
-      console.log("responseData ", responseData);
 
       const { userInfo: newUserInfo, message } = responseData;
 
@@ -185,14 +188,12 @@ const CalendarReserveScreen = ({ route, navigation }) => {
     <View style={styles.screenContainer}>
       <Calendar
         style={{ height: 350 }}
-        onDayPress={(day) => {
-          console.log("selected day", day.dateString);
-          setDaySelected(day.dateString);
-        }}
+        onDayPress={dayPressHandler}
         // Handler which gets executed on day long press. Default = undefined
         onDayLongPress={(day) => {
           console.log("selected day", day);
         }}
+        minDate={today}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={"MMMM yyyy "}
         // Handler which gets executed when visible month changes in calendar. Default = undefined
