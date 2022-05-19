@@ -77,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
         });
         if (userType === "user") {
           console.log("going back");
-          navigation.goBack();
+          navigation.navigate({ name: "Explore" });
         } else {
           navigation.navigate({ name: "Home" });
         }
