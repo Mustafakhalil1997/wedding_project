@@ -17,8 +17,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { reserveHall } from "../store/actions/HallList";
 import { showMessage } from "react-native-flash-message";
 import { URL } from "./../helpers/url";
-import { Calendar } from "react-native-calendars";
-import CalendarReserve from "./../components/CalendarReserve";
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
@@ -46,7 +44,7 @@ const HallDetailScreen = (props) => {
   // const { hallId } = route.params;
   console.log("location ", location);
   const [openMap, setOpenMap] = useState(false);
-  const [openCalendar, setOpenCalendar] = useState(false);
+  // const [openCalendar, setOpenCalendar] = useState(false);
 
   const mapIconClickHandler = () => {
     navigation.navigate("MapView", {
@@ -74,30 +72,15 @@ const HallDetailScreen = (props) => {
   };
 
   const reserveClickHandler = () => {
-    if (Object.keys(userInfo).length === 0) {
-      showMessage({
-        message: "To Book a hall, sign in!",
-        type: "success",
-        style: { backgroundColor: "black" },
-      });
-      return;
-    }
-    // if (reservation) {
-    //   showMessage({
-    //     message: "Cannot Reserve",
-    //     description: "you already have a reservation",
-    //     style: { backgroundColor: "black" },
-    //   });
-    //   return;
-    // }
-
-    setOpenCalendar(true);
-    // dispatch(reserveHall(reservation));
+    navigation.navigate({
+      name: "CalendarReserve",
+      params: {
+        hallId,
+        userId,
+      },
+    });
+    // return <CalendarReserve hallId={hallId} userId={userId} />;
   };
-
-  if (openCalendar) {
-    return <CalendarReserve hallId={hallId} userId={userId} />;
-  }
 
   return (
     <ScrollView>
