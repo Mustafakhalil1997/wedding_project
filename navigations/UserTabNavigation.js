@@ -18,6 +18,7 @@ import EditProfileScreen from "../screens/EditProfileScreen";
 import ReservationScreen from "../screens/ReservationScreen";
 import ChatsScreen from "./../screens/ChatsScreen";
 import ChatScreen from "./../screens/ChatScreen";
+import CalendarReserveScreen from "../screens/CalendarReserveScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,6 +39,10 @@ const UserTabNavigator = () => {
           }}
         />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
+        <Stack.Screen
+          name="CalendarReserve"
+          component={CalendarReserveScreen}
+        />
       </Stack.Navigator>
     );
   };
