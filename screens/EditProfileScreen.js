@@ -45,6 +45,7 @@ const EditProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  console.log("userinfo ", userInfo);
   const token = useSelector((state) => state.Auth.token);
 
   const { id, firstName, lastName, email, profileImage } = userInfo;
@@ -297,6 +298,7 @@ const EditProfileScreen = (props) => {
                   onBlur={handleBlur("email")}
                   error={touched.email && errors.email}
                   autoCapitalize="none"
+                  editable={false}
                 />
                 {/* <Button
                   title="Press me"
