@@ -260,12 +260,7 @@ const CompleteHostProfileScreen = (props) => {
           showsHorizontalScrollIndicator={false}
           decelerationRate={0.1}
         >
-          <View
-            style={[
-              styles.textInputContainerStyle,
-              { backgroundColor: "pink" },
-            ]}
-          >
+          <View style={[styles.textInputContainerStyle]}>
             <TextInput
               style={styles.hallNameInput}
               placeholder="North Hall"
