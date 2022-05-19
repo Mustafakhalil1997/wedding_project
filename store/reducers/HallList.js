@@ -59,18 +59,16 @@ const hallListReducer = (state = initialState, action) => {
       const hall = state.hallList.find((h) => h.id === hallId);
       const index = state.hallList.findIndex((h) => h.id === hallId);
       console.log("hall ", hall);
-      const previousReservations = hall.reservations;
-      const checkExistingIndex = previousReservations.findIndex(
-        (h) => h.date === date
-      );
+      const previousReservations = hall.bookings;
+      console.log("previousReservations ", previousReservations);
+      // const checkExistingIndex = previousReservations.findIndex(
+      //   (h) => h.date === date
+      // );
       let newHallList = [...state.hallList];
-      if (checkExistingIndex < 0) {
-        previousReservations.push(action.reservation);
-        const newHall = { ...hall, reservations: previousReservations };
-        newHallList[index] = newHall;
-      } else {
-        console.log("Hall is reserved on that day, choose another day");
-      }
+      previousReservations.push(action.reservation);
+      const newHall = { ...hall, reservations: previousReservations };
+      newHallList[index] = newHall;
+
       return {
         ...state,
         hallList: newHallList,

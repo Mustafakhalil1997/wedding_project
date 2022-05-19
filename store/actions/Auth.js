@@ -44,7 +44,7 @@ export const login = (token, userInfo, hallInfo) => {
 export const signUp = (token, userInfo) => {
   // get token
   const currentDate = new Date();
-  const expirationDate = new Date(currentDate.getTime() + 10 * 60000);
+  const expirationDate = new Date(currentDate.getTime() + 60 * 60000); // 60 minutes
   const tokenObject = {
     token: token,
     userType: "user",
