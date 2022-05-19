@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  BackHandler,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import DefaultText from "./DefaultText";
-import { URL } from "./../helpers/url";
+import DefaultText from "../components/DefaultText";
+import { URL } from "../helpers/url";
 import { showMessage } from "react-native-flash-message";
 import { useSelector, useDispatch } from "react-redux";
-import { editProfile } from "./../store/actions/Auth";
+import { editProfile } from "../store/actions/Auth";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../components/HeaderButton";
+import { reserveHall } from "../store/actions/HallList";
 
-const CalendarReserve = (props) => {
-  const { hallId, userId } = props;
+const CalendarReserveScreen = ({ route, navigation }) => {
+  const { hallId, userId } = route.params;
 
   const [daySelected, setDaySelected] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,6 +38,51 @@ const CalendarReserve = (props) => {
 
   console.log("datesReserved ", datesReserved);
   console.log("reservationnn ", reservation);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Save"
+            iconName="arrow-back"
+            onPress={() => {
+              if (!isSubmitting) {
+                navigation.goBack(null);
+              }
+            }}
+            style={{ opacity: isSubmitting ? 0.3 : 1 }}
+          />
+        </HeaderButtons>
+      ),
+    });
+  }, [isSubmitting]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isSubmitting) return true;
+      }
+    );
+
+    if (isSubmitting) {
+      navigation.setOptions({
+        gestureEnabled: false,
+      });
+    }
+
+    if (!isSubmitting) {
+      navigation.setOptions({
+        gestureEnabled: true,
+      });
+    }
+
+    return () => {
+      console.log("useEffect returned");
+      backHandler.remove();
+    };
+  }, [isSubmitting]);
 
   let calendarDates = {};
   for (let i = 0; i < datesReserved.length; i++) {
@@ -63,6 +112,14 @@ const CalendarReserve = (props) => {
   // },
 
   const confirmReservationClickHandler = async () => {
+    if (Object.keys(userInfo).length === 0) {
+      showMessage({
+        message: "To Book a hall, sign in!",
+        type: "success",
+        style: { backgroundColor: "black" },
+      });
+      return;
+    }
     if (reservation) {
       showMessage({
         message: "Cannot Reserve",
@@ -77,6 +134,7 @@ const CalendarReserve = (props) => {
       userId,
       date: daySelected,
     };
+    dispatch(reserveHall(booking));
     console.log("booking ", booking);
 
     try {
@@ -96,8 +154,20 @@ const CalendarReserve = (props) => {
       const { userInfo: newUserInfo, message } = responseData;
 
       setIsSubmitting(false);
+
+      if (response.status !== 200) {
+        showMessage({
+          message: message,
+          type: "info",
+          style: { backgroundColor: "black" },
+        });
+        console.log("could not reserve");
+        return;
+      }
+
       if (response.status === 200) {
         dispatch(editProfile(newUserInfo));
+        dispatch(reserveHall(booking));
         showMessage({
           message: "Your Reservation was successfull!",
           type: "success",
@@ -204,4 +274,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CalendarReserve;
+export default CalendarReserveScreen;
