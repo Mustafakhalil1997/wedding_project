@@ -40,7 +40,7 @@ const HallItem = (props) => {
     price,
   } = item;
   console.log("price in hallItem ", price);
-
+  console.log("images ", images);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -94,11 +94,10 @@ const HallItem = (props) => {
               {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>
-              <View>
+              <View style={{ width: "55%" }}>
                 <DefaultText
                   styles={{
                     fontFamily: "open-sans-bold",
-                    width: 200,
                   }}
                   numberOfLines={1}
                 >
