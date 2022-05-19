@@ -167,7 +167,7 @@ const CompleteHostProfileScreen = (props) => {
       // to be saved inside the store
 
       if (response.status === 200) {
-        dispatch(editHall(newHallInfo));
+        // dispatch(editHall(newHallInfo));
       } else {
         const errorMessage = responseData.message;
         console.log("errorMessage ", errorMessage);
@@ -197,6 +197,13 @@ const CompleteHostProfileScreen = (props) => {
         body: imageData,
       });
       const resData = await res.json();
+
+      const { newHallInfo: updatedHall } = resData;
+
+      if (res.status === 200) {
+        dispatch(editHall(updatedHall));
+      }
+
       if (res.status !== 200) {
         const errorMessage = resData.message;
         showMessage({
@@ -231,7 +238,10 @@ const CompleteHostProfileScreen = (props) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.screenContainer}>
+    <ScrollView
+      contentContainerStyle={styles.screenContainer}
+      keyboardShouldPersistTaps="handled"
+    >
       <View style={styles.header}>
         <ImageBackground
           source={require("../constants/images/Roger.jpg")}
@@ -259,6 +269,7 @@ const CompleteHostProfileScreen = (props) => {
           scrollEnabled={false}
           showsHorizontalScrollIndicator={false}
           decelerationRate={0.1}
+          keyboardShouldPersistTaps="handled"
         >
           <View style={[styles.textInputContainerStyle]}>
             <TextInput
