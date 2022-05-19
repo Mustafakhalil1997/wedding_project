@@ -22,6 +22,11 @@ const CustomButton = React.forwardRef((props, ref) => {
 
   const opacity = submitting || buttonDisabled ? 0.4 : 1;
 
+  let rippleColor = null;
+  if (props.style && props.style.backgroundColor !== "black") {
+    rippleColor = "black";
+  }
+
   return (
     <View style={[styles.buttonContainer, { opacity }]}>
       <TouchableComponent
@@ -35,6 +40,11 @@ const CustomButton = React.forwardRef((props, ref) => {
           flex: 1,
           // backgroundColor: "green",
         }}
+        background={
+          rippleColor
+            ? TouchableNativeFeedback.Ripple(rippleColor, false)
+            : TouchableNativeFeedback.Ripple("white", false)
+        }
         //   background={TouchableNativeFeedback.Ripple("white", false)}
       >
         <View
@@ -42,7 +52,7 @@ const CustomButton = React.forwardRef((props, ref) => {
             padding: 15,
             alignItems: "center",
             borderRadius: 15,
-            backgroundColor: "black",
+            backgroundColor: "#000000",
             ...props.style,
           }}
         >
