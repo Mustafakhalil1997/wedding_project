@@ -70,6 +70,12 @@ const ProfileScreen = (props) => {
       <ScrollView style={styles.profileContainer}>
         <View style={styles.header}>
           <View style={styles.imageCircleContainer}>
+            {/* <Avatar.Image
+              size={60}
+              source={{
+                uri: "https://res.cloudinary.com/drpmbofhb/image/upload/v1652994324/images/oiylcizbnqcquzrzz6zy.jpg",
+              }}
+            /> */}
             {profileImage ? (
               <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
             ) : (
