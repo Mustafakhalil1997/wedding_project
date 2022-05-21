@@ -83,10 +83,14 @@ const ChatsScreen = (props) => {
           </View>
           <View style={styles.textSection}>
             <View style={styles.userInfoText}>
-              <DefaultText>{item.userName}</DefaultText>
-              <DefaultText>{item.messageTime}</DefaultText>
+              <DefaultText style={styles.userName}>{item.userName}</DefaultText>
+              <DefaultText style={styles.postTime}>
+                {item.messageTime}
+              </DefaultText>
             </View>
-            <DefaultText>{item.messageText}</DefaultText>
+            <DefaultText style={styles.messageText}>
+              {item.messageText}
+            </DefaultText>
           </View>
         </View>
       </TouchableOpacity>
@@ -144,6 +148,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   userImageWrapper: {
+    flex: 1,
     paddingTop: 15,
     paddingBottom: 15,
   },
@@ -153,12 +158,13 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   textSection: {
+    flex: 6,
     flexDirection: "column",
     justifyContent: "center",
     padding: 15,
     paddingLeft: 0,
     marginLeft: 10,
-    width: 300,
+    // width: 300,
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
   },
