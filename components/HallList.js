@@ -155,7 +155,11 @@ const HallList = (props) => {
 
   return (
     <View style={styles.listContainer}>
-      <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={DUMMY_HALLLIST}
+        renderItem={renderHall}
+      />
     </View>
   );
 };
