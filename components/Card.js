@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
+
+let { width } = Dimensions.get("window");
 
 const Card = (props) => {
   return (
@@ -11,6 +13,7 @@ const Card = (props) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
+    margin: 5,
     // flex: 1,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
@@ -18,7 +21,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
     alignItems: "center",
-    height: 350,
+    height: width + 5,
     overflow: "hidden",
   },
 });

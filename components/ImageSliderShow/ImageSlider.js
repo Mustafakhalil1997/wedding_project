@@ -1,19 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  View,
-  Image,
-  ScrollView,
-  Dimensions,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { View, Image, ScrollView, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "./../../store/actions/HallList";
 import { addFavorite } from "./../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { URL } from "./../../helpers/url";
 
 // let { width } = Dimensions.get("window");
@@ -48,6 +39,8 @@ const ImageSlider = (props) => {
     console.log(x, y, width, height);
     setDimensions({ width: width, height: height });
   };
+
+  console.log("dimensions in imageSlider ", dimensions);
 
   const favoriteIconClickHandler = async () => {
     if (token) {
@@ -93,7 +86,7 @@ const ImageSlider = (props) => {
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "red" }}
+      style={{ width: "100%", height: "100%" }}
       ref={ref}
       onLayout={onLayout}
     >
@@ -101,40 +94,52 @@ const ImageSlider = (props) => {
         ref={scrollRef}
         pagingEnabled
         horizontal
-        scrollEnabled={scrollEnabled}
-        // scrollEnabled={false}
+        // scrollEnabled={scrollEnabled}
         onMomentumScrollEnd={scrollingHandler}
         // scrollEventThrottle={changeNumber}
         // onScrollEndDrag={changeNumber}
         showsHorizontalScrollIndicator={false}
-        // style={{ width: "100%", height: "100%" }}
       >
         {images.map((image, index) => (
-          <Image
+          <View
             key={index}
-            source={{ uri: image }}
+            style={{
+              width: dimensions.width,
+              height: dimensions.height,
+            }}
+          >
+            <Image
+              source={{ uri: image }}
+              style={{
+                ...styles.image,
+                width: dimensions.width,
+                height: dimensions.height,
+                aspectRatio: dot ? 2 / 2 : 2 / 2,
+                ...newStyles,
+              }}
+            />
+          </View>
+        ))}
+        <View
+          style={{
+            width: dimensions.width,
+            height: dimensions.height,
+          }}
+        >
+          <Image
+            source={{
+              uri: `https://reactnative.dev/${source}`,
+            }}
             style={{
               ...styles.image,
+
               width: dimensions.width,
               height: dimensions.height,
               aspectRatio: dot ? 2 / 1.8 : 3 / 2.3,
               ...newStyles,
             }}
           />
-        ))}
-        <Image
-          source={{
-            uri: `https://reactnative.dev/${source}`,
-          }}
-          style={{
-            ...styles.image,
-
-            width: dimensions.width,
-            height: dimensions.height,
-            aspectRatio: dot ? 2 / 1.8 : 3 / 2.3,
-            ...newStyles,
-          }}
-        />
+        </View>
       </ScrollView>
       <View
         style={{

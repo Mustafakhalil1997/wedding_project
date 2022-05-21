@@ -4,8 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Image,
-  Text,
   Platform,
 } from "react-native";
 import DefaultText from "./DefaultText";
@@ -22,10 +20,10 @@ if (Platform.OS === "android") {
   android = true;
 }
 
-console.log("OS ", android);
-
 const HallItem = (props) => {
   const { navigation, item, isFavorite } = props;
+
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const {
     id,
@@ -72,6 +70,14 @@ const HallItem = (props) => {
     (image) => URL + "/" + image.replace(/\\/g, "/")
   );
 
+  const onLayout = (event) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    console.log("value s", x, y, width, height);
+    setDimensions({ width: width, height: height });
+  };
+
+  console.log("dimensions in hallItem ", dimensions);
+
   return (
     <Card>
       <View style={{ flex: 1 }}>
@@ -83,7 +89,13 @@ const HallItem = (props) => {
           //   useForeground
         >
           <View style={styles.contentContainer}>
-            <View style={styles.imageContainer}>
+            <View
+              onLayout={onLayout}
+              style={[
+                styles.imageContainer,
+                { width: "100%", height: dimensions.width },
+              ]}
+            >
               <ImageSlider
                 dot
                 images={convertedImagesUrl}
@@ -137,12 +149,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 5,
     // alignItems: "center",
-    // backgroundColor: "green",
-    height: "15%",
+    height: "20%",
   },
   imageContainer: {
-    width: "100%",
-    height: "80%",
+    backgroundColor: "red",
     borderRadius: 10,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },

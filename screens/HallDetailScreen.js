@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   View,
@@ -6,17 +6,16 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import ImageSlider from "./../components/ImageSliderShow/ImageSlider";
 import DefaultText from "./../components/DefaultText";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
-import MapViewer from "./MapViewer";
-import { useSelector, useDispatch } from "react-redux";
-import { reserveHall } from "../store/actions/HallList";
-import { showMessage } from "react-native-flash-message";
+import { useSelector } from "react-redux";
+
 import { URL } from "./../helpers/url";
+
+const { width } = Dimensions.get("window");
 
 const HallDetailScreen = (props) => {
   const { route, navigation } = props;
@@ -26,25 +25,14 @@ const HallDetailScreen = (props) => {
 
   console.log("pricee ", price);
 
-  // convertedImagesUrl = URL + "/" + profileImage.replace(/\\/g, "/");
-
-  // const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
-  // const source1 = require("../constants/images/illustration-light-garland-transparent-background_257584-674.jpg");
-  // const source2 = require("../constants/images/pexels-jeremy-wong-1035665.jpg");
-  // const source3 = require("../constants/images/pexels-logan-rhoads-10905822.jpg");
+  const userInfo = useSelector((state) => state.Auth.userInfo);
 
   const convertedImagesUrl = images.map(
     (image) => URL + "/" + image.replace(/\\/g, "/")
   );
 
-  console.log("converted Images ", convertedImagesUrl);
-
-  const dispatch = useDispatch();
-
-  // const { hallId } = route.params;
-  console.log("location ", location);
-  const [openMap, setOpenMap] = useState(false);
-  // const [openCalendar, setOpenCalendar] = useState(false);
+  // console.log("converted Images ", convertedImagesUrl);
+  // console.log("location ", location);
 
   const mapIconClickHandler = () => {
     navigation.navigate("MapView", {
@@ -56,8 +44,6 @@ const HallDetailScreen = (props) => {
     });
   };
 
-  const userInfo = useSelector((state) => state.Auth.userInfo);
-  // const userId = userInfo.id;
   const { id: userId, reservation } = userInfo;
 
   let halls = useSelector((state) => state.halls.hallList);
@@ -65,7 +51,7 @@ const HallDetailScreen = (props) => {
   const hall = halls.find((h) => h.id === hallId);
   console.log("hall ", hall);
 
-  let favorite = () => {
+  const favorite = () => {
     if (Object.keys(userInfo).length === 0) return false;
     if (userInfo.favorites.includes(hallId)) return true;
     return false;
@@ -79,7 +65,6 @@ const HallDetailScreen = (props) => {
         userId,
       },
     });
-    // return <CalendarReserve hallId={hallId} userId={userId} />;
   };
 
   return (
@@ -153,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   imagesContainer: {
-    height: 250,
+    height: width,
   },
   infoContainer: {
     marginTop: 15,
