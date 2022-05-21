@@ -204,7 +204,9 @@ const CalendarScreen = ({ navigation }) => {
     );
   };
 
-  if (Object.keys(bookingsWithUsers).length === 0) {
+  const arrayLength = Object.keys(bookingsWithUsers).length;
+
+  if (bookings.length !== 0 && arrayLength === 0) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={Colors.primaryColor} />
