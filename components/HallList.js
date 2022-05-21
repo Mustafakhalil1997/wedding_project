@@ -18,26 +18,6 @@ import { setStatus } from "./../store/actions/HallList";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "./HeaderButton";
 
-// const initialState = { mockList: [], loading: false };
-
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case "setList":
-//       return {
-//         ...state,
-//         mockList: action.list,
-//         loading: false,
-//       };
-//     case "setLoading":
-//       return {
-//         ...state,
-//         loading: action.loading,
-//       };
-//     default:
-//       return state;
-//   }
-// };
-
 const HallList = (props) => {
   const { navigation } = props;
 
