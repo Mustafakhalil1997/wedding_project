@@ -25,6 +25,8 @@ import { URL } from "./../helpers/url";
 import DefaultText from "./../components/DefaultText";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import customBackArrow from "./../helpers/customBackArrow";
+import customBackHandler from "./../helpers/customBackHandler";
 
 const { width } = Dimensions.get("window");
 
@@ -83,6 +85,10 @@ const EditProfileScreen = (props) => {
   };
 
   useLayoutEffect(() => {
+    customBackArrow({ navigation, isSubmitting });
+  }, [isSubmitting]);
+
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         //   <Text>Save</Text>
@@ -98,6 +104,15 @@ const EditProfileScreen = (props) => {
       ),
     });
   });
+
+  useEffect(() => {
+    const backHandler = customBackHandler({ navigation, isSubmitting });
+
+    return () => {
+      console.log("useEffect returned");
+      backHandler.remove();
+    };
+  }, [isSubmitting]);
 
   let submitForm;
 

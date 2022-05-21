@@ -24,6 +24,7 @@ import { URL } from "../helpers/url";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "./../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
+import customBackArrow from "./../helpers/customBackArrow";
 
 // envelope // lock
 
@@ -91,43 +92,30 @@ const SignupScreen = ({ navigation }) => {
   };
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title="Save"
-            iconName="arrow-back"
-            onPress={() => {
-              if (!isSubmitting) {
-                navigation.goBack(null);
-              }
-            }}
-            style={{ opacity: isSubmitting ? 0.3 : 1 }}
-          />
-        </HeaderButtons>
-      ),
-    });
+    customBackArrow({ navigation, isSubmitting });
   }, [isSubmitting]);
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (isSubmitting) return true;
-      }
-    );
+    const backHandler = customBackHandler({ navigation, isSubmitting });
 
-    if (isSubmitting) {
-      navigation.setOptions({
-        gestureEnabled: false,
-      });
-    }
+    // const backHandler = BackHandler.addEventListener(
+    //   "hardwareBackPress",
+    //   () => {
+    //     if (isSubmitting) return true;
+    //   }
+    // );
 
-    if (!isSubmitting) {
-      navigation.setOptions({
-        gestureEnabled: true,
-      });
-    }
+    // if (isSubmitting) {
+    //   navigation.setOptions({
+    //     gestureEnabled: false,
+    //   });
+    // }
+
+    // if (!isSubmitting) {
+    //   navigation.setOptions({
+    //     gestureEnabled: true,
+    //   });
+    // }
 
     return () => {
       console.log("useEffect returned");

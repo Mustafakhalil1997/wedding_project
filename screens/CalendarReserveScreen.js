@@ -15,6 +15,8 @@ import { editProfile } from "../store/actions/Auth";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/HeaderButton";
 import { reserveHall } from "../store/actions/HallList";
+import customBackArrow from "./../helpers/customBackArrow";
+import customBackHandler from "./../helpers/customBackHandler";
 
 const CalendarReserveScreen = ({ route, navigation }) => {
   const { hallId, userId } = route.params;
@@ -40,44 +42,11 @@ const CalendarReserveScreen = ({ route, navigation }) => {
   console.log("datesReserved ", datesReserved);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => (
-        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item
-            title="Save"
-            iconName="arrow-back"
-            onPress={() => {
-              if (!isSubmitting) {
-                navigation.goBack(null);
-              }
-            }}
-            style={{ opacity: isSubmitting ? 0.3 : 1 }}
-          />
-        </HeaderButtons>
-      ),
-    });
+    customBackArrow({ navigation, isSubmitting });
   }, [isSubmitting]);
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (isSubmitting) return true;
-      }
-    );
-
-    if (isSubmitting) {
-      navigation.setOptions({
-        gestureEnabled: false,
-      });
-    }
-
-    if (!isSubmitting) {
-      navigation.setOptions({
-        gestureEnabled: true,
-      });
-    }
-
+    const backHandler = customBackHandler({ navigation, isSubmitting });
     return () => {
       console.log("useEffect returned");
       backHandler.remove();
@@ -99,16 +68,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
     calendarDates = { ...calendarDates, ...Object.assign(calendarDate) };
   }
   console.log("calendarDates ", calendarDates);
-
-  // [daySelected] : { selected: true},
-  // [daySelected]: {
-  //   selected: true,
-  //   customStyles: {
-  //     container: {
-  //       backgroundColor: "black",
-  //     },
-  //   },
-  // },
 
   const dayPressHandler = (day) => {
     console.log("selected day", day.dateString);
