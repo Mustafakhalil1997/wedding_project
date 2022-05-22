@@ -18,6 +18,7 @@ import ProfileElement from "./ProfileElement";
 import { logout, switchProfile } from "./../store/actions/Auth";
 import { URL } from "./../helpers/url";
 import { showMessage } from "react-native-flash-message";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -35,8 +36,8 @@ const ProfileScreen = (props) => {
   console.log("profileImage in profileScreen ", profileImage);
 
   let convertedImageUrl = "";
-  if (profileImage)
-    convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+  if (profileImage) convertedImageUrl = cloudinaryURL + profileImage;
+  //  convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
 
   const editProfileClickHandler = () => {
     console.log("clicked");

@@ -17,6 +17,8 @@ const ImageSlider = (props) => {
 
   const [dimensions, setDimensions] = useState(0);
 
+  console.log("images in imageSlider ", images);
+
   const ref = useRef(null);
 
   const scrollRef = useRef();

@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import Card from "./Card";
 import { findDistanceBetween } from "./../constants/FindDistance";
 import { URL } from "./../helpers/url";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 let TouchableComponent = TouchableOpacity;
 let android = false;
@@ -66,9 +67,7 @@ const HallItem = (props) => {
     });
   };
 
-  const convertedImagesUrl = images.map(
-    (image) => URL + "/" + image.replace(/\\/g, "/")
-  );
+  const convertedImagesUrl = images.map((image) => cloudinaryURL + image);
 
   const onLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;

@@ -27,6 +27,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import customBackArrow from "./../helpers/customBackArrow";
 import customBackHandler from "./../helpers/customBackHandler";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const { width } = Dimensions.get("window");
 
@@ -116,7 +117,7 @@ const EditProfileScreen = (props) => {
 
   let submitForm;
 
-  const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+  const convertedImageUrl = cloudinaryURL + profileImage;
 
   const saveClickHandler = () => {
     // buttonRef.current.props.onPress();

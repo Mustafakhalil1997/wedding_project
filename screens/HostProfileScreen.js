@@ -17,6 +17,7 @@ import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
 import { logout, switchProfile } from "./../store/actions/Auth";
 import { URL } from "../helpers/url";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const HostProfileScreen = (props) => {
   const { navigation } = props;
@@ -29,7 +30,7 @@ const HostProfileScreen = (props) => {
   const { firstName, lastName, email, id, profileImage } = userInfo;
 
   const fullName = firstName + " " + lastName;
-  const convertedImageUrl = URL + "/" + profileImage.replace(/\\/g, "/");
+  const convertedImageUrl = cloudinaryURL + profileImage;
 
   const editProfileClickHandler = () => {
     console.log("clicked");

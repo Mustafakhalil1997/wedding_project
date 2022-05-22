@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
 import { URL } from "./../helpers/url";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const { width } = Dimensions.get("window");
 
@@ -27,9 +28,7 @@ const HallDetailScreen = (props) => {
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
-  const convertedImagesUrl = images.map(
-    (image) => URL + "/" + image.replace(/\\/g, "/")
-  );
+  const convertedImagesUrl = images.map((image) => cloudinaryURL + image);
 
   // console.log("converted Images ", convertedImagesUrl);
   // console.log("location ", location);
