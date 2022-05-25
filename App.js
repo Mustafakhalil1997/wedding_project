@@ -1,18 +1,13 @@
 import "react-native-gesture-handler";
 
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, Animated, Easing } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React, { useState } from "react";
+import { StyleSheet, Animated, Easing } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { enableScreens } from "react-native-screens";
-import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import { Provider, useSelector, useDispatch } from "react-redux";
-import { getToken, init } from "./helpers/db";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Provider } from "react-redux";
 
 import ReduxThunk from "redux-thunk";
 import FlashMessage from "react-native-flash-message";

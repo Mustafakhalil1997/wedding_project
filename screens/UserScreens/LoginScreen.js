@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   Platform,
   TextInput,
   ScrollView,
@@ -21,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/actions/Auth";
 import { URL } from "../../helpers/url";
 import DefaultText from "../../components/DefaultText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // envelope // lock
 
@@ -121,91 +121,95 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.formContainer]}>
-      <View style={{ marginBottom: "40%" }}></View>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={[styles.formContainer]}>
+        <View style={{ marginBottom: "40%" }}></View>
 
-      <ScrollView keyboardShouldPersistTaps="handled">
-        {/* <StatusBar style="auto" /> */}
-        <Formik
-          initialValues={userInfo}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmitForm}
-        >
-          {({
-            values,
-            handleChange,
-            handleSubmit,
-            touched,
-            handleBlur,
-            errors,
-            isSubmitting,
-          }) => {
-            let buttonDisabled = true;
-            if (
-              Object.keys(errors).length == 0 &&
-              Object.keys(touched).length != 0
-            ) {
-              buttonDisabled = false;
-            }
+        <ScrollView keyboardShouldPersistTaps="handled">
+          {/* <StatusBar style="auto" /> */}
+          <Formik
+            initialValues={userInfo}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmitForm}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              touched,
+              handleBlur,
+              errors,
+              isSubmitting,
+            }) => {
+              let buttonDisabled = true;
+              if (
+                Object.keys(errors).length == 0 &&
+                Object.keys(touched).length != 0
+              ) {
+                buttonDisabled = false;
+              }
 
-            return (
-              <View style={styles.inputsContainer}>
-                <CustomInput
-                  iconName="envelope"
-                  iconSize={32}
-                  value={values.email}
-                  label="E-mail Address"
-                  keyboardType="email-address"
-                  placeholder="example@gmail.com"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  error={touched.email && errors.email}
-                />
+              return (
+                <View style={styles.inputsContainer}>
+                  <CustomInput
+                    iconName="envelope"
+                    iconSize={32}
+                    value={values.email}
+                    label="E-mail Address"
+                    keyboardType="email-address"
+                    placeholder="example@gmail.com"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    error={touched.email && errors.email}
+                  />
 
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.password}
-                  secureTextEntry
-                  label="Password"
-                  keyboardType="default"
-                  placeholder="********"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  error={touched.password && errors.password}
-                  type="password"
-                />
+                  <CustomInput
+                    iconName="lock"
+                    iconSize={32}
+                    value={values.password}
+                    secureTextEntry
+                    label="Password"
+                    keyboardType="default"
+                    placeholder="********"
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    error={touched.password && errors.password}
+                    type="password"
+                  />
 
-                <CustomButton
-                  buttonDisabled={buttonDisabled}
-                  handleSubmit={handleSubmit}
-                  submitting={isSubmitting}
-                  label="LOG IN"
-                />
-              </View>
-            );
-          }}
-        </Formik>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Signup");
-          }}
-        >
-          <View style={{ marginTop: 30, alignSelf: "center" }}>
-            <DefaultText styles={{ fontSize: 16, color: Colors.accentColor }}>
-              Don't have an account? Sign Up
-            </DefaultText>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={forgotPasswordHandler}>
-          <View style={{ marginTop: 20, alignSelf: "center" }}>
-            <DefaultText styles={{ fontSize: 16, color: "blue", opacity: 0.6 }}>
-              Forgot Password?
-            </DefaultText>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+                  <CustomButton
+                    buttonDisabled={buttonDisabled}
+                    handleSubmit={handleSubmit}
+                    submitting={isSubmitting}
+                    label="LOG IN"
+                  />
+                </View>
+              );
+            }}
+          </Formik>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Signup");
+            }}
+          >
+            <View style={{ marginTop: 30, alignSelf: "center" }}>
+              <DefaultText styles={{ fontSize: 16, color: Colors.accentColor }}>
+                Don't have an account? Sign Up
+              </DefaultText>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={forgotPasswordHandler}>
+            <View style={{ marginTop: 20, alignSelf: "center" }}>
+              <DefaultText
+                styles={{ fontSize: 16, color: "blue", opacity: 0.6 }}
+              >
+                Forgot Password?
+              </DefaultText>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

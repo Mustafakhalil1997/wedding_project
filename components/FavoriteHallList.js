@@ -12,6 +12,7 @@ import HallItem from "./HallItem";
 import { setCurrentLocation } from "./../store/actions/Location";
 import Colors from "../constants/Colors";
 import DefaultText from "./DefaultText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const initialState = { mockList: [], loading: false };
 
@@ -116,9 +117,11 @@ const FavoriteHallList = (props) => {
   }
 
   return (
-    <View style={styles.listContainer}>
-      <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
-    </View>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.listContainer}>
+        <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
+      </View>
+    </SafeAreaView>
   );
 };
 

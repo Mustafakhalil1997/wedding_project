@@ -6,6 +6,8 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHallList } from "../store/actions/HallList";
@@ -17,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { setStatus } from "./../store/actions/HallList";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "./HeaderButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HallList = (props) => {
   const { navigation } = props;
@@ -119,28 +122,37 @@ const HallList = (props) => {
 
   if (DUMMY_HALLLIST.length === 0) {
     return (
-      <View
-        style={[
-          styles.listContainer,
-          {
-            alignItems: "center",
-            justifyContent: "center",
-          },
-        ]}
-      >
-        <DefaultText>There Are no Venues</DefaultText>
-      </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View
+          style={[
+            styles.listContainer,
+            {
+              alignItems: "center",
+              justifyContent: "center",
+            },
+          ]}
+        >
+          <DefaultText>There Are no Venues</DefaultText>
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.listContainer}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={DUMMY_HALLLIST}
-        renderItem={renderHall}
-      />
-    </View>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+      edges={["bottom"]}
+    >
+      <View style={styles.listContainer}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={DUMMY_HALLLIST}
+          renderItem={renderHall}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
     backgroundColor: "white",
+    margin: 0,
   },
   noFavorites: {
     flex: 1,

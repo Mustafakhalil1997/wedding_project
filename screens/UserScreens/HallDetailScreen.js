@@ -15,6 +15,7 @@ import ImageSlider from "../../components/ImageSliderShow/ImageSlider";
 import DefaultText from "../../components/DefaultText";
 
 import { cloudinaryURL } from "./../../helpers/cloudinaryURL";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -67,67 +68,69 @@ const HallDetailScreen = (props) => {
   };
 
   return (
-    <ScrollView>
-      {/* <SafeAreaView style={{ flex: 1, backgroundColor: "pink" }}> */}
-      <View style={styles.screenContainer}>
-        <View style={styles.imagesContainer}>
-          <ImageSlider
-            // images={[source, source1, source]}
-            images={[...convertedImagesUrl]}
-            hallId={hallId}
-            isFavorite={favorite()}
-            scrollEnabled={true}
-          />
-        </View>
-        <View style={styles.infoContainer}>
-          <View style={styles.hallNameContainer}>
-            <DefaultText styles={{ fontSize: 32, marginBottom: 10 }}>
-              {name}
-            </DefaultText>
-            <View style={styles.location}>
-              <DefaultText styles={{ fontSize: 14 }}>{address}</DefaultText>
-
-              <TouchableOpacity onPress={mapIconClickHandler}>
-                <Feather name="map-pin" size={22} color="green" />
-              </TouchableOpacity>
-            </View>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <ScrollView>
+        <View style={styles.screenContainer}>
+          <View style={styles.imagesContainer}>
+            <ImageSlider
+              // images={[source, source1, source]}
+              images={[...convertedImagesUrl]}
+              hallId={hallId}
+              isFavorite={favorite()}
+              scrollEnabled={true}
+            />
           </View>
+          <View style={styles.infoContainer}>
+            <View style={styles.hallNameContainer}>
+              <DefaultText styles={{ fontSize: 32, marginBottom: 10 }}>
+                {name}
+              </DefaultText>
+              <View style={styles.location}>
+                <DefaultText styles={{ fontSize: 14 }}>{address}</DefaultText>
 
-          <View style={styles.priceContainer}>
-            <DefaultText styles={{ fontSize: 24 }}>Prices</DefaultText>
-            <View style={styles.offer}>
-              <DefaultText styles={{ width: "70%" }}>
-                We offer one of the best services there is, let us handle
-                everything for you and you won't regret it
-              </DefaultText>
-              <Text style={{ alignSelf: "center" }}>{price}$ per person</Text>
+                <TouchableOpacity onPress={mapIconClickHandler}>
+                  <Feather name="map-pin" size={22} color="green" />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.offer}>
-              <DefaultText styles={{ width: "70%" }}>
-                Our Premium Offer. Our best offer with the North hall, let
-                everything be on us and have a beautiful nice wedding
-              </DefaultText>
-              <Text style={{ alignSelf: "center" }}>2000$</Text>
+
+            <View style={styles.priceContainer}>
+              <DefaultText styles={{ fontSize: 24 }}>Prices</DefaultText>
+              <View style={styles.offer}>
+                <DefaultText styles={{ width: "70%" }}>
+                  We offer one of the best services there is, let us handle
+                  everything for you and you won't regret it
+                </DefaultText>
+                <Text style={{ alignSelf: "center" }}>{price}$ per person</Text>
+              </View>
+              <View style={styles.offer}>
+                <DefaultText styles={{ width: "70%" }}>
+                  Our Premium Offer. Our best offer with the North hall, let
+                  everything be on us and have a beautiful nice wedding
+                </DefaultText>
+                <Text style={{ alignSelf: "center" }}>2000$</Text>
+              </View>
+              <View style={styles.offer}>
+                <DefaultText style={{ width: "70%" }}>
+                  Our Premium ooOffer. Our best offer with the North hall, let
+                  everything be on us and have a beautiful nice wedding
+                </DefaultText>
+                <Text style={{ alignSelf: "center" }}>2000$</Text>
+              </View>
             </View>
-            <View style={styles.offer}>
-              <DefaultText style={{ width: "70%" }}>
-                Our Premium ooOffer. Our best offer with the North hall, let
-                everything be on us and have a beautiful nice wedding
+
+            <TouchableOpacity
+              onPress={reserveClickHandler}
+              style={styles.reserveButtonContainer}
+            >
+              <DefaultText styles={styles.reserveButtonText}>
+                RESERVE
               </DefaultText>
-              <Text style={{ alignSelf: "center" }}>2000$</Text>
-            </View>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            onPress={reserveClickHandler}
-            style={styles.reserveButtonContainer}
-          >
-            <DefaultText styles={styles.reserveButtonText}>RESERVE</DefaultText>
-          </TouchableOpacity>
         </View>
-      </View>
-      {/* </SafeAreaView> */}
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

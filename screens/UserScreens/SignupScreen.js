@@ -17,6 +17,7 @@ import validationSchema from "./SignupSchema";
 
 import { URL } from "../../helpers/url";
 import customBackArrow from "../../helpers/customBackArrow";
+import { SafeAreaView } from "react-native-safe-area-context";
 // envelope // lock
 
 const height = Dimensions.get("window").height;
@@ -206,125 +207,127 @@ const SignupScreen = ({ navigation }) => {
     //   style={[styles.formContainer]}
     //   // enabled={false}
     // >
-    <View style={styles.formContainer}>
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <CustomButton
-          buttonDisabled={false}
-          // handleSubmit={
-          //   accessToken
-          //     ? getUserData
-          //     : () => {
-          //         promptAsync({ showInRecents: true });
-          //       }
-          // }
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.formContainer}>
+        <ScrollView keyboardShouldPersistTaps="handled">
+          <CustomButton
+            buttonDisabled={false}
+            // handleSubmit={
+            //   accessToken
+            //     ? getUserData
+            //     : () => {
+            //         promptAsync({ showInRecents: true });
+            //       }
+            // }
 
-          submitting={false}
-          label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
-          style={{
-            backgroundColor: "red",
-          }}
-        />
+            submitting={false}
+            label={accessToken ? "GET USER DATA" : "SIGN UP WITH GOOGLE"}
+            style={{
+              backgroundColor: "red",
+            }}
+          />
 
-        <View
-          style={{
-            alignItems: "center",
-            marginTop: 20,
-          }}
-        >
-          <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
-            OR
-          </DefaultText>
-        </View>
+          <View
+            style={{
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <DefaultText styles={{ fontFamily: "open-sans-bold" }}>
+              OR
+            </DefaultText>
+          </View>
 
-        <Formik
-          initialValues={userInfo}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmitForm}
-          enableReinitialize
-        >
-          {({
-            values,
-            handleChange,
-            handleSubmit,
-            touched,
-            handleBlur,
-            errors,
-            isSubmitting,
-          }) => {
-            let buttonDisabled = true;
-            if (
-              Object.keys(errors).length == 0 &&
-              Object.keys(touched).length != 0
-            ) {
-              buttonDisabled = false;
-            }
+          <Formik
+            initialValues={userInfo}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmitForm}
+            enableReinitialize
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              touched,
+              handleBlur,
+              errors,
+              isSubmitting,
+            }) => {
+              let buttonDisabled = true;
+              if (
+                Object.keys(errors).length == 0 &&
+                Object.keys(touched).length != 0
+              ) {
+                buttonDisabled = false;
+              }
 
-            return (
-              <View style={styles.inputsContainer}>
-                <CustomInput
-                  iconName="user"
-                  iconSize={32}
-                  value={values.fullName}
-                  label="Full Name"
-                  placeholder="John Smith"
-                  onChangeText={handleChange("fullName")}
-                  onBlur={handleBlur("fullName")}
-                  error={touched.fullName && errors.fullName}
-                  editable={accessToken ? false : true}
-                />
-                <CustomInput
-                  iconName="envelope"
-                  iconSize={32}
-                  value={values.email}
-                  label="E-mail Address"
-                  keyboardType="email-address"
-                  placeholder="example@gmail.com"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  error={touched.email && errors.email}
-                  autoCapitalize="none"
-                  editable={accessToken ? false : true}
-                  // selectTextOnFocus={true}
-                />
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.password}
-                  secureTextEntry
-                  label="Password"
-                  keyboardType="default"
-                  placeholder="********"
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  error={touched.password && errors.password}
-                  type="password"
-                />
-                <CustomInput
-                  iconName="lock"
-                  iconSize={32}
-                  value={values.confirmPassword}
-                  secureTextEntry
-                  label="Confirm Password"
-                  keyboardType="default"
-                  placeholder="********"
-                  onChangeText={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                  error={touched.confirmPassword && errors.confirmPassword}
-                  type="password"
-                />
+              return (
+                <View style={styles.inputsContainer}>
+                  <CustomInput
+                    iconName="user"
+                    iconSize={32}
+                    value={values.fullName}
+                    label="Full Name"
+                    placeholder="John Smith"
+                    onChangeText={handleChange("fullName")}
+                    onBlur={handleBlur("fullName")}
+                    error={touched.fullName && errors.fullName}
+                    editable={accessToken ? false : true}
+                  />
+                  <CustomInput
+                    iconName="envelope"
+                    iconSize={32}
+                    value={values.email}
+                    label="E-mail Address"
+                    keyboardType="email-address"
+                    placeholder="example@gmail.com"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    error={touched.email && errors.email}
+                    autoCapitalize="none"
+                    editable={accessToken ? false : true}
+                    // selectTextOnFocus={true}
+                  />
+                  <CustomInput
+                    iconName="lock"
+                    iconSize={32}
+                    value={values.password}
+                    secureTextEntry
+                    label="Password"
+                    keyboardType="default"
+                    placeholder="********"
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    error={touched.password && errors.password}
+                    type="password"
+                  />
+                  <CustomInput
+                    iconName="lock"
+                    iconSize={32}
+                    value={values.confirmPassword}
+                    secureTextEntry
+                    label="Confirm Password"
+                    keyboardType="default"
+                    placeholder="********"
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    error={touched.confirmPassword && errors.confirmPassword}
+                    type="password"
+                  />
 
-                <CustomButton
-                  buttonDisabled={buttonDisabled}
-                  handleSubmit={handleSubmit}
-                  submitting={isSubmitting}
-                  label="SIGN UP"
-                />
-              </View>
-            );
-          }}
-        </Formik>
-      </ScrollView>
-    </View>
+                  <CustomButton
+                    buttonDisabled={buttonDisabled}
+                    handleSubmit={handleSubmit}
+                    submitting={isSubmitting}
+                    label="SIGN UP"
+                  />
+                </View>
+              );
+            }}
+          </Formik>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

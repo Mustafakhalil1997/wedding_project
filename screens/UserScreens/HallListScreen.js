@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
 import HallList from "../../components/HallList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HallListScreen = ({ navigation }) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);

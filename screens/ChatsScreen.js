@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import DefaultText from "../components/DefaultText";
 import { useSelector } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 const Messages = [
   {
     id: "1",
@@ -99,31 +100,35 @@ const ChatsScreen = (props) => {
 
   if (!token) {
     return (
-      <View style={styles.notLoggedIn}>
-        <DefaultText
-          styles={{
-            fontSize: 18,
-            fontFamily: "open-sans-bold",
-            marginBottom: 10,
-          }}
-        >
-          Login To See Your Messages
-        </DefaultText>
-        <DefaultText onPress={goToLogin} styles={{ color: "blue" }}>
-          Go to Login
-        </DefaultText>
-      </View>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={styles.notLoggedIn}>
+          <DefaultText
+            styles={{
+              fontSize: 18,
+              fontFamily: "open-sans-bold",
+              marginBottom: 10,
+            }}
+          >
+            Login To See Your Messages
+          </DefaultText>
+          <DefaultText onPress={goToLogin} styles={{ color: "blue" }}>
+            Go to Login
+          </DefaultText>
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View>
-      <FlatList
-        data={Messages}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={Messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

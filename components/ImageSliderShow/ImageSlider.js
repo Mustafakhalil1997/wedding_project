@@ -122,26 +122,6 @@ const ImageSlider = (props) => {
             />
           </View>
         ))}
-        <View
-          style={{
-            width: dimensions.width,
-            height: dimensions.height,
-          }}
-        >
-          <Image
-            source={{
-              uri: `https://reactnative.dev/${source}`,
-            }}
-            style={{
-              ...styles.image,
-
-              width: dimensions.width,
-              height: dimensions.height,
-              aspectRatio: dot ? 2 / 1.8 : 3 / 2.3,
-              ...newStyles,
-            }}
-          />
-        </View>
       </ScrollView>
       <View
         style={{
