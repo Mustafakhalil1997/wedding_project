@@ -8,14 +8,12 @@ import {
   TextInput,
   ImageBackground,
 } from "react-native";
-import DefaultText from "../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
-import * as ImagePicker from "expo-image-picker";
-import Map from "./../components/Map";
-import { editHall } from "./../store/actions/Auth";
+import { editHall } from "../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
-import { URL } from "./../helpers/url";
-import { setCurrentLocation } from "../store/actions/Location";
+import { URL } from "../../helpers/url";
+import { setCurrentLocation } from "../../store/actions/Location";
+import DefaultText from "../../components/DefaultText";
 
 const { width } = Dimensions.get("window");
 
@@ -68,7 +66,7 @@ const HomeScreen = (props) => {
     <ScrollView contentContainerStyle={styles.screenContainer}>
       <View style={styles.header}>
         <ImageBackground
-          source={require("../constants/images/Roger.jpg")}
+          source={require("../.././constants/images/Roger.jpg")}
           resizeMode="cover"
           style={styles.backgroundImage}
         >

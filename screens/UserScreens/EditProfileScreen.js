@@ -14,20 +14,23 @@ import { Avatar } from "react-native-paper";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 
-import CustomHeaderButton from "./../components/HeaderButton";
+import * as ImagePicker from "expo-image-picker";
 import validationSchema from "./EditProfileSchema";
 import { Formik } from "formik";
-import CustomInput from "./../components/CustomInput";
-import CustomButton from "./../components/CustomButton";
-import { editProfile } from "./../store/actions/Auth";
-import { showMessage } from "react-native-flash-message";
-import { URL } from "./../helpers/url";
-import DefaultText from "./../components/DefaultText";
 import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import customBackArrow from "./../helpers/customBackArrow";
-import customBackHandler from "./../helpers/customBackHandler";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+
+import { editProfile } from "../../store/actions/Auth";
+import { showMessage } from "react-native-flash-message";
+import { URL } from "../../helpers/url";
+
+import customBackArrow from "../../helpers/customBackArrow";
+import customBackHandler from "../../helpers/customBackHandler";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+
+import CustomHeaderButton from "../../components/HeaderButton";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+import DefaultText from "../../components/DefaultText";
 
 const { width } = Dimensions.get("window");
 
@@ -236,7 +239,7 @@ const EditProfileScreen = (props) => {
             {!profileImage && !profileImagePicked && (
               <Avatar.Image
                 size={240}
-                source={require("../constants/images/Roger.jpg")}
+                source={require("../../constants/images/Roger.jpg")}
               />
             )}
 

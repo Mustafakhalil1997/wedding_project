@@ -7,16 +7,16 @@ import {
   BackHandler,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
-import DefaultText from "../components/DefaultText";
-import { URL } from "../helpers/url";
+import DefaultText from "../../components/DefaultText";
+import { URL } from "../../helpers/url";
 import { showMessage } from "react-native-flash-message";
 import { useSelector, useDispatch } from "react-redux";
-import { editProfile } from "../store/actions/Auth";
+import { editProfile } from "../../store/actions/Auth";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../components/HeaderButton";
-import { reserveHall } from "../store/actions/HallList";
-import customBackArrow from "./../helpers/customBackArrow";
-import customBackHandler from "./../helpers/customBackHandler";
+import CustomHeaderButton from "../../components/HeaderButton";
+import { reserveHall } from "../../store/actions/HallList";
+import customBackArrow from "../../helpers/customBackArrow";
+import customBackHandler from "../../helpers/customBackHandler";
 
 const CalendarReserveScreen = ({ route, navigation }) => {
   const { hallId, userId } = route.params;

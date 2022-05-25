@@ -7,18 +7,19 @@ import { useSelector } from "react-redux";
 
 import Colors from "../constants/Colors";
 
-import HallListScreen from "../screens/HallListScreen";
-import HallDetailScreen from "../screens/HallDetailScreen";
-import FavoriteHallsScreen from "../screens/FavoriteHallsScreen";
-import LoginScreen from "../screens/LoginScreen";
-import SignupScreen from "../screens/SignupScreen";
-import MapViewer from "../screens/MapViewer";
-import ProfileScreen from "../screens/ProfileScreen";
-import EditProfileScreen from "../screens/EditProfileScreen";
-import ReservationScreen from "../screens/ReservationScreen";
 import ChatsScreen from "./../screens/ChatsScreen";
 import ChatScreen from "./../screens/ChatScreen";
-import CalendarReserveScreen from "../screens/CalendarReserveScreen";
+
+import HallListScreen from "../screens/UserScreens/HallListScreen";
+import HallDetailScreen from "../screens/UserScreens/HallDetailScreen";
+import FavoriteHallsScreen from "../screens/UserScreens/FavoriteHallsScreen";
+import LoginScreen from "../screens/UserScreens/LoginScreen";
+import SignupScreen from "../screens/UserScreens/SignupScreen";
+import MapViewer from "../screens/UserScreens/MapViewer";
+import ProfileScreen from "../screens/UserScreens/ProfileScreen";
+import EditProfileScreen from "../screens/UserScreens/EditProfileScreen";
+import ReservationScreen from "../screens/UserScreens/ReservationScreen";
+import CalendarReserveScreen from "../screens/UserScreens/CalendarReserveScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

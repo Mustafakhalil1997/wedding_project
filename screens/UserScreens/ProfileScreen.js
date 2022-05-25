@@ -11,14 +11,17 @@ import {
   TouchableWithoutFeedback,
   Pressable,
 } from "react-native";
+
 import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "react-native-paper";
-import DefaultText from "./../components/DefaultText";
-import ProfileElement from "./ProfileElement";
-import { logout, switchProfile } from "./../store/actions/Auth";
-import { URL } from "./../helpers/url";
 import { showMessage } from "react-native-flash-message";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+
+import { logout, switchProfile } from "../../store/actions/Auth";
+import { URL } from "../../helpers/url";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+
+import DefaultText from "../../components/DefaultText";
+import ProfileElement from "./ProfileElement";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -82,7 +85,7 @@ const ProfileScreen = (props) => {
             ) : (
               <Avatar.Image
                 size={60}
-                source={require("../constants/images/Roger.jpg")}
+                source={require("../../constants/images/Roger.jpg")}
               />
             )}
           </View>

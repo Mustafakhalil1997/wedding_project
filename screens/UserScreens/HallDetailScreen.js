@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import ImageSlider from "./../components/ImageSliderShow/ImageSlider";
-import DefaultText from "./../components/DefaultText";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
-import { URL } from "./../helpers/url";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+import ImageSlider from "../../components/ImageSliderShow/ImageSlider";
+import DefaultText from "../../components/DefaultText";
+
+import { cloudinaryURL } from "./../../helpers/cloudinaryURL";
 
 const { width } = Dimensions.get("window");
 

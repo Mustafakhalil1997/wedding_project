@@ -3,22 +3,21 @@ import { Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { EvilIcons, Feather, Ionicons } from "@expo/vector-icons";
-import HallListScreen from "./../screens/HallListScreen";
-import HallDetailScreen from "./../screens/HallDetailScreen";
-import LoginScreen from "./../screens/LoginScreen";
-import SignupScreen from "./../screens/SignupScreen";
-import ProfileScreen from "./../screens/ProfileScreen";
-import EditProfileScreen from "./../screens/EditProfileScreen";
+
 import { useSelector } from "react-redux";
 import Colors from "../constants/Colors";
-import HomeScreen from "./../screens/HomeScreen";
-import CalendarScreen from "./../screens/CalendarScreen";
-import HostProfileScreen from "./../screens/HostProfileScreen";
-import EditHallScreen from "./../screens/EditHallScreen";
-import CompleteHostProfileScreen from "./../screens/completeHostProfileScreen";
+
+import LoginScreen from "../screens/UserScreens/LoginScreen";
+import SignupScreen from "../screens/UserScreens/SignupScreen";
+
+import CalendarScreen from "../screens/HostScreens/CalendarScreen";
+import HostProfileScreen from "../screens/HostScreens/HostProfileScreen";
+import EditHallScreen from "../screens/HostScreens/EditHallScreen";
+import CompleteHostProfileScreen from "../screens/HostScreens/completeHostProfileScreen";
 import ChatsScreen from "../screens/ChatsScreen";
 import ChatScreen from "../screens/ChatScreen";
-import EditImagesScreen from "./../screens/EditImagesScreen";
+import EditImagesScreen from "./../screens/HostScreens/EditImagesScreen";
+import HomeScreen from "./../screens/HostScreens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,13 +46,6 @@ const HostTabNavigator = () => {
               component={HostProfileScreen}
               options={{
                 headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="Edit"
-              component={EditProfileScreen}
-              options={{
-                title: "",
               }}
             />
             <Stack.Screen name="EditHall" component={EditHallScreen} />

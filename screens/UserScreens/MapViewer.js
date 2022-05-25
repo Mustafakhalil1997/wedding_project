@@ -3,8 +3,8 @@ import { View, StyleSheet, Dimensions, Pressable } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useSelector } from "react-redux";
-import DefaultText from "../components/DefaultText";
 import { Ionicons } from "@expo/vector-icons";
+import DefaultText from "../../components/DefaultText";
 
 // const locations = [
 //   {
@@ -77,8 +77,6 @@ const MapViewer = ({ route, navigation }) => {
 
   console.log("lat ", lat);
   console.log("lng ", lng);
-
-  const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
 
   return (
     <View style={styles.container}>

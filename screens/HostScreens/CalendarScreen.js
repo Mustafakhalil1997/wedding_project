@@ -10,10 +10,10 @@ import {
 import { useSelector } from "react-redux";
 import { Agenda } from "react-native-calendars";
 
-import { URL } from "./../helpers/url";
+import { URL } from "../../helpers/url";
 import { Avatar } from "react-native-paper";
-import DefaultText from "./../components/DefaultText";
-import Colors from "../constants/Colors";
+import DefaultText from "../../components/DefaultText";
+import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 const CalendarScreen = ({ navigation }) => {
@@ -193,7 +193,7 @@ const CalendarScreen = ({ navigation }) => {
             {convertedImageUrl.length === 0 ? (
               <Avatar.Image
                 size={40}
-                source={require("../constants/images/Roger.jpg")}
+                source={require("../../constants/images/Roger.jpg")}
               />
             ) : (
               <Avatar.Image size={40} source={{ uri: convertedImageUrl }} />

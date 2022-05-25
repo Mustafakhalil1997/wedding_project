@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Text, TouchableNativeFeedback } from "react-native";
-import HallList from "../components/HallList";
+import HallList from "../../components/HallList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 

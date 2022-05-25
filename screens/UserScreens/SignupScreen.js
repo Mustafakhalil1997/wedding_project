@@ -1,31 +1,22 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Dimensions,
-  Platform,
-  KeyboardAvoidingView,
-  ScrollView,
-  BackHandler,
-} from "react-native";
-import { showMessage, hideMessage } from "react-native-flash-message";
-import { Formik, setIn } from "formik";
+import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { showMessage } from "react-native-flash-message";
+import { Formik } from "formik";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
-import Colors from "../constants/Colors";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "../components/CustomButton";
-import validationSchema from "./SignupSchema";
 import { useDispatch } from "react-redux";
-import { signUp } from "./../store/actions/Auth";
-import { URL } from "../helpers/url";
-import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "./../components/HeaderButton";
-import DefaultText from "../components/DefaultText";
-import customBackArrow from "./../helpers/customBackArrow";
+import { signUp } from "../../store/actions/Auth";
 
+import Colors from "../../constants/Colors";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
+import DefaultText from "../../components/DefaultText";
+
+import validationSchema from "./SignupSchema";
+
+import { URL } from "../../helpers/url";
+import customBackArrow from "../../helpers/customBackArrow";
 // envelope // lock
 
 const height = Dimensions.get("window").height;

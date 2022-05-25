@@ -1,6 +1,6 @@
 import React from "react";
-import HallList from "../components/HallList";
-import FavoriteHallList from "./../components/FavoriteHallList";
+import HallList from "../../components/HallList";
+import FavoriteHallList from "../../components/FavoriteHallList";
 
 const FavoriteHallsScreen = ({ navigation }) => {
   return <FavoriteHallList navigation={navigation} />;

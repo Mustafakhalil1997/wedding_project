@@ -9,15 +9,16 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import DefaultText from "../components/DefaultText";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 import * as ImagePicker from "expo-image-picker";
 import { showMessage } from "react-native-flash-message";
-import { URL } from "./../helpers/url";
-import { editHall } from "../store/actions/Auth";
-import HallImage from "./../components/HallImage";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "../components/HeaderButton";
+
+import { URL } from "../../helpers/url";
+import { editHall } from "../../store/actions/Auth";
+
+import CustomHeaderButton from "../../components/HeaderButton";
+import DefaultText from "../../components/DefaultText";
+import HallImage from "../../components/HallImage";
 
 const { width } = Dimensions.get("window");
 

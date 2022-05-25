@@ -10,14 +10,14 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import DefaultText from "../components/DefaultText";
+import DefaultText from "../../components/DefaultText";
 import { useSelector, useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
-import Map from "./../components/Map";
-import { editHall } from "./../store/actions/Auth";
+import Map from "../../components/Map";
+import { editHall } from "../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
-import { URL } from "./../helpers/url";
-import { setCurrentLocation } from "../store/actions/Location";
+import { URL } from "../../helpers/url";
+import { setCurrentLocation } from "../../store/actions/Location";
 import { Avatar } from "react-native-paper";
 
 const { width } = Dimensions.get("window");
@@ -244,7 +244,7 @@ const CompleteHostProfileScreen = (props) => {
     >
       <View style={styles.header}>
         <ImageBackground
-          source={require("../constants/images/Roger.jpg")}
+          source={require("../.././constants/images/Roger.jpg")}
           resizeMode="cover"
           style={styles.backgroundImage}
         ></ImageBackground>
@@ -310,7 +310,7 @@ const CompleteHostProfileScreen = (props) => {
                 source={
                   imageSelected
                     ? { uri: imageSelected }
-                    : require("../constants/images/Roger.jpg")
+                    : require("../.././constants/images/Roger.jpg")
                 }
                 style={{
                   ...styles.image,

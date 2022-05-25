@@ -13,14 +13,14 @@ import {
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Colors from "../constants/Colors";
-import CustomInput from "../components/CustomInput";
-import CustomButton from "./../components/CustomButton";
+import Colors from "../../constants/Colors";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
 import validationSchema from "./LoginSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../store/actions/Auth";
-import { URL } from "./../helpers/url";
-import DefaultText from "../components/DefaultText";
+import { login } from "../../store/actions/Auth";
+import { URL } from "../../helpers/url";
+import DefaultText from "../../components/DefaultText";
 
 // envelope // lock
 

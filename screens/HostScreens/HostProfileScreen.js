@@ -14,14 +14,12 @@ import {
   Image,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar } from "react-native-paper";
-import DefaultText from "./../components/DefaultText";
-import ProfileElement from "./ProfileElement";
-import { editHall, logout, switchProfile } from "./../store/actions/Auth";
-import { URL } from "../helpers/url";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
-import * as ImagePicker from "expo-image-picker";
-import { showMessage } from "react-native-flash-message";
+
+import { logout, switchProfile } from "../../store/actions/Auth";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+
+import DefaultText from "../../components/DefaultText";
+import ProfileElement from "../UserScreens/ProfileElement";
 
 const { width } = Dimensions.get("window");
 

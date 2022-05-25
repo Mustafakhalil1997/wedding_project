@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import DefaultText from "./../components/DefaultText";
 import { useSelector } from "react-redux";
-import HallItem from "./../components/HallItem";
+
+import HallItem from "../../components/HallItem";
+import DefaultText from "../../components/DefaultText";
 
 const monthNames = [
   "January",

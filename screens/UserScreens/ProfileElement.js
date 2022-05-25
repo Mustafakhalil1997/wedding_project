@@ -6,7 +6,7 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import { SimpleLineIcons, EvilIcons, Ionicons } from "@expo/vector-icons";
-import DefaultText from "./../components/DefaultText";
+import DefaultText from "../../components/DefaultText";
 
 const ProfileElement = (props) => {
   const { iconName, onPress } = props;
