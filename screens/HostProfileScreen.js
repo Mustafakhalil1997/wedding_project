@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -10,14 +10,20 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Pressable,
+  Dimensions,
+  Image,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "react-native-paper";
 import DefaultText from "./../components/DefaultText";
 import ProfileElement from "./ProfileElement";
-import { logout, switchProfile } from "./../store/actions/Auth";
+import { editHall, logout, switchProfile } from "./../store/actions/Auth";
 import { URL } from "../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+import * as ImagePicker from "expo-image-picker";
+import { showMessage } from "react-native-flash-message";
+
+const { width } = Dimensions.get("window");
 
 const HostProfileScreen = (props) => {
   const { navigation } = props;
@@ -25,19 +31,12 @@ const HostProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo in hostProfileScreen ", userInfo);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
+  const { id: hallId, images } = hallInfo;
   const { firstName, lastName, email, id, profileImage } = userInfo;
 
-  const fullName = firstName + " " + lastName;
-  const convertedImageUrl = cloudinaryURL + profileImage;
-
-  const editProfileClickHandler = () => {
-    console.log("clicked");
-    navigation.navigate({
-      name: "Edit",
-    });
-  };
+  const convertedImagesUrl = images.map((image) => cloudinaryURL + image);
 
   const logoutClickHandler = () => {
     dispatch(logout());
@@ -53,46 +52,63 @@ const HostProfileScreen = (props) => {
     });
   };
 
+  const editImagesClickHandler = () => {
+    navigation.navigate({
+      name: "EditImages",
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.profileContainer}>
-        <View style={styles.header}>
-          <View style={styles.imageCircleContainer}>
-            {profileImage ? (
-              <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
-            ) : (
-              <Avatar.Image
-                size={60}
-                source={require("../constants/images/Roger.jpg")}
-              />
-            )}
-          </View>
-          {/* <View></View> */}
-          <TouchableOpacity style={{}} onPress={logoutClickHandler}>
-            <DefaultText style={{ color: "red", fontFamily: "open-sans-bold" }}>
-              LOGOUT
-            </DefaultText>
+        <View style={[styles.imagesContainer]}>
+          {convertedImagesUrl.map((imageUri, index) => (
+            <Image
+              key={index}
+              source={{ uri: imageUri }}
+              style={{
+                ...styles.image,
+                width: (width - 40 - 1) / 3,
+                height: 100,
+                aspectRatio: 2 / 2,
+              }}
+            />
+          ))}
+          {/* <Image
+            source={{ uri: convertedImagesUrl[0] }}
+            style={{
+              ...styles.image,
+              width: (width - 40 - 1) / 3,
+              height: 100,
+              aspectRatio: 2 / 2,
+            }}
+          /> */}
+
+          <TouchableOpacity onPress={editImagesClickHandler}>
+            <View
+              style={{
+                width: (width - 40 - 1) / 3,
+                height: (width - 40 - 1) / 3,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <DefaultText
+                styles={{ fontSize: 18, fontFamily: "open-sans-bold" }}
+              >
+                EDIT
+              </DefaultText>
+            </View>
+            {/* <Image
+              source={require("../constants/images/addImageIcon.png")}
+              style={{
+                width: (width - 40 - 1) / 3,
+                height: (width - 40 - 1) / 3,
+                aspectRatio: 2 / 2,
+              }}
+            /> */}
           </TouchableOpacity>
         </View>
-        <DefaultText
-          styles={{
-            fontSize: 26,
-            fontFamily: "acme-regular",
-          }}
-        >
-          {fullName || "Mustafa Khalil"}
-        </DefaultText>
-        <TouchableOpacity onPress={editProfileClickHandler}>
-          <DefaultText
-            styles={{
-              fontSize: 16,
-              marginBottom: 30,
-              textDecorationLine: "underline",
-            }}
-          >
-            Edit Profile
-          </DefaultText>
-        </TouchableOpacity>
         <DefaultText styles={styles.contentTitle}>Account Settings</DefaultText>
         <View style={styles.accountSettings}>
           <ProfileElement iconName="person-circle-outline">
@@ -131,8 +147,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
+  imagesContainer: {
+    borderWidth: 0.5,
+    borderColor: "gray",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
   profileContainer: {
-    backgroundColor: "white",
     padding: 20,
   },
   header: {
