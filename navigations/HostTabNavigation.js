@@ -15,9 +15,10 @@ import HomeScreen from "./../screens/HomeScreen";
 import CalendarScreen from "./../screens/CalendarScreen";
 import HostProfileScreen from "./../screens/HostProfileScreen";
 import EditHallScreen from "./../screens/EditHallScreen";
-import CompleteHostProfileScreen from "./../screens/CompleteHostProfileScreen";
-import ChatsScreen from "./../screens/ChatsScreen";
-import ChatScreen from "./../screens/ChatScreen";
+import CompleteHostProfileScreen from "./../screens/completeHostProfileScreen";
+import ChatsScreen from "../screens/ChatsScreen";
+import ChatScreen from "../screens/ChatScreen";
+import EditImagesScreen from "./../screens/EditImagesScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -56,6 +57,7 @@ const HostTabNavigator = () => {
               }}
             />
             <Stack.Screen name="EditHall" component={EditHallScreen} />
+            <Stack.Screen name="EditImages" component={EditImagesScreen} />
           </>
         )}
       </Stack.Navigator>
