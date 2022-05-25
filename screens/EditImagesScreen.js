@@ -37,8 +37,6 @@ const EditImagesScreen = ({ navigation, route }) => {
 
   const [selectedImages, setSelectedImages] = useState(selected);
 
-  console.log("selectedd ", Object.values(selectedImages));
-
   useLayoutEffect(() => {
     if (Object.values(selectedImages).includes(true)) {
       navigation.setOptions({
@@ -66,11 +64,9 @@ const EditImagesScreen = ({ navigation, route }) => {
     let deleteIds = [];
     for (let i = 0; i < images.length; i++) {
       if (selectedImages[images[i]] === true) {
-        console.log("hereee");
         deleteIds.push(images[i]);
       }
     }
-    console.log("deleteIds ", deleteIds);
     try {
       setIsSubmitting(true);
       const response = await fetch(`${URL}/api/hall/deleteImages/${hallId}`, {
@@ -87,20 +83,14 @@ const EditImagesScreen = ({ navigation, route }) => {
       setIsSubmitting(false);
       setSelectedImages((previousState) => {
         let newArray = [];
-        console.log("typeof ", typeof Object.keys(previousState));
 
         const newIdsArray = Object.keys(previousState).filter((key) => {
-          console.log("key ", typeof key);
-          console.log("deleteIds ", deleteIds);
           return !deleteIds.includes(key);
         });
 
-        console.log("newIdsArray ", newIdsArray);
         for (let i = 0; i < newIdsArray.length; i++) {
-          console.log("key in here ", newIdsArray[i]);
           newArray[newIdsArray[i]] = false;
         }
-        console.log("newArray after delete ", Object.keys(newArray));
         return newArray;
       });
       if (response.status !== 200) {
@@ -166,7 +156,6 @@ const EditImagesScreen = ({ navigation, route }) => {
           body: imageData,
         });
         const resData = await res.json();
-        console.log("waiting for response");
         const { newHallInfo: updatedHall, newImage } = resData;
 
         if (res.status === 200) {
@@ -177,7 +166,6 @@ const EditImagesScreen = ({ navigation, route }) => {
               newArray[key] = previousState[key];
             }
             newArray[newImage] = false;
-            console.log("newArray ", Object.keys(newArray));
             return newArray;
           });
         }
@@ -213,20 +201,15 @@ const EditImagesScreen = ({ navigation, route }) => {
           {images.map((image, index) => {
             return (
               <HallImage
-                key={index}
+                key={image}
                 image={image}
                 onImageLongPressed={(selected) => {
                   setSelectedImages((previousState) => {
                     let newArray = [];
                     for (const key in previousState) {
-                      console.log("keyyy ", key);
-                      console.log("value of key ", previousState[key]);
                       newArray[key] = previousState[key];
                     }
-                    console.log("image ", image);
-                    console.log("selected value ", selected);
                     newArray[image] = selected;
-                    console.log("newArray ", Object.values(newArray));
                     return newArray;
                   });
                 }}
