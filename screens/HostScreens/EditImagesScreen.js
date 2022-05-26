@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -19,6 +19,8 @@ import { editHall } from "../../store/actions/Auth";
 import CustomHeaderButton from "../../components/HeaderButton";
 import DefaultText from "../../components/DefaultText";
 import HallImage from "../../components/HallImage";
+import customBackArrow from "./../../helpers/customBackArrow";
+import customBackHandler from "./../../helpers/customBackHandler";
 
 const { width } = Dimensions.get("window");
 
@@ -34,9 +36,22 @@ const EditImagesScreen = ({ navigation, route }) => {
     selected[images[i]] = false;
   }
 
-  console.log("isSubmitting ", isSubmitting);
+  console.log("isSubmittinggg ", isSubmitting);
 
   const [selectedImages, setSelectedImages] = useState(selected);
+
+  useEffect(() => {
+    const backHandler = customBackHandler({ navigation, isSubmitting });
+
+    return () => {
+      console.log("useEffect returned");
+      backHandler.remove();
+    };
+  }, [isSubmitting]);
+
+  useLayoutEffect(() => {
+    customBackArrow({ navigation, isSubmitting });
+  }, [isSubmitting]);
 
   useLayoutEffect(() => {
     if (Object.values(selectedImages).includes(true)) {
@@ -47,7 +62,10 @@ const EditImagesScreen = ({ navigation, route }) => {
               title="Delete"
               iconName="ios-remove-circle-sharp"
               onPress={deleteHallImages}
-              style={{ opacity: isSubmitting ? 0.3 : 1 }}
+              style={{
+                opacity: isSubmitting ? 0.3 : 1,
+                color: "red",
+              }}
             />
           </HeaderButtons>
         ),
@@ -57,7 +75,7 @@ const EditImagesScreen = ({ navigation, route }) => {
         headerRight: null,
       });
     }
-  }, [selectedImages]);
+  }, [selectedImages, isSubmitting]);
 
   const dispatch = useDispatch();
 
@@ -81,7 +99,6 @@ const EditImagesScreen = ({ navigation, route }) => {
 
       const responseData = await response.json();
 
-      setIsSubmitting(false);
       setSelectedImages((previousState) => {
         let newArray = [];
 
@@ -95,6 +112,7 @@ const EditImagesScreen = ({ navigation, route }) => {
         return newArray;
       });
       if (response.status !== 200) {
+        setIsSubmitting(false);
         const errorMessage = responseData.message;
         showMessage({
           message: errorMessage,
@@ -114,6 +132,7 @@ const EditImagesScreen = ({ navigation, route }) => {
         backgroundColor: "black",
         style: { borderRadius: 5 },
       });
+      setIsSubmitting(false);
       dispatch(editHall(responseData.updatedHall));
     } catch (err) {
       setIsSubmitting(false);

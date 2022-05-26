@@ -107,7 +107,7 @@ const EditProfileScreen = (props) => {
         </HeaderButtons>
       ),
     });
-  });
+  }, [isSubmitting]);
 
   useEffect(() => {
     const backHandler = customBackHandler({ navigation, isSubmitting });
