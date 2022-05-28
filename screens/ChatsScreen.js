@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import DefaultText from "../components/DefaultText";
 import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { URL } from "./../helpers/url";
 const Messages = [
   {
     id: "1",
@@ -57,7 +58,30 @@ const Messages = [
 const ChatsScreen = (props) => {
   const { navigation } = props;
 
+  const [contacts, setContacts] = useState([]);
+
   const token = useSelector((state) => state.Auth.token);
+  const userInfo = useSelector((state) => state.Auth.userInfo);
+
+  console.log("userInfo in chats Screen ", userInfo);
+
+  const { chatRooms } = userInfo;
+
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        let arr = encodeURIComponent(JSON.stringify(chatRooms));
+        const response = await fetch(`${URL}/api/chat/${arr}`);
+        const responseData = await response.json();
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (chatRooms) {
+      getMessages();
+    }
+  }, [chatRooms]);
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });
