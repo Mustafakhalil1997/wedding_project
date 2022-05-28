@@ -2,22 +2,21 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { Formik } from "formik";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 
-import { useDispatch } from "react-redux";
 import { signUp } from "../../store/actions/Auth";
+import { URL } from "../../helpers/url";
 
+import validationSchema from "./SignupSchema";
 import Colors from "../../constants/Colors";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import DefaultText from "../../components/DefaultText";
-
-import validationSchema from "./SignupSchema";
-
-import { URL } from "../../helpers/url";
 import customBackArrow from "../../helpers/customBackArrow";
-import { SafeAreaView } from "react-native-safe-area-context";
+import customBackHandler from "./../../helpers/customBackHandler";
 // envelope // lock
 
 const height = Dimensions.get("window").height;
@@ -60,27 +59,38 @@ const SignupScreen = ({ navigation }) => {
   }, [accessToken]);
 
   const getUserData = async () => {
-    const userInfoResponse = await fetch(
-      "https://www.googleapis.com/userinfo/v2/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    try {
+      const userInfoResponse = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
 
-    const responseData = await userInfoResponse.json();
-    console.log("responseData here ", responseData);
+      const responseData = await userInfoResponse.json();
+      console.log("responseData here ", responseData);
 
-    const { name, email } = responseData;
+      const { name, email } = responseData;
 
-    const newUserInfo = {
-      fullName: name,
-      email: email,
-      password: "",
-      confirmPassword: "",
-    };
-    setUserInfo(newUserInfo);
+      const newUserInfo = {
+        fullName: name,
+        email: email,
+        password: "",
+        confirmPassword: "",
+      };
+      setUserInfo(newUserInfo);
+    } catch (err) {
+      const errorMessage = responseData.message;
+      showMessage({
+        message: errorMessage,
+        type: "default",
+        color: "white",
+        backgroundColor: "red",
+        style: { borderRadius: 20 },
+      });
+    }
   };
 
   useLayoutEffect(() => {
