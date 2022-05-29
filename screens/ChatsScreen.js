@@ -73,6 +73,7 @@ const ChatsScreen = (props) => {
         const response = await fetch(`${URL}/api/chat/${arr}`);
         const responseData = await response.json();
         const { chats, message } = responseData;
+        console.log("responseData ", responseData);
         setChatsDetails(chats);
       } catch (err) {
         console.log(err);

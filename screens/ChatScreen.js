@@ -27,16 +27,16 @@ const ChatScreen = (props) => {
 
   useEffect(() => {
     const convertedMessages = chats.map((chat) => {
-      const { _id, message, time, sender } = chat;
+      const { _id, message, time, senderId } = chat;
       const newMessage = {
         _id: _id.toString(),
         text: message,
         createdAt: time,
         user: {
-          _id: sender.toString(),
-          name: sender === userId ? firstName + " " + lastName : title,
+          _id: senderId.toString(),
+          name: senderId === userId ? firstName + " " + lastName : title,
           avatar:
-            sender === userId
+            senderId === userId
               ? require("../constants/images/Roger.jpg")
               : cloudinaryURL + contactImage,
         },
@@ -60,8 +60,8 @@ const ChatScreen = (props) => {
     const { _id, createdAt, text, user } = message;
     const newMessage = {
       message: text,
-      sender: userId,
-      receiver: contactId,
+      senderId: userId,
+      receiverId: contactId,
       time: createdAt,
     };
 
