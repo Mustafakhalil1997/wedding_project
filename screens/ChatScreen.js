@@ -10,95 +10,44 @@ import DefaultText from "../components/DefaultText";
 import { useSelector } from "react-redux";
 import { URL } from "./../helpers/url";
 import { showMessage } from "react-native-flash-message";
+import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const ChatScreen = (props) => {
   const { route, navigation } = props;
 
+  const { title, chats, contactImage, contactId, roomId } = route.params;
+
   const [messages, setMessages] = useState([]);
 
-  const [contact, setContact] = useState();
-
-  const { id: userId } = useSelector((state) => state.Auth.userInfo);
+  const {
+    id: userId,
+    firstName,
+    lastName,
+  } = useSelector((state) => state.Auth.userInfo);
 
   useEffect(() => {
-    const chatroomId = "628fffc6f9d1d539069c1bb3";
-    const retrieveMessages = async () => {
-      try {
-        const response = await fetch(`${URL}/api/chat/${chatroomId}`);
+    const convertedMessages = chats.map((chat) => {
+      const { _id, message, time, sender } = chat;
+      const newMessage = {
+        _id: _id.toString(),
+        text: message,
+        createdAt: time,
+        user: {
+          _id: sender.toString(),
+          name: sender === userId ? firstName + " " + lastName : title,
+          avatar:
+            sender === userId
+              ? require("../constants/images/Roger.jpg")
+              : cloudinaryURL + contactImage,
+        },
+      };
+      return newMessage;
+    });
 
-        const responseData = await response.json();
-
-        console.log("responseData");
-        if (response.status !== 200) {
-          const errorMessage = responseData.message;
-          showMessage({
-            message: errorMessage,
-            type: "default",
-            color: "white",
-            backgroundColor: "red",
-            style: { borderRadius: 20 },
-          });
-
-          return;
-        }
-
-        const {
-          messages: retrievedMessages,
-          contacts,
-          contactsIds,
-        } = responseData;
-
-        console.log("retrieved ", retrievedMessages);
-
-        const allMessages = retrievedMessages.map((msg) => {
-          let {
-            _id: messageId,
-            message,
-            sender,
-            receiver,
-            time,
-            sendername,
-            receivername,
-          } = msg;
-
-          sender = sender.toString();
-          receiver = receiver.toString();
-          messageId = messageId.toString();
-
-          const newMessage = {
-            _id: messageId,
-            text: message,
-            createdAt: time,
-            user: {
-              _id: sender,
-              name: sendername,
-              avatar: "https://placeimg.com/140/140/any",
-            },
-          };
-          return newMessage;
-        });
-
-        const contact1 = contactsIds[0].toString();
-        const contact2 = contactsIds[1].toString();
-
-        setContact(contact1 === userId ? contact2 : contact1);
-        setMessages(allMessages);
-      } catch (err) {
-        console.log(err);
-        showMessage({
-          message: "An unknown error occured",
-          type: "default",
-          color: "white",
-          backgroundColor: "red",
-          style: { borderRadius: 20 },
-        });
-      }
-    };
-
-    retrieveMessages();
+    setMessages(convertedMessages);
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback(async (messages = []) => {
     const time = messages[0].createdAt;
     console.log("time ", time.getHours() + ":" + time.getMinutes());
     console.log("message ", messages);
@@ -110,9 +59,21 @@ const ChatScreen = (props) => {
 
     const { _id, createdAt, text, user } = message;
     const newMessage = {
-      sender: user._id,
-      // receiver:
+      message: text,
+      sender: userId,
+      receiver: contactId,
+      time: createdAt,
     };
+
+    try {
+      await fetch(`${URL}/api/chat/sendMessage`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ roomId: roomId, newMessage }),
+      });
+    } catch (err) {}
   }, []);
 
   const renderBubble = (props) => {
