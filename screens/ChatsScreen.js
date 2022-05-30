@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from "react-native";
 import DefaultText from "../components/DefaultText";
 import { useSelector } from "react-redux";
@@ -60,30 +61,42 @@ const ChatsScreen = (props) => {
   const { navigation } = props;
 
   const [chatsDetails, setChatsDetails] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
   const { chatRooms, firstName } = userInfo;
 
-  useEffect(() => {
-    const getMessages = async () => {
-      try {
-        let arr = encodeURIComponent(JSON.stringify(chatRooms));
-        const response = await fetch(`${URL}/api/chat/${arr}`);
-        const responseData = await response.json();
-        const { chats, message } = responseData;
-        console.log("responseData ", responseData);
-        setChatsDetails(chats);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
+  const getMessages = async () => {
+    try {
+      let arr = encodeURIComponent(JSON.stringify(chatRooms));
+      const response = await fetch(`${URL}/api/chat/${arr}`);
+      const responseData = await response.json();
+      const { chats, message } = responseData;
+      console.log("responseData ", responseData);
+      setChatsDetails(chats);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     if (chatRooms) {
       getMessages();
     }
   }, [chatRooms]);
+
+  useEffect(() => {
+    if (refreshing) getMessages();
+  }, [refreshing]);
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });
@@ -203,6 +216,9 @@ const ChatsScreen = (props) => {
           data={chatsDetails}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       </View>
     </SafeAreaView>
