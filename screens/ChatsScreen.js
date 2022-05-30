@@ -9,11 +9,15 @@ import {
   Image,
   RefreshControl,
 } from "react-native";
-import DefaultText from "../components/DefaultText";
-import { useSelector } from "react-redux";
+
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
+
 import { URL } from "./../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+
+import DefaultText from "../components/DefaultText";
+
 const Messages = [
   {
     id: "1",
