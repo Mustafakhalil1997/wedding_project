@@ -1,4 +1,10 @@
-import React, { useEffect, useReducer, useState, useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useReducer,
+  useState,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import {
   View,
   FlatList,
@@ -8,6 +14,7 @@ import {
   TouchableOpacity,
   Platform,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setHallList } from "../store/actions/HallList";
@@ -47,6 +54,14 @@ const HallList = (props) => {
       ),
     });
   });
+
+  const onRefresh = useCallback(() => {
+    setLoading(true);
+    tryAgain();
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
@@ -150,6 +165,9 @@ const HallList = (props) => {
           showsVerticalScrollIndicator={false}
           data={DUMMY_HALLLIST}
           renderItem={renderHall}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={tryAgain} />
+          }
         />
       </View>
     </SafeAreaView>
