@@ -1,16 +1,22 @@
+import React, { useState, useCallback, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+
 import {
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import React, { useState, useCallback, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
-import DefaultText from "../components/DefaultText";
-import { useSelector } from "react-redux";
-import { URL } from "./../helpers/url";
 import { showMessage } from "react-native-flash-message";
+import { io } from "socket.io-client";
+
+import { URL } from "./../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
+import DefaultText from "../components/DefaultText";
+
+const socket = io.connect(URL);
 
 const ChatScreen = (props) => {
   const { route, navigation } = props;
@@ -23,7 +29,20 @@ const ChatScreen = (props) => {
     id: userId,
     firstName,
     lastName,
+    profileImage,
   } = useSelector((state) => state.Auth.userInfo);
+
+  useEffect(() => {
+    socket.on(userId, async (messagesReceived) => {
+      console.log("id of user that received message ", userId);
+      console.log("messagesReceived ", messagesReceived);
+      console.log("type of time ", typeof messagesReceived[0].createdAt);
+
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messagesReceived)
+      );
+    });
+  }, []);
 
   useEffect(() => {
     const convertedMessages = chats.map((chat) => {
@@ -37,7 +56,7 @@ const ChatScreen = (props) => {
           name: senderId === userId ? firstName + " " + lastName : title,
           avatar:
             senderId === userId
-              ? require("../constants/images/Roger.jpg")
+              ? cloudinaryURL + profileImage
               : cloudinaryURL + contactImage,
         },
       };
@@ -47,10 +66,16 @@ const ChatScreen = (props) => {
     setMessages(convertedMessages);
   }, []);
 
+  console.log("userId ", userId);
+
   const onSend = useCallback(async (messages = []) => {
-    const time = messages[0].createdAt;
-    console.log("time ", time.getHours() + ":" + time.getMinutes());
+    // const time = messages[0].createdAt;
+    // console.log("time ", time.getHours() + ":" + time.getMinutes());
+    messages[0].user.avatar = cloudinaryURL + profileImage;
     console.log("message ", messages);
+    console.log("type of time in send ", typeof messages[0].createdAt);
+    console.log("type of message in send ", typeof messages);
+    socket.emit("sentMessage", { contactId, messages });
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
