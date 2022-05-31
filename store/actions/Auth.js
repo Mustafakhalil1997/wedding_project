@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const login = (token, userInfo, hallInfo) => {
   const currentDate = new Date();
-  const expirationDate = new Date(currentDate.getTime() + 10 * 60000); // 10 minutes      // 24 hours or 1440 minutes
+  const expirationDate = new Date(currentDate.getTime() + 60 * 60000); // 10 minutes      // 24 hours or 1440 minutes
   console.log("this is login ");
   console.log("hallInfo ", hallInfo);
 

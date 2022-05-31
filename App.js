@@ -17,6 +17,7 @@ import * as Font from "expo-font";
 import hallListReducer from "./store/reducers/HallList";
 import currentLocationReducer from "./store/reducers/Location";
 import AuthReducer from "./store/reducers/Auth";
+import ChatReducer from "./store/reducers/Chat";
 import UserTabNavigator from "./navigations/UserTabNavigation";
 import SwitchNavigation from "./navigations/SwitchNavigation";
 import { setToken } from "./store/actions/Auth";
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   halls: hallListReducer,
   location: currentLocationReducer,
   Auth: AuthReducer,
+  Chats: ChatReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

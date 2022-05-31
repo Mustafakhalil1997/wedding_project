@@ -11,12 +11,18 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { io } from "socket.io-client";
 
 import { URL } from "./../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 import DefaultText from "../components/DefaultText";
+import { getChats } from "../store/actions/Chat";
+import ChatItem from "../components/ChatItem";
+
+const socket = io.connect(URL);
 
 const Messages = [
   {
@@ -64,13 +70,19 @@ const Messages = [
 const ChatsScreen = (props) => {
   const { navigation } = props;
 
-  const [chatsDetails, setChatsDetails] = useState([]);
+  // const [chatsDetails, setChatsDetails] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [flag, setFlag] = useState(false);
+
+  const dispatch = useDispatch();
 
   const token = useSelector((state) => state.Auth.token);
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const chatsDetails = useSelector((state) => state.Chats.chats);
 
-  const { chatRooms, firstName } = userInfo;
+  console.log("chatsDetails after update ", chatsDetails);
+
+  const { chatRooms, firstName, id: userId } = userInfo;
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -81,16 +93,63 @@ const ChatsScreen = (props) => {
 
   const getMessages = async () => {
     try {
-      let arr = encodeURIComponent(JSON.stringify(chatRooms));
-      const response = await fetch(`${URL}/api/chat/${arr}`);
-      const responseData = await response.json();
-      const { chats, message } = responseData;
-      console.log("responseData ", responseData);
-      setChatsDetails(chats);
+      dispatch(getChats(chatRooms));
+      setFlag(true);
     } catch (err) {
       console.log(err);
     }
   };
+
+  // try setting a listener for every room and pass room id with receiverId
+  useEffect(() => {
+    if (flag) {
+      for (let i = 0; i < chatRooms.length; i++) {
+        console.log("room ", chatRooms[i]);
+        const objectListener = {
+          contactId: userId,
+          chatRoom: chatRooms[i],
+        };
+        const stringObjectListener = JSON.stringify(objectListener);
+        socket.on(stringObjectListener, (messagesReceived) => {
+          console.log("id of user that received message ", userId);
+          console.log("messagesReceived ", messagesReceived);
+          console.log("type of time ", typeof messagesReceived[0].createdAt);
+
+          // set chats adding new message
+          console.log("chatsDetails in on ", chatsDetails);
+          const index = chatsDetails.findIndex(
+            (chatDetails) => chatDetails._id === chatRooms[i]
+          );
+          const chatRoom = chatsDetails.find((chatDetails) => {
+            console.log(
+              "chatDetails ",
+              typeof chatDetails._id,
+              chatDetails._id
+            );
+            console.log("chatRoom ", typeof chatRooms[i], chatRooms[i]);
+            return chatDetails._id === chatRooms[i];
+          });
+
+          const newMessage = {
+            _id: messagesReceived[0]._id,
+            message: messagesReceived[0].text,
+            time: messagesReceived[0].createdAt,
+            senderId: messagesReceived[0].user._id,
+            receiverId: userId,
+          };
+
+          console.log("chatRoom.chats ", chatRoom);
+
+          chatRoom.chats.unshift(newMessage);
+
+          const newChats = [...chatsDetails];
+          newChats[index] = chatRoom;
+          console.log("hereee");
+          dispatch(getChats(newChats));
+        });
+      }
+    }
+  }, [flag]);
 
   useEffect(() => {
     if (chatRooms) {
@@ -112,84 +171,8 @@ const ChatsScreen = (props) => {
   };
 
   const renderItem = ({ item }) => {
-    console.log("item ", item);
-    const { _id, chats, contacts } = item;
-
-    const lastChat = chats[0];
-    const { message, time } = lastChat;
-
-    let contactImage;
-    let contactId;
-
-    const convertedTime = new Date(time);
-    console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
-    const now = new Date();
-
-    const timeDifference = (() => {
-      // when message was sent
-      const diffMs = now - convertedTime;
-      const diffDays = Math.floor(diffMs / 86400000); // days
-      if (diffDays >= 1) return diffDays + " days ago";
-      const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-      if (diffHrs >= 1) return diffHrs + " hours ago";
-      const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-      return diffMins + " minutes ago";
-    })();
-
-    const contactName = (() => {
-      if (contacts[0].firstName === firstName) {
-        contactImage = contacts[1].profileImage;
-        contactId = contacts[1]._id;
-        return contacts[1].firstName + " " + contacts[1].lastName;
-      }
-      contactImage = contacts[0].profileImage;
-      contactId = contacts[0]._id;
-      return contacts[0].firstName + " " + contacts[0].lastName;
-    })();
-
-    console.log(contactName);
-    console.log(lastChat);
-
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Chat", {
-            title: contactName,
-            chats: chats,
-            contactImage: contactImage,
-            contactId: contactId,
-            roomId: _id,
-          });
-        }}
-        style={styles.card}
-      >
-        <View style={styles.userInfo}>
-          <View style={styles.userImageWrapper}>
-            {contactImage !== "" ? (
-              <Image
-                source={{ uri: cloudinaryURL + contactImage }}
-                style={styles.userImage}
-              />
-            ) : (
-              <Image
-                source={require("../constants/images/Roger.jpg")}
-                // source={require("../../constants/images/Roger.jpg")}
-                style={styles.userImage}
-              />
-            )}
-          </View>
-          <View style={styles.textSection}>
-            <View style={styles.userInfoText}>
-              <DefaultText style={styles.userName}>{contactName}</DefaultText>
-              <DefaultText style={styles.postTime}>
-                {timeDifference}
-              </DefaultText>
-            </View>
-            <DefaultText style={styles.messageText}>{message}</DefaultText>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
+    // console.log("item ", item);
+    return <ChatItem navigation={navigation} item={item} />;
   };
 
   if (!token) {
@@ -217,6 +200,7 @@ const ChatsScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={{ flex: 1 }}>
         <FlatList
+          keyExtractor={(item) => item._id}
           data={chatsDetails}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
@@ -241,51 +225,6 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     alignItems: "center",
     backgroundColor: "#ffffff",
-  },
-  card: {
-    width: "100%",
-  },
-  userInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userImageWrapper: {
-    flex: 1,
-    paddingTop: 15,
-    paddingBottom: 15,
-  },
-  userImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  textSection: {
-    flex: 6,
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: 15,
-    paddingLeft: 0,
-    marginLeft: 10,
-    // width: 300,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  userInfoText: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 5,
-  },
-  userName: {
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  postTime: {
-    fontSize: 12,
-    color: "#666",
-  },
-  messageText: {
-    fontSize: 14,
-    color: "#333333",
   },
 });
 

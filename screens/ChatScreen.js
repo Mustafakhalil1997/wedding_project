@@ -21,7 +21,17 @@ const socket = io.connect(URL);
 const ChatScreen = (props) => {
   const { route, navigation } = props;
 
-  const { title, chats, contactImage, contactId, roomId } = route.params;
+  const { title, contactImage, contactId, roomId } = route.params;
+
+  const chatRooms = useSelector((state) => state.Chats.chats);
+
+  const chatRoom = chatRooms.find((room) => {
+    return room._id === roomId;
+  });
+
+  // console.log("chatRooom ", chatRoom);
+
+  const { chats } = chatRoom;
 
   const [messages, setMessages] = useState([]);
 
@@ -33,15 +43,14 @@ const ChatScreen = (props) => {
   } = useSelector((state) => state.Auth.userInfo);
 
   useEffect(() => {
-    socket.on(userId, async (messagesReceived) => {
-      console.log("id of user that received message ", userId);
-      console.log("messagesReceived ", messagesReceived);
-      console.log("type of time ", typeof messagesReceived[0].createdAt);
-
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messagesReceived)
-      );
-    });
+    // socket.on(userId, (messagesReceived) => {
+    //   console.log("id of user that received message ", userId);
+    //   console.log("messagesReceived ", messagesReceived);
+    //   console.log("type of time ", typeof messagesReceived[0].createdAt);
+    //   setMessages((previousMessages) =>
+    //     GiftedChat.append(previousMessages, messagesReceived)
+    //   );
+    // });
   }, []);
 
   useEffect(() => {
@@ -64,7 +73,7 @@ const ChatScreen = (props) => {
     });
 
     setMessages(convertedMessages);
-  }, []);
+  }, [chats]);
 
   console.log("userId ", userId);
 
@@ -75,7 +84,11 @@ const ChatScreen = (props) => {
     console.log("message ", messages);
     console.log("type of time in send ", typeof messages[0].createdAt);
     console.log("type of message in send ", typeof messages);
-    socket.emit("sentMessage", { contactId, messages });
+    const stringObjectListener = JSON.stringify({
+      contactId: contactId,
+      chatRoom: roomId,
+    });
+    socket.emit("sentMessage", { stringObjectListener, messages });
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
@@ -98,7 +111,9 @@ const ChatScreen = (props) => {
         },
         body: JSON.stringify({ roomId: roomId, newMessage }),
       });
-    } catch (err) {}
+    } catch (err) {
+      console.log("err ", err);
+    }
   }, []);
 
   const renderBubble = (props) => {
