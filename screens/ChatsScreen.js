@@ -209,7 +209,7 @@ const ChatsScreen = (props) => {
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={{ flex: 1 }}>
         <FlatList
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => `${item._id}`}
           data={chatsDetails}
           renderItem={renderItem}
           refreshControl={
