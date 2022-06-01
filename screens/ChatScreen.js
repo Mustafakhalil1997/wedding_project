@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import {
   FontAwesome,
@@ -15,6 +15,7 @@ import { io } from "socket.io-client";
 import { URL } from "./../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 import DefaultText from "../components/DefaultText";
+import { setChats } from "./../store/actions/Chat";
 
 const socket = io.connect(URL);
 
@@ -23,7 +24,10 @@ const ChatScreen = (props) => {
 
   const { title, contactImage, contactId, roomId } = route.params;
 
+  const dispatch = useDispatch();
   const chatRooms = useSelector((state) => state.Chats.chats);
+
+  console.log("this is the chat screen");
 
   const chatRoom = chatRooms.find((room) => {
     return room._id === roomId;
@@ -73,7 +77,7 @@ const ChatScreen = (props) => {
     });
 
     setMessages(convertedMessages);
-  }, [chats]);
+  }, [chatRoom]);
 
   console.log("userId ", userId);
 
@@ -81,9 +85,6 @@ const ChatScreen = (props) => {
     // const time = messages[0].createdAt;
     // console.log("time ", time.getHours() + ":" + time.getMinutes());
     messages[0].user.avatar = cloudinaryURL + profileImage;
-    console.log("message ", messages);
-    console.log("type of time in send ", typeof messages[0].createdAt);
-    console.log("type of message in send ", typeof messages);
     const stringObjectListener = JSON.stringify({
       contactId: contactId,
       chatRoom: roomId,
@@ -97,6 +98,41 @@ const ChatScreen = (props) => {
 
     const { _id, createdAt, text, user } = message;
     const newMessage = {
+      _id: _id,
+      message: text,
+      senderId: userId,
+      receiverId: contactId,
+      time: createdAt,
+    };
+
+    const index = chatRooms.findIndex((chatRoom) => chatRoom._id === roomId);
+    const chatRoom = chatRooms.find((chatRoom) => {
+      console.log("chatDetails ", typeof chatRoom._id, chatRoom._id);
+      // console.log("chatRoom ", typeof chatRooms[i], chatRooms[i]);
+      return chatRoom._id === roomId;
+    });
+
+    // const newMessage = {
+    //   _id: messagesReceived[0]._id,
+    //   message: messagesReceived[0].text,
+    //   time: messagesReceived[0].createdAt,
+    //   senderId: messagesReceived[0].user._id,
+    //   receiverId: userId,
+    // };
+
+    console.log("chatRoom.chats ", chatRoom);
+
+    chatRoom.chats.unshift(newMessage);
+
+    const newChats = [...chatRooms];
+    newChats.sort((x, y) => {
+      return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
+    });
+    // newChats[index] = chatRoom;
+    // console.log("hereee");
+    dispatch(setChats(newChats));
+
+    const messageSentToDatabase = {
       message: text,
       senderId: userId,
       receiverId: contactId,
@@ -109,7 +145,10 @@ const ChatScreen = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ roomId: roomId, newMessage }),
+        body: JSON.stringify({
+          roomId: roomId,
+          newMessage: messageSentToDatabase,
+        }),
       });
     } catch (err) {
       console.log("err ", err);
