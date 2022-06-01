@@ -19,7 +19,7 @@ import { URL } from "./../helpers/url";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 import DefaultText from "../components/DefaultText";
-import { getChats } from "../store/actions/Chat";
+import { getChats, setChats } from "../store/actions/Chat";
 import ChatItem from "../components/ChatItem";
 
 const socket = io.connect(URL);
@@ -94,11 +94,16 @@ const ChatsScreen = (props) => {
   const getMessages = async () => {
     try {
       dispatch(getChats(chatRooms));
-      setFlag(true);
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (chatsDetails.length !== 0 && flag === false) {
+      setFlag(true);
+    }
+  }, [chatsDetails]);
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
@@ -110,13 +115,14 @@ const ChatsScreen = (props) => {
           chatRoom: chatRooms[i],
         };
         const stringObjectListener = JSON.stringify(objectListener);
+        console.log("chatsDetails in useEffect ", chatsDetails);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
           console.log("messagesReceived ", messagesReceived);
           console.log("type of time ", typeof messagesReceived[0].createdAt);
 
           // set chats adding new message
-          console.log("chatsDetails in on ", chatsDetails);
+          // console.log("chatsDetails in on ", chatsDetails);
           const index = chatsDetails.findIndex(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
@@ -143,9 +149,12 @@ const ChatsScreen = (props) => {
           chatRoom.chats.unshift(newMessage);
 
           const newChats = [...chatsDetails];
-          newChats[index] = chatRoom;
-          console.log("hereee");
-          dispatch(getChats(newChats));
+          newChats.sort((x, y) => {
+            return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
+          });
+          // newChats[index] = chatRoom;
+          // console.log("hereee");
+          dispatch(setChats(newChats));
         });
       }
     }
@@ -202,7 +211,6 @@ const ChatsScreen = (props) => {
         <FlatList
           keyExtractor={(item) => item._id}
           data={chatsDetails}
-          keyExtractor={(item) => item.id}
           renderItem={renderItem}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
