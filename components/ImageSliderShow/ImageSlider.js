@@ -17,7 +17,7 @@ const ImageSlider = (props) => {
 
   const [dimensions, setDimensions] = useState(0);
 
-  console.log("images in imageSlider ", images);
+  // console.log("images in imageSlider ", images);
 
   const ref = useRef(null);
 
@@ -42,7 +42,7 @@ const ImageSlider = (props) => {
     setDimensions({ width: width, height: height });
   };
 
-  console.log("dimensions in imageSlider ", dimensions);
+  // console.log("dimensions in imageSlider ", dimensions);
 
   const favoriteIconClickHandler = async () => {
     if (token) {
