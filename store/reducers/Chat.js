@@ -1,4 +1,4 @@
-import { GET_CHATS } from "./../actions/Chat";
+import { GET_CHATS, SET_CHATS } from "./../actions/Chat";
 
 const initialState = {
   //  token: null,
@@ -8,6 +8,11 @@ const initialState = {
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CHATS:
+      return {
+        ...state,
+        chats: action.chats,
+      };
+    case SET_CHATS:
       return {
         ...state,
         chats: action.chats,

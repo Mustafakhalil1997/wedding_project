@@ -1,4 +1,5 @@
 export const GET_CHATS = "GET_CHATS";
+export const SET_CHATS = "SET_CHATS";
 export const GET_CHAT_BY_ROOM_ID = "GET_CHAT_BY_ROOM_ID";
 import { URL } from "./../../helpers/url";
 
@@ -18,6 +19,10 @@ export const getChats = (chatRooms) => {
       console.log("error in action store", err);
     }
   };
+};
+
+export const setChats = (chats) => {
+  return { type: SET_CHATS, chats: chats };
 };
 // export const getChatByRoomId = (roomId) => {
 //   return { type: GET_CHAT_BY_ROOM_ID, roomId: roomId };
