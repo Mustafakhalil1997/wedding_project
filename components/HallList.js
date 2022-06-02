@@ -55,13 +55,13 @@ const HallList = (props) => {
     });
   });
 
-  const onRefresh = useCallback(() => {
-    setLoading(true);
-    tryAgain();
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  // const onRefresh = useCallback(() => {
+  //   setLoading(true);
+  //   tryAgain();
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
