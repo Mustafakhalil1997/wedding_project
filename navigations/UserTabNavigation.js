@@ -7,9 +7,6 @@ import { useSelector } from "react-redux";
 
 import Colors from "../constants/Colors";
 
-import ChatsScreen from "./../screens/ChatsScreen";
-import ChatScreen from "./../screens/ChatScreen";
-
 import HallListScreen from "../screens/UserScreens/HallListScreen";
 import HallDetailScreen from "../screens/UserScreens/HallDetailScreen";
 import FavoriteHallsScreen from "../screens/UserScreens/FavoriteHallsScreen";
@@ -20,6 +17,8 @@ import ProfileScreen from "../screens/UserScreens/ProfileScreen";
 import EditProfileScreen from "../screens/UserScreens/EditProfileScreen";
 import ReservationScreen from "../screens/UserScreens/ReservationScreen";
 import CalendarReserveScreen from "../screens/UserScreens/CalendarReserveScreen";
+import ChatsScreen from "./../screens/UserScreens/ChatsScreen";
+import ChatScreen from "./../screens/UserScreens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

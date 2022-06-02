@@ -12,10 +12,10 @@ import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import { showMessage } from "react-native-flash-message";
 import { io } from "socket.io-client";
 
-import { URL } from "./../helpers/url";
-import { cloudinaryURL } from "./../helpers/cloudinaryURL";
-import DefaultText from "../components/DefaultText";
-import { setChats } from "./../store/actions/Chat";
+import { URL } from "../../helpers/url";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+import DefaultText from "../../components/DefaultText";
+import { setChats } from "../../store/actions/Chat";
 
 const socket = io.connect(URL);
 
@@ -64,7 +64,7 @@ const ChatScreen = (props) => {
 
       setMessages(convertedMessages);
     }
-  }, [chatRoom]);
+  }, [chatRooms]);
 
   const onSend = useCallback(async (messages = []) => {
     messages[0].user.avatar = cloudinaryURL + profileImage;
@@ -107,46 +107,54 @@ const ChatScreen = (props) => {
         return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
       });
 
+      dispatch(setChats(newChats));
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
-      dispatch(setChats(newChats));
+      try {
+        await fetch(`${URL}/api/chat/sendMessage`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            roomId: roomId,
+            newMessage: messageSentToDatabase,
+          }),
+        });
+      } catch (err) {
+        console.log("err ", err);
+      }
     } else {
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
-
       const requestBody = {
         firstMessage: messageSentToDatabase,
         userId: userId,
         hallId: contactId,
       };
       try {
-        await fetch(`${URL}/api/chat/createChat`, {
+        const response = await fetch(`${URL}/api/chat/createChat`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(requestBody),
         });
+
+        const responseData = response.json();
+
+        if (response.status !== 200) {
+          console.log("returned with status ", response.status);
+        } else {
+          const { chatRoom } = responseData;
+          const newChats = [chatRoom, ...chatRooms];
+          dispatch(setChats(newChats));
+        }
       } catch (err) {
         console.log("err ", err);
       }
-    }
-
-    try {
-      await fetch(`${URL}/api/chat/sendMessage`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          roomId: roomId,
-          newMessage: messageSentToDatabase,
-        }),
-      });
-    } catch (err) {
-      console.log("err ", err);
     }
   }, []);
 

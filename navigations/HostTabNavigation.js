@@ -14,8 +14,8 @@ import CalendarScreen from "../screens/HostScreens/CalendarScreen";
 import HostProfileScreen from "../screens/HostScreens/HostProfileScreen";
 import EditHallScreen from "../screens/HostScreens/EditHallScreen";
 import CompleteHostProfileScreen from "../screens/HostScreens/completeHostProfileScreen";
-import ChatsScreen from "../screens/ChatsScreen";
-import ChatScreen from "../screens/ChatScreen";
+import ChatsScreen from "../screens/HostScreens/ChatsScreen";
+import ChatScreen from "../screens/HostScreens/ChatScreen";
 import EditImagesScreen from "./../screens/HostScreens/EditImagesScreen";
 import HomeScreen from "./../screens/HostScreens/HomeScreen";
 

@@ -5,9 +5,11 @@ import DefaultText from "./DefaultText";
 import { useSelector } from "react-redux";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
-const ChatItem = (props) => {
+const UserChatItem = (props) => {
   const { navigation, item } = props;
-  const { _id, chats, contacts } = item;
+  const { _id, chats, hallId: hallItem } = item;
+
+  console.log("hallItem in chatItem ", hallItem);
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
@@ -15,9 +17,6 @@ const ChatItem = (props) => {
 
   const lastChat = chats[0];
   const { message, time } = lastChat;
-
-  let contactImage;
-  let contactId;
 
   const convertedTime = new Date(time);
   console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
@@ -35,16 +34,20 @@ const ChatItem = (props) => {
     return "now";
   })();
 
-  const contactName = (() => {
-    if (contacts[0].firstName === firstName) {
-      contactImage = contacts[1].profileImage;
-      contactId = contacts[1]._id;
-      return contacts[1].firstName + " " + contacts[1].lastName;
-    }
-    contactImage = contacts[0].profileImage;
-    contactId = contacts[0]._id;
-    return contacts[0].firstName + " " + contacts[0].lastName;
-  })();
+  const contactName = hallItem.hallName;
+  const contactImage = hallItem.images[0];
+  const contactId = hallItem._id;
+
+  // const contactName = (() => {
+  //   if ( === firstName) {
+  //     contactImage = contacts[1].profileImage;
+  //     contactId = contacts[1]._id;
+  //     return contacts[1].firstName + " " + contacts[1].lastName;
+  //   }
+  //   contactImage = contacts[0].profileImage;
+  //   contactId = contacts[0]._id;
+  //   return contacts[0].firstName + " " + contacts[0].lastName;
+  // })();
 
   console.log(contactName);
   console.log(lastChat);
@@ -136,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatItem;
+export default UserChatItem;
