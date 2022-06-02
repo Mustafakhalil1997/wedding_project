@@ -67,6 +67,17 @@ const HallDetailScreen = (props) => {
     });
   };
 
+  const contactHostClickHandler = () => {
+    navigation.navigate({
+      name: "Chat",
+      params: {
+        title: name,
+        contactId: hallId,
+        contactImage: images[0],
+      },
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <ScrollView>
@@ -118,6 +129,20 @@ const HallDetailScreen = (props) => {
                 <Text style={{ alignSelf: "center" }}>2000$</Text>
               </View>
             </View>
+
+            <TouchableOpacity
+              onPress={contactHostClickHandler}
+              style={[
+                styles.reserveButtonContainer,
+                { backgroundColor: "white" },
+              ]}
+            >
+              <DefaultText
+                styles={{ ...styles.reserveButtonText, color: "black" }}
+              >
+                CONTACT HOST
+              </DefaultText>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={reserveClickHandler}
@@ -175,6 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: "black",
+    marginVertical: 5,
   },
   reserveButtonText: {
     fontSize: 16,
