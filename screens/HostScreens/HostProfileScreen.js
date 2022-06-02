@@ -31,10 +31,12 @@ const HostProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
-  const { id: hallId, images } = hallInfo;
   const { firstName, lastName, email, id, profileImage } = userInfo;
 
-  const convertedImagesUrl = images.map((image) => cloudinaryURL + image);
+  let convertedImagesUrl;
+  if (hallInfo) {
+    convertedImagesUrl = hallInfo.images.map((image) => cloudinaryURL + image);
+  }
 
   const logoutClickHandler = () => {
     dispatch(logout());
@@ -59,54 +61,39 @@ const HostProfileScreen = (props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.profileContainer}>
-        <View style={[styles.imagesContainer]}>
-          {convertedImagesUrl.map((imageUri, index) => (
-            <Image
-              key={index}
-              source={{ uri: imageUri }}
-              style={{
-                ...styles.image,
-                width: (width - 40 - 1) / 3,
-                height: 100,
-                aspectRatio: 2 / 2,
-              }}
-            />
-          ))}
-          {/* <Image
-            source={{ uri: convertedImagesUrl[0] }}
-            style={{
-              ...styles.image,
-              width: (width - 40 - 1) / 3,
-              height: 100,
-              aspectRatio: 2 / 2,
-            }}
-          /> */}
+        {convertedImagesUrl && (
+          <View style={[styles.imagesContainer]}>
+            {convertedImagesUrl.map((imageUri, index) => (
+              <Image
+                key={index}
+                source={{ uri: imageUri }}
+                style={{
+                  ...styles.image,
+                  width: (width - 40 - 1) / 3,
+                  height: 100,
+                  aspectRatio: 2 / 2,
+                }}
+              />
+            ))}
 
-          <TouchableOpacity onPress={editImagesClickHandler}>
-            <View
-              style={{
-                width: (width - 40 - 1) / 3,
-                height: (width - 40 - 1) / 3,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <DefaultText
-                styles={{ fontSize: 18, fontFamily: "open-sans-bold" }}
+            <TouchableOpacity onPress={editImagesClickHandler}>
+              <View
+                style={{
+                  width: (width - 40 - 1) / 3,
+                  height: (width - 40 - 1) / 3,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                EDIT
-              </DefaultText>
-            </View>
-            {/* <Image
-              source={require("../constants/images/addImageIcon.png")}
-              style={{
-                width: (width - 40 - 1) / 3,
-                height: (width - 40 - 1) / 3,
-                aspectRatio: 2 / 2,
-              }}
-            /> */}
-          </TouchableOpacity>
-        </View>
+                <DefaultText
+                  styles={{ fontSize: 18, fontFamily: "open-sans-bold" }}
+                >
+                  EDIT
+                </DefaultText>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
         <DefaultText styles={styles.contentTitle}>Account Settings</DefaultText>
         <View style={styles.accountSettings}>
           <ProfileElement iconName="person-circle-outline">
