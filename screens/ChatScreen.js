@@ -24,78 +24,52 @@ const ChatScreen = (props) => {
 
   const { title, contactImage, contactId, roomId } = route.params;
 
-  const dispatch = useDispatch();
-  const chatRooms = useSelector((state) => state.Chats.chats);
-
-  console.log("this is the chat screen");
-
-  const chatRoom = chatRooms.find((room) => {
-    return room._id === roomId;
-  });
-
-  // console.log("chatRooom ", chatRoom);
-
-  const { chats } = chatRoom;
-
   const [messages, setMessages] = useState([]);
 
+  const dispatch = useDispatch();
   const {
     id: userId,
     firstName,
     lastName,
     profileImage,
   } = useSelector((state) => state.Auth.userInfo);
+  const chatRooms = useSelector((state) => state.Chats.chats);
 
-  useEffect(() => {
-    // socket.on(userId, (messagesReceived) => {
-    //   console.log("id of user that received message ", userId);
-    //   console.log("messagesReceived ", messagesReceived);
-    //   console.log("type of time ", typeof messagesReceived[0].createdAt);
-    //   setMessages((previousMessages) =>
-    //     GiftedChat.append(previousMessages, messagesReceived)
-    //   );
-    // });
-  }, []);
-
-  useEffect(() => {
-    const convertedMessages = chats.map((chat) => {
-      const { _id, message, time, senderId } = chat;
-      const newMessage = {
-        _id: _id.toString(),
-        text: message,
-        createdAt: time,
-        user: {
-          _id: senderId.toString(),
-          name: senderId === userId ? firstName + " " + lastName : title,
-          avatar:
-            senderId === userId
-              ? cloudinaryURL + profileImage
-              : cloudinaryURL + contactImage,
-        },
-      };
-      return newMessage;
+  let chatRoom;
+  if (roomId) {
+    chatRoom = chatRooms.find((room) => {
+      return room._id === roomId;
     });
+  }
 
-    setMessages(convertedMessages);
+  useEffect(() => {
+    if (chatRoom) {
+      const convertedMessages = chatRoom.chats.map((chat) => {
+        const { _id, message, time, senderId } = chat;
+        const newMessage = {
+          _id: _id.toString(),
+          text: message,
+          createdAt: time,
+          user: {
+            _id: senderId.toString(),
+            name: senderId === userId ? firstName + " " + lastName : title,
+            avatar:
+              senderId === userId
+                ? cloudinaryURL + profileImage
+                : cloudinaryURL + contactImage,
+          },
+        };
+        return newMessage;
+      });
+
+      setMessages(convertedMessages);
+    }
   }, [chatRoom]);
 
-  console.log("userId ", userId);
-
   const onSend = useCallback(async (messages = []) => {
-    // const time = messages[0].createdAt;
-    // console.log("time ", time.getHours() + ":" + time.getMinutes());
     messages[0].user.avatar = cloudinaryURL + profileImage;
-    const stringObjectListener = JSON.stringify({
-      contactId: contactId,
-      chatRoom: roomId,
-    });
-    socket.emit("sentMessage", { stringObjectListener, messages });
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
 
     const message = messages[0];
-
     const { _id, createdAt, text, user } = message;
     const newMessage = {
       _id: _id,
@@ -105,39 +79,60 @@ const ChatScreen = (props) => {
       time: createdAt,
     };
 
-    const index = chatRooms.findIndex((chatRoom) => chatRoom._id === roomId);
-    const chatRoom = chatRooms.find((chatRoom) => {
-      console.log("chatDetails ", typeof chatRoom._id, chatRoom._id);
-      // console.log("chatRoom ", typeof chatRooms[i], chatRooms[i]);
-      return chatRoom._id === roomId;
-    });
-
-    // const newMessage = {
-    //   _id: messagesReceived[0]._id,
-    //   message: messagesReceived[0].text,
-    //   time: messagesReceived[0].createdAt,
-    //   senderId: messagesReceived[0].user._id,
-    //   receiverId: userId,
-    // };
-
-    console.log("chatRoom.chats ", chatRoom);
-
-    chatRoom.chats.unshift(newMessage);
-
-    const newChats = [...chatRooms];
-    newChats.sort((x, y) => {
-      return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
-    });
-    // newChats[index] = chatRoom;
-    // console.log("hereee");
-    dispatch(setChats(newChats));
-
     const messageSentToDatabase = {
       message: text,
       senderId: userId,
       receiverId: contactId,
       time: createdAt,
     };
+
+    let stringObjectListener;
+    let chatRoom;
+    if (roomId) {
+      stringObjectListener = JSON.stringify({
+        contactId: contactId,
+        chatRoom: roomId,
+      });
+      socket.emit("sentMessage", { stringObjectListener, messages });
+
+      // const index = chatRooms.findIndex((chatRoom) => chatRoom._id === roomId);
+      chatRoom = chatRooms.find((chatRoom) => {
+        return chatRoom._id === roomId;
+      });
+
+      chatRoom.chats.unshift(newMessage);
+
+      const newChats = [...chatRooms];
+      newChats.sort((x, y) => {
+        return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
+      });
+
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
+      dispatch(setChats(newChats));
+    } else {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages)
+      );
+
+      const requestBody = {
+        firstMessage: messageSentToDatabase,
+        userId: userId,
+        hallId: contactId,
+      };
+      try {
+        await fetch(`${URL}/api/chat/createChat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        });
+      } catch (err) {
+        console.log("err ", err);
+      }
+    }
 
     try {
       await fetch(`${URL}/api/chat/sendMessage`, {
