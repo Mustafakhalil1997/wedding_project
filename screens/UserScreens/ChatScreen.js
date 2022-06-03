@@ -24,6 +24,7 @@ import { setChats } from "../../store/actions/Chat";
 import customBackArrow from "./../../helpers/customBackArrow";
 import { CommonActions } from "@react-navigation/native";
 import { editProfile } from "./../../store/actions/Auth";
+import { setStatus } from "./../../store/actions/Chat";
 
 const socket = io.connect(URL);
 
@@ -50,22 +51,22 @@ const ChatScreen = (props) => {
     });
   }
 
-  const goBackToChats = () => {
-    navigation.dispatch({
-      ...CommonActions.reset({
-        index: 0,
-        routes: [{ name: "ChatStack" }],
-      }),
-    });
-  };
+  // const goBackToChats = () => {
+  //   navigation.dispatch({
+  //     ...CommonActions.reset({
+  //       index: 0,
+  //       routes: [{ name: "ChatStack" }],
+  //     }),
+  //   });
+  // };
 
-  useLayoutEffect(() => {
-    customBackArrow({
-      navigation,
-      isSubmitting: false,
-      onPress: goBackToChats,
-    });
-  }, []);
+  // useLayoutEffect(() => {
+  //   customBackArrow({
+  //     navigation,
+  //     isSubmitting: false,
+  //     onPress: goBackToChats,
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (chatRoom) {
@@ -169,7 +170,7 @@ const ChatScreen = (props) => {
           body: JSON.stringify(requestBody),
         });
 
-        const responseData = response.json();
+        const responseData = await response.json();
 
         console.log("responseData ", responseData);
 
@@ -181,6 +182,7 @@ const ChatScreen = (props) => {
 
           const { _id: roomId, hallId: contactId } = chatRoom;
 
+          dispatch(setStatus(100));
           dispatch(editProfile(user));
           dispatch(setChats(newChats));
           stringObjectListener = JSON.stringify({
