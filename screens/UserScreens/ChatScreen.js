@@ -135,7 +135,7 @@ const ChatScreen = (props) => {
 
     let stringObjectListener;
     let chatRoom;
-    if (roomId) {
+    if (roomId || existingChatRoom) {
       stringObjectListener = JSON.stringify({
         contactId: contactId,
         chatRoom: roomId,
