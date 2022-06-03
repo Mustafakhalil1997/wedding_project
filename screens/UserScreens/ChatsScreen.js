@@ -84,7 +84,7 @@ const ChatsScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const chatsDetails = useSelector((state) => state.Chats.chats);
   const status = useSelector((state) => state.Chats.status);
-
+  console.log("status ", status);
   console.log("chatsDetails after update ", chatsDetails);
 
   const { chatRooms, firstName, id: userId } = userInfo;
@@ -106,6 +106,7 @@ const ChatsScreen = (props) => {
       dispatch(getChats(chatRooms, "user"));
     };
     if (token && chatRooms.length !== 0 && status === 100) {
+      console.log("loading list of chats again");
       setLoading(true);
       getMessages();
     }
