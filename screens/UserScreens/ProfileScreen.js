@@ -22,6 +22,7 @@ import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 import DefaultText from "../../components/DefaultText";
 import ProfileElement from "./ProfileElement";
+import { logOut } from "./../../store/actions/Chat";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -51,6 +52,7 @@ const ProfileScreen = (props) => {
 
   const logoutClickHandler = () => {
     dispatch(logout());
+    dispatch(logOut());
   };
 
   const switchProfileClickHandler = () => {
