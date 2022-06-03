@@ -89,6 +89,7 @@ const ChatsScreen = (props) => {
 
   const { chatRooms, firstName, id: userId } = userInfo;
 
+  console.log("chatRooms ", chatRooms);
   // const onRefresh = useCallback(() => {
   //   setRefreshing(true);
   //   setTimeout(() => {
@@ -108,7 +109,7 @@ const ChatsScreen = (props) => {
       setLoading(true);
       getMessages();
     }
-  }, [chatRooms, status]);
+  }, [userInfo, status]);
 
   // useEffect(() => {
   //   if (loading) getMessages();
