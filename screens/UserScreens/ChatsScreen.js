@@ -15,15 +15,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 
 import { io } from "socket.io-client";
+import { Ionicons } from "@expo/vector-icons";
 
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
-
-import DefaultText from "../../components/DefaultText";
 import { getChats, setChats } from "../../store/actions/Chat";
-import Colors from "../../constants/Colors";
 import { setStatus } from "./../../store/actions/Chat";
+
+import Colors from "../../constants/Colors";
 import UserChatItem from "./../../components/UserChatItem";
+import DefaultText from "../../components/DefaultText";
 
 const socket = io.connect(URL);
 
