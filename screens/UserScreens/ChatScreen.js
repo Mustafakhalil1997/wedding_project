@@ -51,6 +51,19 @@ const ChatScreen = (props) => {
     });
   }
 
+  let existingChatRoom;
+  if (!roomId) {
+    existingChatRoom = chatRooms.find((room) => {
+      // console.log("type of room id ", typeof room._id);
+      // console.log("type of room.userId", typeof room.userId);
+      // console.log("type of userId", typeof userId);
+      // console.log("type of room.hallId", typeof room.hallId._id);
+      // console.log("type of hallId", typeof contactId);
+      return room.userId === userId && room.hallId._id === contactId;
+    });
+  }
+  console.log("existingChatRoom ", existingChatRoom);
+
   // const goBackToChats = () => {
   //   navigation.dispatch({
   //     ...CommonActions.reset({
@@ -69,8 +82,8 @@ const ChatScreen = (props) => {
   // }, []);
 
   useEffect(() => {
-    if (chatRoom) {
-      const convertedMessages = chatRoom.chats.map((chat) => {
+    const convertMessages = (chatRoom) => {
+      return chatRoom.chats.map((chat) => {
         const { _id, message, time, senderId } = chat;
         const newMessage = {
           _id: _id.toString(),
@@ -87,7 +100,15 @@ const ChatScreen = (props) => {
         };
         return newMessage;
       });
+    };
 
+    if (chatRoom) {
+      const convertedMessages = convertMessages(chatRoom);
+      setMessages(convertedMessages);
+    }
+
+    if (existingChatRoom) {
+      const convertedMessages = convertMessages(existingChatRoom);
       setMessages(convertedMessages);
     }
   }, [chatRooms]);
