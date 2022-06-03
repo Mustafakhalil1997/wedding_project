@@ -100,25 +100,6 @@ const SignupScreen = ({ navigation }) => {
   useEffect(() => {
     const backHandler = customBackHandler({ navigation, isSubmitting });
 
-    // const backHandler = BackHandler.addEventListener(
-    //   "hardwareBackPress",
-    //   () => {
-    //     if (isSubmitting) return true;
-    //   }
-    // );
-
-    // if (isSubmitting) {
-    //   navigation.setOptions({
-    //     gestureEnabled: false,
-    //   });
-    // }
-
-    // if (!isSubmitting) {
-    //   navigation.setOptions({
-    //     gestureEnabled: true,
-    //   });
-    // }
-
     return () => {
       console.log("useEffect returned");
       backHandler.remove();
