@@ -1,4 +1,4 @@
-import { GET_CHATS, SET_CHATS, SET_STATUS } from "./../actions/Chat";
+import { GET_CHATS, SET_CHATS, SET_STATUS, LOG_OUT } from "./../actions/Chat";
 
 const initialState = {
   chats: [],
@@ -24,6 +24,12 @@ const ChatReducer = (state = initialState, action) => {
         status: action.status,
       };
     default:
+    case LOG_OUT:
+      return {
+        ...state,
+        status: 100,
+        chats: [],
+      };
       return state;
   }
 };
