@@ -1,4 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import { View, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -16,6 +21,9 @@ import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
 import { setChats } from "../../store/actions/Chat";
+import customBackArrow from "./../../helpers/customBackArrow";
+import { CommonActions } from "@react-navigation/native";
+import { editProfile } from "./../../store/actions/Auth";
 
 const socket = io.connect(URL);
 
@@ -41,6 +49,23 @@ const ChatScreen = (props) => {
       return room._id === roomId;
     });
   }
+
+  const goBackToChats = () => {
+    navigation.dispatch({
+      ...CommonActions.reset({
+        index: 0,
+        routes: [{ name: "ChatStack" }],
+      }),
+    });
+  };
+
+  useLayoutEffect(() => {
+    customBackArrow({
+      navigation,
+      isSubmitting: false,
+      onPress: goBackToChats,
+    });
+  }, []);
 
   useEffect(() => {
     if (chatRoom) {
@@ -126,6 +151,7 @@ const ChatScreen = (props) => {
         console.log("err ", err);
       }
     } else {
+      console.log("here");
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
@@ -145,12 +171,23 @@ const ChatScreen = (props) => {
 
         const responseData = response.json();
 
+        console.log("responseData ", responseData);
+
         if (response.status !== 200) {
           console.log("returned with status ", response.status);
         } else {
-          const { chatRoom } = responseData;
+          const { chatRoom, user } = responseData;
           const newChats = [chatRoom, ...chatRooms];
+
+          const { _id: roomId, hallId: contactId } = chatRoom;
+
+          dispatch(editProfile(user));
           dispatch(setChats(newChats));
+          stringObjectListener = JSON.stringify({
+            contactId: contactId,
+            chatRoom: roomId,
+          });
+          socket.emit("sentMessage", { stringObjectListener, messages });
         }
       } catch (err) {
         console.log("err ", err);
