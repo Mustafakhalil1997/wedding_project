@@ -152,7 +152,8 @@ const CalendarReserveScreen = ({ route, navigation }) => {
         onDayLongPress={(day) => {
           console.log("selected day", day);
         }}
-        minDate={today}
+        minDate={`${today}`}
+        // minDate={today}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={"MMMM yyyy "}
         // Handler which gets executed when visible month changes in calendar. Default = undefined
