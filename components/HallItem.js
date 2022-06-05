@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     height: "20%",
   },
   imageContainer: {
-    backgroundColor: "red",
+    backgroundColor: "white",
     borderRadius: 10,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
