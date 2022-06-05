@@ -21,6 +21,7 @@ import { login } from "../../store/actions/Auth";
 import { URL } from "../../helpers/url";
 import DefaultText from "../../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { connectionMessage } from "../../helpers/connectionMessageHandler";
 
 // envelope // lock
 
@@ -34,10 +35,17 @@ const LoginScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.Auth.userType);
+  const connectionStatus = useSelector((state) => state.Connection.isConnected);
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
-
+    console.log("connectionStatuss ", connectionStatus);
+    if (!connectionStatus) {
+      console.log("connectionTypee ", connectionType);
+      console.log("not connected to wifi");
+      connectionMessage("You are not connected to wifi");
+      return;
+    }
     const { email, password } = values;
 
     const user = {
