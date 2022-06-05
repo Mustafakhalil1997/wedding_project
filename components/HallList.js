@@ -17,16 +17,21 @@ import {
   RefreshControl,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { setHallList } from "../store/actions/HallList";
-import HallItem from "./HallItem";
-import { setCurrentLocation } from "./../store/actions/Location";
-import Colors from "../constants/Colors";
-import DefaultText from "./DefaultText";
-import { Ionicons } from "@expo/vector-icons";
-import { setStatus } from "./../store/actions/HallList";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import CustomHeaderButton from "./HeaderButton";
+import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import NetInfo from "@react-native-community/netinfo";
+
+import { setHallList } from "../store/actions/HallList";
+import { setCurrentLocation } from "./../store/actions/Location";
+import { setStatus } from "./../store/actions/HallList";
+
+import HallItem from "./HallItem";
+import DefaultText from "./DefaultText";
+import Colors from "../constants/Colors";
+import CustomHeaderButton from "./HeaderButton";
+import { connectionMessage } from "../helpers/connectionMessageHandler";
 
 const HallList = (props) => {
   const { navigation } = props;
@@ -42,6 +47,14 @@ const HallList = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
   const status = useSelector((state) => state.halls.status);
+  const connectionStatus = useSelector((state) => state.Connection.isConnected);
+  const connectionType = useSelector((state) => state.Connection.type);
+  const isReachable = useSelector(
+    (state) => state.Connection.isInternetReachable
+  );
+
+  console.log("connectionStatus ", connectionStatus);
+  console.log("connectionType ", connectionType);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -62,6 +75,14 @@ const HallList = (props) => {
   //     setLoading(false);
   //   }, 2000);
   // }, []);
+
+  useEffect(() => {
+    if (!connectionStatus) {
+      console.log("connectionType ", connectionType);
+      console.log("not connected to wifi");
+      connectionMessage("You are not connected to wifi");
+    }
+  }, [connectionStatus]);
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
