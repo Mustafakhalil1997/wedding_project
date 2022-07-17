@@ -191,13 +191,6 @@ const SignupScreen = ({ navigation }) => {
   };
 
   return (
-    // <SafeAreaView style={[styles.formContainer]}>
-    // <KeyboardAvoidingView
-    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-    //   keyboardVerticalOffset={50}
-    //   style={[styles.formContainer]}
-    //   // enabled={false}
-    // >
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={styles.formContainer}>
         <ScrollView keyboardShouldPersistTaps="handled">

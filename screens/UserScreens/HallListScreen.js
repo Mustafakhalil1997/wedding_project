@@ -24,9 +24,11 @@ const HallListScreen = ({ navigation }) => {
   }, [userInfo]);
 
   return (
-    <View style={styles.screenContainer}>
-      <HallList navigation={navigation} />
-    </View>
+    <SafeAreaView style={styles.screenContainer} edges={["bottom"]}>
+      <View style={styles.screenContainer}>
+        <HallList navigation={navigation} />
+      </View>
+    </SafeAreaView>
   );
 };
 

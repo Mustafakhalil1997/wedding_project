@@ -117,11 +117,9 @@ const FavoriteHallList = (props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
-      <View style={styles.listContainer}>
-        <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
-      </View>
-    </SafeAreaView>
+    <View style={styles.listContainer}>
+      <FlatList data={DUMMY_HALLLIST} renderItem={renderHall} />
+    </View>
   );
 };
 

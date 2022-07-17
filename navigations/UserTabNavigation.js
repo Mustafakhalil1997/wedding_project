@@ -177,7 +177,6 @@ const UserTabNavigator = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
-
         // tabBarVisibilityAnimationConfig: true,
         headerTitleAlign: "center",
 

@@ -31,6 +31,7 @@ import CustomHeaderButton from "../../components/HeaderButton";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import DefaultText from "../../components/DefaultText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -232,127 +233,131 @@ const EditProfileScreen = (props) => {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <ScrollView>
-        <View style={styles.imageContainer}>
-          <View style={styles.imageCircleContainer}>
-            {!profileImage && !profileImagePicked && (
-              <Avatar.Image
-                size={240}
-                source={require("../../constants/images/Roger.jpg")}
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.screenContainer}>
+        <ScrollView>
+          <View style={styles.imageContainer}>
+            <View style={styles.imageCircleContainer}>
+              {!profileImage && !profileImagePicked && (
+                <Avatar.Image
+                  size={240}
+                  source={require("../../constants/images/Roger.jpg")}
+                />
+              )}
+
+              {showImage() && (
+                <Avatar.Image
+                  size={240}
+                  source={{
+                    uri: showImage(),
+                  }}
+                />
+              )}
+            </View>
+            <View style={styles.imagePickerContainer}>
+              <Ionicons
+                name="md-camera-outline"
+                size={30}
+                onPress={pickProfileImage}
               />
-            )}
-
-            {showImage() && (
-              <Avatar.Image
-                size={240}
-                source={{
-                  uri: showImage(),
-                }}
-              />
-            )}
+            </View>
           </View>
-          <View style={styles.imagePickerContainer}>
-            <Ionicons
-              name="md-camera-outline"
-              size={30}
-              onPress={pickProfileImage}
-            />
-          </View>
-        </View>
 
-        <Formik
-          initialValues={userInfoBasic}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmitForm}
-        >
-          {({
-            values,
-            handleChange,
-            handleSubmit,
-            touched,
-            handleBlur,
-            errors,
-            isSubmitting,
-          }) => {
-            let buttonDisabled = false;
-            // if (
-            //   Object.keys(errors).length == 0 &&
-            //   Object.keys(touched).length != 0
-            // ) {
-            //   buttonDisabled = false;
-            // }
-            submitForm = handleSubmit;
+          <Formik
+            initialValues={userInfoBasic}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmitForm}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              touched,
+              handleBlur,
+              errors,
+              isSubmitting,
+            }) => {
+              let buttonDisabled = false;
+              // if (
+              //   Object.keys(errors).length == 0 &&
+              //   Object.keys(touched).length != 0
+              // ) {
+              //   buttonDisabled = false;
+              // }
+              submitForm = handleSubmit;
 
-            return (
-              <View style={styles.inputsContainer}>
-                <CustomInput
-                  iconName="user"
-                  iconSize={32}
-                  value={values.firstName}
-                  label="First Name"
-                  placeholder="John"
-                  onChangeText={handleChange("firstName")}
-                  onBlur={handleBlur("firstName")}
-                  error={touched.firstName && errors.firstName}
-                />
-                <CustomInput
-                  iconName="user"
-                  iconSize={32}
-                  value={values.lastName}
-                  label="Last Name"
-                  placeholder="Smith"
-                  onChangeText={handleChange("lastName")}
-                  onBlur={handleBlur("lastName")}
-                  error={touched.lastName && errors.lastName}
-                />
-                <CustomInput
-                  iconName="envelope"
-                  iconSize={32}
-                  value={values.email}
-                  label="E-mail Address"
-                  keyboardType="email-address"
-                  placeholder="example@gmail.com"
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  error={touched.email && errors.email}
-                  autoCapitalize="none"
-                  editable={false}
-                />
-                {/* <Button
+              return (
+                <View style={styles.inputsContainer}>
+                  <CustomInput
+                    iconName="user"
+                    iconSize={32}
+                    value={values.firstName}
+                    label="First Name"
+                    placeholder="John"
+                    onChangeText={handleChange("firstName")}
+                    onBlur={handleBlur("firstName")}
+                    error={touched.firstName && errors.firstName}
+                  />
+                  <CustomInput
+                    iconName="user"
+                    iconSize={32}
+                    value={values.lastName}
+                    label="Last Name"
+                    placeholder="Smith"
+                    onChangeText={handleChange("lastName")}
+                    onBlur={handleBlur("lastName")}
+                    error={touched.lastName && errors.lastName}
+                  />
+                  <CustomInput
+                    iconName="envelope"
+                    iconSize={32}
+                    value={values.email}
+                    label="E-mail Address"
+                    keyboardType="email-address"
+                    placeholder="example@gmail.com"
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    error={touched.email && errors.email}
+                    autoCapitalize="none"
+                    editable={false}
+                  />
+                  {/* <Button
                   title="Press me"
                   ref={buttonRef}
                   onPress={handleSubmit}
                 /> */}
-                {/* <CustomButton
+                  {/* <CustomButton
                   buttonDisabled={buttonDisabled}
                   handleSubmit={handleSubmit}
                   submitting={isSubmitting}
                   label="SIGN UP"
                   ref={buttonRef}
                 /> */}
-              </View>
-            );
-          }}
-        </Formik>
-        <TouchableOpacity
-          style={{
-            width: "50%",
-            alignSelf: "flex-end",
-            marginHorizontal: 20,
-            marginVertical: 10,
-            backgroundColor: "black",
-            padding: 10,
-            borderRadius: 5,
-            alignItems: "center",
-          }}
-        >
-          <DefaultText style={{ color: "white", fontFamily: "open-sans-bold" }}>
-            Change Password
-          </DefaultText>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+                </View>
+              );
+            }}
+          </Formik>
+          <TouchableOpacity
+            style={{
+              width: "50%",
+              alignSelf: "flex-end",
+              marginHorizontal: 20,
+              marginVertical: 10,
+              backgroundColor: "black",
+              padding: 10,
+              borderRadius: 5,
+              alignItems: "center",
+            }}
+          >
+            <DefaultText
+              style={{ color: "white", fontFamily: "open-sans-bold" }}
+            >
+              Change Password
+            </DefaultText>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

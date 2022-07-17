@@ -158,19 +158,17 @@ const HallList = (props) => {
 
   if (DUMMY_HALLLIST.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View
-          style={[
-            styles.listContainer,
-            {
-              alignItems: "center",
-              justifyContent: "center",
-            },
-          ]}
-        >
-          <DefaultText>There Are no Venues</DefaultText>
-        </View>
-      </SafeAreaView>
+      <View
+        style={[
+          styles.listContainer,
+          {
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        ]}
+      >
+        <DefaultText>There Are no Venues</DefaultText>
+      </View>
     );
   }
 

@@ -16,6 +16,7 @@ import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
 import { setChats } from "../../store/actions/Chat";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const socket = io.connect(URL);
 
@@ -201,21 +202,23 @@ const ChatScreen = (props) => {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <GiftedChat
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: hallId,
-          name: hallName,
-        }}
-        renderBubble={renderBubble}
-        alwaysShowSend
-        renderSend={renderSend}
-        scrollToBottom
-        scrollToBottomComponent={scrollToBottomComponent}
-      />
-    </View>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.screenContainer}>
+        <GiftedChat
+          messages={messages}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: hallId,
+            name: hallName,
+          }}
+          renderBubble={renderBubble}
+          alwaysShowSend
+          renderSend={renderSend}
+          scrollToBottom
+          scrollToBottomComponent={scrollToBottomComponent}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

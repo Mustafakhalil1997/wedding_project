@@ -17,6 +17,7 @@ import CustomHeaderButton from "../../components/HeaderButton";
 import { reserveHall } from "../../store/actions/HallList";
 import customBackArrow from "../../helpers/customBackArrow";
 import customBackHandler from "../../helpers/customBackHandler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CalendarReserveScreen = ({ route, navigation }) => {
   const { hallId, userId } = route.params;
@@ -144,69 +145,75 @@ const CalendarReserveScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.screenContainer}>
-      <Calendar
-        style={{ height: 350 }}
-        onDayPress={dayPressHandler}
-        // Handler which gets executed on day long press. Default = undefined
-        onDayLongPress={(day) => {
-          console.log("selected day", day);
-        }}
-        minDate={`${today}`}
-        // minDate={today}
-        // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-        monthFormat={"MMMM yyyy "}
-        // Handler which gets executed when visible month changes in calendar. Default = undefined
-        onMonthChange={(month) => {
-          console.log("month changed", month);
-        }}
-        markingType={"custom"}
-        markedDates={{
-          ...calendarDates,
-          [daySelected]: {
-            selected: true,
-            customStyles: {
-              container: {
-                backgroundColor: "black",
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.screenContainer}>
+        <Calendar
+          style={{ height: 350 }}
+          onDayPress={dayPressHandler}
+          // Handler which gets executed on day long press. Default = undefined
+          onDayLongPress={(day) => {
+            console.log("selected day", day);
+          }}
+          minDate={`${today}`}
+          // minDate={today}
+          // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
+          monthFormat={"MMMM yyyy "}
+          // Handler which gets executed when visible month changes in calendar. Default = undefined
+          onMonthChange={(month) => {
+            console.log("month changed", month);
+          }}
+          markingType={"custom"}
+          markedDates={{
+            ...calendarDates,
+            [daySelected]: {
+              selected: true,
+              customStyles: {
+                container: {
+                  backgroundColor: "black",
+                },
               },
             },
-          },
-          // "2022-05-10": {
-          //   selected: true,
-          //   marked: true,
-          //   customStyles: {
-          //     container: {
-          //       backgroundColor: "red",
-          //     },
-          //   },
-          // },
-        }}
-        // Enable the option to swipe between months. Default = false
-        enableSwipeMonths={true}
-      />
-      {/* <View
+            // "2022-05-10": {
+            //   selected: true,
+            //   marked: true,
+            //   customStyles: {
+            //     container: {
+            //       backgroundColor: "red",
+            //     },
+            //   },
+            // },
+          }}
+          // Enable the option to swipe between months. Default = false
+          enableSwipeMonths={true}
+        />
+        {/* <View
       style={[
         styles.reserveButtonContainer,
         { marginTop: 10 },
         { opacity: daySelected ? 1 : 0.4 },
       ]}
     > */}
-      <TouchableOpacity
-        onPress={confirmReservationClickHandler}
-        disabled={(daySelected ? false : true) && (isSubmitting ? false : true)}
-        style={[
-          styles.reserveButtonContainer,
-          { width: "60%", alignSelf: "center", marginTop: 10 },
-          { opacity: daySelected ? 1 : 0.4 },
-        ]}
-      >
-        {isSubmitting && <ActivityIndicator color="white"></ActivityIndicator>}
-        {!isSubmitting && (
-          <DefaultText styles={styles.reserveButtonText}>CONFRIM</DefaultText>
-        )}
-      </TouchableOpacity>
-      {/* </View> */}
-    </View>
+        <TouchableOpacity
+          onPress={confirmReservationClickHandler}
+          disabled={
+            (daySelected ? false : true) && (isSubmitting ? false : true)
+          }
+          style={[
+            styles.reserveButtonContainer,
+            { width: "60%", alignSelf: "center", marginTop: 10 },
+            { opacity: daySelected ? 1 : 0.4 },
+          ]}
+        >
+          {isSubmitting && (
+            <ActivityIndicator color="white"></ActivityIndicator>
+          )}
+          {!isSubmitting && (
+            <DefaultText styles={styles.reserveButtonText}>CONFRIM</DefaultText>
+          )}
+        </TouchableOpacity>
+        {/* </View> */}
+      </View>
+    </SafeAreaView>
   );
 };
 

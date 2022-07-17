@@ -200,7 +200,7 @@ const ChatsScreen = (props) => {
 
   if (!token) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -221,38 +221,42 @@ const ChatsScreen = (props) => {
 
   if (loading) {
     return (
-      <View
-        style={[
-          {
-            flex: 1,
-            backgroundColor: "white",
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        ]}
-      >
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
-        <Text>Loading</Text>
-      </View>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+        <View
+          style={[
+            {
+              flex: 1,
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+            },
+          ]}
+        >
+          <ActivityIndicator size="large" color={Colors.primaryColor} />
+          <Text>Loading</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (status === 500) {
     return (
-      <View
-        style={[{ flex: 1, alignItems: "center", justifyContent: "center" }]}
-      >
-        <TouchableOpacity onPress={tryAgain}>
-          <Ionicons name="reload" size={36} color="black" />
-        </TouchableOpacity>
-        <Text>Reload</Text>
-      </View>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+        <View
+          style={[{ flex: 1, alignItems: "center", justifyContent: "center" }]}
+        >
+          <TouchableOpacity onPress={tryAgain}>
+            <Ionicons name="reload" size={36} color="black" />
+          </TouchableOpacity>
+          <Text>Reload</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (chatsDetails.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{

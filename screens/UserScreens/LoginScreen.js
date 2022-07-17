@@ -129,7 +129,12 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+      }}
+      edges={["bottom"]}
+    >
       <View style={[styles.formContainer]}>
         <View style={{ marginBottom: "40%" }}></View>
 

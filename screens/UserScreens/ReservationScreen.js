@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import HallItem from "../../components/HallItem";
 import DefaultText from "../../components/DefaultText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const monthNames = [
   "January",
@@ -48,23 +49,25 @@ const ReservationScreen = (props) => {
   const isFavorite = isItemFavorite(hall.id);
 
   return (
-    <View style={styles.screenContainer}>
-      <DefaultText
-        style={{
-          fontSize: 20,
-          fontFamily: "open-sans",
-          alignSelf: "center",
-          margin: 10,
-        }}
-      >
-        Your wedding is on the{" "}
-        <DefaultText style={{ fontFamily: "open-sans-bold" }}>
-          {day}th of {month}
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.screenContainer}>
+        <DefaultText
+          style={{
+            fontSize: 20,
+            fontFamily: "open-sans",
+            alignSelf: "center",
+            margin: 10,
+          }}
+        >
+          Your wedding is on the{" "}
+          <DefaultText style={{ fontFamily: "open-sans-bold" }}>
+            {day}th of {month}
+          </DefaultText>
         </DefaultText>
-      </DefaultText>
 
-      <HallItem isFavorite={isFavorite} item={hall} navigation={navigation} />
-    </View>
+        <HallItem isFavorite={isFavorite} item={hall} navigation={navigation} />
+      </View>
+    </SafeAreaView>
   );
 };
 

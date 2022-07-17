@@ -5,7 +5,6 @@ import {
   Text,
   ScrollView,
   Button,
-  SafeAreaView,
   StatusBar,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -23,6 +22,10 @@ import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
 import ProfileElement from "./ProfileElement";
 import { logOut } from "./../../store/actions/Chat";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const ProfileScreen = (props) => {
   const { navigation } = props;
@@ -70,9 +73,15 @@ const ProfileScreen = (props) => {
       name: "MyReservation",
     });
   };
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View
+      style={{
+        flex: 1,
+        paddingTop: insets.top,
+      }}
+    >
       <ScrollView style={styles.profileContainer}>
         <View style={styles.header}>
           <View style={styles.imageCircleContainer}>
@@ -147,7 +156,7 @@ const ProfileScreen = (props) => {
           </ProfileElement>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

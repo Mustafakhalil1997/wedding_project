@@ -15,6 +15,7 @@ import { Avatar } from "react-native-paper";
 import DefaultText from "../../components/DefaultText";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CalendarScreen = ({ navigation }) => {
   const [items, setItems] = useState({});
@@ -208,52 +209,69 @@ const CalendarScreen = ({ navigation }) => {
 
   if (bookings.length !== 0 && arrayLength === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
-        <Text>Loading</Text>
-      </View>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color={Colors.primaryColor} />
+          <Text>Loading</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (bookingsWithUsers) {
     return (
-      <View style={styles.screenContainer}>
-        <Agenda
-          // testID={testIDs.agenda.CONTAINER}
-          items={items}
-          loadItemsForMonth={loadItems}
-          // selected={"2022-05-16"}
-          renderItem={renderItem}
-          // renderEmptyDate={renderEmptyDate}
-          // rowHasChanged={rowHasChanged}
-          showClosingKnob={true}
-          // markingType={"period"}
-          markedDates={{
-            ...calendarDates,
-            // "2022-05-08": { textColor: "#43515c", selected: true },
-            // "2022-05-09": { textColor: "#43515c" },
-            // "2022-05-14": { startingDay: true, endingDay: true, color: "blue" },
-            // "2022-05-21": {
-            //   startingDay: true,
-            //   selected: true,
-            //   selectedColor: "black",
-            // },
-            // "2022-05-22": { endingDay: true, color: "gray" },
-            // "2022-05-24": { startingDay: true, color: "gray" },
-            // "2022-05-25": { color: "gray" },
-            // "2022-05-26": { endingDay: true, color: "gray" },
-          }}
-          showOnlySelectedDayItems
-          // monthFormat={'yyyy'}
-          // theme={{ calendarBackground: "red", agendaKnobColor: "green" }}
-          theme={{ agendaKnobColor: "black" }}
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+        <View style={styles.screenContainer}>
+          <Agenda
+            // testID={testIDs.agenda.CONTAINER}
+            items={items}
+            loadItemsForMonth={loadItems}
+            // selected={"2022-05-16"}
+            renderItem={renderItem}
+            // renderEmptyDate={renderEmptyDate}
+            // rowHasChanged={rowHasChanged}
+            showClosingKnob={true}
+            // markingType={"period"}
+            markedDates={{
+              ...calendarDates,
+              // "2022-05-08": { textColor: "#43515c", selected: true },
+              // "2022-05-09": { textColor: "#43515c" },
+              // "2022-05-14": { startingDay: true, endingDay: true, color: "blue" },
+              // "2022-05-21": {
+              //   startingDay: true,
+              //   selected: true,
+              //   selectedColor: "black",
+              // },
+              // "2022-05-22": { endingDay: true, color: "gray" },
+              // "2022-05-24": { startingDay: true, color: "gray" },
+              // "2022-05-25": { color: "gray" },
+              // "2022-05-26": { endingDay: true, color: "gray" },
+            }}
+            showOnlySelectedDayItems
+            // monthFormat={'yyyy'}
+            // theme={{ calendarBackground: "red", agendaKnobColor: "green" }}
+            theme={{ agendaKnobColor: "black" }}
 
-          //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-          // hideExtraDays={true}
-        />
-      </View>
+            //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+            // hideExtraDays={true}
+          />
+        </View>
+      </SafeAreaView>
     );
   }
+
+  return (
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View
+        style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}
+      >
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+        <Text>Loading</Text>
+      </View>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({

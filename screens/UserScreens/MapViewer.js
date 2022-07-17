@@ -5,6 +5,7 @@ import * as Location from "expo-location";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import DefaultText from "../../components/DefaultText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // const locations = [
 //   {
@@ -79,72 +80,73 @@ const MapViewer = ({ route, navigation }) => {
   console.log("lng ", lng);
 
   return (
-    <View style={styles.container}>
-      {currentLocation && (
-        <MapView
-          style={styles.map}
-          region={
-            route.params
-              ? {
-                  latitude: lat,
-                  longitude: lng,
-                  latitudeDelta: 0.03,
-                  longitudeDelta: 0.03,
-                }
-              : currentLocation
-              ? {
-                  latitude: lat,
-                  longitude: lng,
-                  latitudeDelta: 0.5,
-                  longitudeDelta: 0.5, // more view of the map
-                }
-              : {}
-          }
-        >
-          {locations.map((location, index) => {
-            const { hallId, hallName, lat, lng } = location;
-            return (
-              <Marker
-                key={index}
-                // pinColor="green"
-                title={hallName}
-                // onPress={() => {
-                //   markerClickHandler(hallId);
-                // }}
-                onCalloutPress={() => {
-                  markerClickHandler(hallId);
-                }}
-                coordinate={{ latitude: lat, longitude: lng }}
-              >
-                <Ionicons name="md-location-sharp" size={32} color="green" />
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <View style={styles.container}>
+        {currentLocation && (
+          <MapView
+            style={styles.map}
+            region={
+              route.params
+                ? {
+                    latitude: lat,
+                    longitude: lng,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.03,
+                  }
+                : currentLocation
+                ? {
+                    latitude: lat,
+                    longitude: lng,
+                    latitudeDelta: 0.5,
+                    longitudeDelta: 0.5, // more view of the map
+                  }
+                : {}
+            }
+          >
+            {locations.map((location, index) => {
+              const { hallId, hallName, lat, lng } = location;
+              return (
+                <Marker
+                  key={index}
+                  // pinColor="green"
+                  title={hallName}
+                  // onPress={() => {
+                  //   markerClickHandler(hallId);
+                  // }}
+                  onCalloutPress={() => {
+                    markerClickHandler(hallId);
+                  }}
+                  coordinate={{ latitude: lat, longitude: lng }}
+                >
+                  <Ionicons name="md-location-sharp" size={32} color="green" />
 
-                <Callout tooltip>
-                  <View>
-                    <View
-                      style={{
-                        backgroundColor: "#fff",
-                        width: 150,
-                        alignItems: "center",
-                        borderColor: "black",
-                        borderWidth: 0.5,
-                        borderRadius: 3,
-                      }}
-                    >
-                      <DefaultText>{hallName}</DefaultText>
-                    </View>
+                  <Callout tooltip>
+                    <View>
+                      <View
+                        style={{
+                          backgroundColor: "#fff",
+                          width: 150,
+                          alignItems: "center",
+                          borderColor: "black",
+                          borderWidth: 0.5,
+                          borderRadius: 3,
+                        }}
+                      >
+                        <DefaultText>{hallName}</DefaultText>
+                      </View>
 
-                    <View
-                      style={{
-                        backgroundColor: "transparent",
-                        borderColor: "transparent",
-                        borderTopColor: "#fff",
-                        borderWidth: 13,
-                        alignSelf: "center",
-                        marginTop: -0.5,
-                        // marginBottom: -15
-                      }}
-                    />
-                    {/* <View
+                      <View
+                        style={{
+                          backgroundColor: "transparent",
+                          borderColor: "transparent",
+                          borderTopColor: "#fff",
+                          borderWidth: 13,
+                          alignSelf: "center",
+                          marginTop: -0.5,
+                          // marginBottom: -15
+                        }}
+                      />
+                      {/* <View
                       style={{
                         backgroundColor: "transparent",
                         borderColor: "transparent",
@@ -154,12 +156,12 @@ const MapViewer = ({ route, navigation }) => {
                         marginTop: -32,
                       }}
                     /> */}
-                  </View>
-                </Callout>
-              </Marker>
-            );
-          })}
-          {/* {route.params && (
+                    </View>
+                  </Callout>
+                </Marker>
+              );
+            })}
+            {/* {route.params && (
           <Marker
             pinColor="green"
             title={title}
@@ -167,9 +169,10 @@ const MapViewer = ({ route, navigation }) => {
             coordinate={{ latitude: lat, longitude: lng }}
           />
         )} */}
-        </MapView>
-      )}
-    </View>
+          </MapView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 

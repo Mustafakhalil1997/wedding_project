@@ -88,8 +88,8 @@ export default function App() {
   store.dispatch(setToken());
 
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <Provider store={store}>
         <NavigationContainer>
           {/* <UserTabNavigator /> */}
           <SwitchNavigation />
@@ -101,8 +101,9 @@ export default function App() {
           autoHide={true}
           // style={{ borderRadius: "10" }}
         />
-      </SafeAreaProvider>
-    </Provider>
+      </Provider>
+    </SafeAreaProvider>
+
     // <View style={styles.container}>
     //   <Text>Open up App.js to start working on your app!</Text>
     //   <StatusBar style="auto" />

@@ -11,7 +11,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 
 import { io } from "socket.io-client";
@@ -25,6 +28,7 @@ import { setStatus } from "./../../store/actions/Chat";
 import Colors from "../../constants/Colors";
 import UserChatItem from "./../../components/UserChatItem";
 import DefaultText from "../../components/DefaultText";
+import { StatusBar } from "expo-status-bar";
 
 const socket = io.connect(URL);
 
@@ -199,9 +203,11 @@ const ChatsScreen = (props) => {
     return <UserChatItem navigation={navigation} item={item} />;
   };
 
+  const insets = useSafeAreaInsets();
+
   if (!token) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -223,40 +229,49 @@ const ChatsScreen = (props) => {
   if (loading) {
     return (
       <View
-        style={[
-          {
-            flex: 1,
-            backgroundColor: "white",
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        ]}
+        style={{
+          flex: 1,
+          paddingTop: insets.bottom,
+        }}
       >
-        <ActivityIndicator size="large" color={Colors.primaryColor} />
-        <Text>Loading</Text>
+        <View
+          style={[
+            {
+              flex: 1,
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+            },
+          ]}
+        >
+          <ActivityIndicator size="large" color={Colors.primaryColor} />
+          <Text>Loading</Text>
+        </View>
       </View>
     );
   }
 
   if (status === 500) {
     return (
-      <View
-        style={[
-          styles.listContainer,
-          { alignItems: "center", justifyContent: "center" },
-        ]}
-      >
-        <TouchableOpacity onPress={tryAgain}>
-          <Ionicons name="reload" size={36} color="black" />
-        </TouchableOpacity>
-        <Text>Reload</Text>
-      </View>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+        <View
+          style={[
+            styles.listContainer,
+            { alignItems: "center", justifyContent: "center" },
+          ]}
+        >
+          <TouchableOpacity onPress={tryAgain}>
+            <Ionicons name="reload" size={36} color="black" />
+          </TouchableOpacity>
+          <Text>Reload</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
   if (chatsDetails.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -275,18 +290,22 @@ const ChatsScreen = (props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
-      <View style={{ flex: 1 }}>
-        <FlatList
-          keyExtractor={(item) => `${item._id}`}
-          data={chatsDetails}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={tryAgain} />
-          }
-        />
-      </View>
-    </SafeAreaView>
+    <View
+      style={{
+        flex: 1,
+        // paddingTop: insets.bottom,
+        backgroundColor: "white",
+      }}
+    >
+      <FlatList
+        keyExtractor={(item) => `${item._id}`}
+        data={chatsDetails}
+        renderItem={renderItem}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={tryAgain} />
+        }
+      />
+    </View>
   );
 };
 
