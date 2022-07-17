@@ -52,6 +52,8 @@ const ImageSlider = (props) => {
       };
 
       try {
+        dispatch(toggleFavorite(hallId));
+        dispatch(addFavorite(hallId));
         const response = await fetch(`${URL}/api/user/addFavorite`, {
           method: "PATCH",
           headers: {
@@ -64,10 +66,10 @@ const ImageSlider = (props) => {
         // console.log("responseData in imageSlider ", responseData);
       } catch (err) {
         console.log("error ", err);
+        dispatch(toggleFavorite(hallId));
+        dispatch(addFavorite(hallId));
       }
 
-      dispatch(toggleFavorite(hallId));
-      dispatch(addFavorite(hallId));
       return;
     }
     showMessage({
