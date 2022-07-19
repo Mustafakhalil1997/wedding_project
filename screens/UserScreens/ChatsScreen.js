@@ -22,8 +22,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
-import { getChats, setChats } from "../../store/actions/Chat";
-import { setStatus } from "./../../store/actions/Chat";
+import { getUserChats, setUserChats } from "../../store/actions/UserChat";
+import { setStatus } from "../../store/actions/UserChat";
 
 import Colors from "../../constants/Colors";
 import UserChatItem from "./../../components/UserChatItem";
@@ -87,10 +87,13 @@ const ChatsScreen = (props) => {
 
   const token = useSelector((state) => state.Auth.token);
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  const chatsDetails = useSelector((state) => state.Chats.chats);
-  const status = useSelector((state) => state.Chats.status);
+  const chatsDetails = useSelector((state) => state.UserChats.userChats);
+  const status = useSelector((state) => state.UserChats.userChatStatus);
+  const userType = useSelector((state) => state.Auth.userType);
+
+  console.log("usertype changed to ", userType);
   console.log("status ", status);
-  console.log("chatsDetails after update ", chatsDetails);
+  // console.log("chatsDetails after update ", chatsDetails);
 
   const { chatRooms, firstName, id: userId } = userInfo;
 
@@ -108,14 +111,17 @@ const ChatsScreen = (props) => {
 
   useEffect(() => {
     const getMessages = () => {
-      dispatch(getChats(chatRooms, "user"));
+      console.log("setting chats in chatsScreen for user");
+      // dispatch(getUserChats(chatRooms, "user"));
+      dispatch(getUserChats(chatRooms));
     };
     if (token && chatRooms.length !== 0 && status === 100) {
       console.log("loading list of chats again");
+      console.log("userType changed");
       setLoading(true);
       getMessages();
     }
-  }, [userInfo, status]);
+  }, [userInfo, status, userType]);
 
   // useEffect(() => {
   //   if (loading) getMessages();
@@ -144,7 +150,7 @@ const ChatsScreen = (props) => {
           chatRoom: chatRooms[i],
         };
         const stringObjectListener = JSON.stringify(objectListener);
-        console.log("chatsDetails in useEffect ", chatsDetails);
+        // console.log("chatsDetails in useEffect ", chatsDetails);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
           console.log("messagesReceived ", messagesReceived);
@@ -173,7 +179,7 @@ const ChatsScreen = (props) => {
             receiverId: userId,
           };
 
-          console.log("chatRoom.chats ", chatRoom);
+          // console.log("chatRoom.chats ", chatRoom);
 
           chatRoom.chats.unshift(newMessage);
 
@@ -183,7 +189,7 @@ const ChatsScreen = (props) => {
           });
           // newChats[index] = chatRoom;
           // console.log("hereee");
-          dispatch(setChats(newChats));
+          dispatch(setUserChats(newChats));
         });
       }
     }

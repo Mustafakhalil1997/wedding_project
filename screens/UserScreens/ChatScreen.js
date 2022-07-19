@@ -20,11 +20,11 @@ import { io } from "socket.io-client";
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
-import { setChats } from "../../store/actions/Chat";
+import { setUserChats } from "../../store/actions/UserChat";
 import customBackArrow from "./../../helpers/customBackArrow";
 import { CommonActions } from "@react-navigation/native";
 import { editProfile } from "./../../store/actions/Auth";
-import { setStatus } from "./../../store/actions/Chat";
+import { setStatus } from "../../store/actions/UserChat";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const socket = io.connect(URL);
@@ -43,14 +43,18 @@ const ChatScreen = (props) => {
     lastName,
     profileImage,
   } = useSelector((state) => state.Auth.userInfo);
-  const chatRooms = useSelector((state) => state.Chats.chats);
+  const chatRooms = useSelector((state) => state.UserChats.userChats);
 
   let chatRoom;
+  console.log("roomId ", roomId);
+  // console.log("chatRooms ", chatRooms);
   if (roomId) {
     chatRoom = chatRooms.find((room) => {
       return room._id === roomId;
     });
   }
+
+  console.log("chatRoom found?? ", chatRoom ? "found" : "not found");
 
   let existingChatRoom;
   if (!roomId) {
@@ -155,7 +159,7 @@ const ChatScreen = (props) => {
         return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
       });
 
-      dispatch(setChats(newChats));
+      dispatch(setUserChats(newChats));
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
@@ -206,7 +210,7 @@ const ChatScreen = (props) => {
 
           dispatch(setStatus(100));
           dispatch(editProfile(user));
-          dispatch(setChats(newChats));
+          dispatch(setUserChats(newChats));
           stringObjectListener = JSON.stringify({
             contactId: contactId,
             chatRoom: roomId,

@@ -18,7 +18,8 @@ import NetInfo from "@react-native-community/netinfo";
 import hallListReducer from "./store/reducers/HallList";
 import currentLocationReducer from "./store/reducers/Location";
 import AuthReducer from "./store/reducers/Auth";
-import ChatReducer from "./store/reducers/Chat";
+import UserChatReducer from "./store/reducers/UserChat";
+import HallChatReducer from "./store/reducers/HallChat";
 import connectionReducer from "./store/reducers/Connection";
 
 import UserTabNavigator from "./navigations/UserTabNavigation";
@@ -48,7 +49,8 @@ const rootReducer = combineReducers({
   halls: hallListReducer,
   location: currentLocationReducer,
   Auth: AuthReducer,
-  Chats: ChatReducer,
+  UserChats: UserChatReducer,
+  HallChats: HallChatReducer,
   Connection: connectionReducer,
 });
 

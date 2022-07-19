@@ -15,7 +15,7 @@ import { io } from "socket.io-client";
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
-import { setChats } from "../../store/actions/Chat";
+import { setHallChats } from "../../store/actions/HallChat";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const socket = io.connect(URL);
@@ -40,7 +40,7 @@ const ChatScreen = (props) => {
   const { id: hallId, hallName, images } = hallInfo;
 
   //   console.log("hallIdd ", hallInfo);
-  const chatRooms = useSelector((state) => state.Chats.chats);
+  const chatRooms = useSelector((state) => state.HallChats.hallChats);
 
   let chatRoom;
   if (roomId) {
@@ -114,7 +114,7 @@ const ChatScreen = (props) => {
         return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
       });
 
-      dispatch(setChats(newChats));
+      dispatch(setHallChats(newChats));
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
@@ -157,7 +157,7 @@ const ChatScreen = (props) => {
         } else {
           const { chatRoom } = responseData;
           const newChats = [chatRoom, ...chatRooms];
-          dispatch(setChats(newChats));
+          dispatch(setHallChats(newChats));
         }
       } catch (err) {
         console.log("err ", err);

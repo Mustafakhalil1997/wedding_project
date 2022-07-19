@@ -38,8 +38,8 @@ const HallItem = (props) => {
     ownerId,
     price,
   } = item;
-  console.log("price in hallItem ", price);
-  console.log("images ", images);
+  // console.log("price in hallItem ", price);
+  // console.log("images ", images);
   // const { lat, lng } = location;
 
   const currentLocation = useSelector(
@@ -75,7 +75,7 @@ const HallItem = (props) => {
     setDimensions({ width: width, height: height });
   };
 
-  console.log("dimensions in hallItem ", dimensions);
+  // console.log("dimensions in hallItem ", dimensions);
 
   return (
     <Card>

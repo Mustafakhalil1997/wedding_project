@@ -9,6 +9,8 @@ const HallListScreen = ({ navigation }) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
+  // need to check if chats are reset after logout do tomorrow
+
   // still can't decide the right place for calling this method, maybe app.js would be better
   // this doesn't work in app.js as the file only runs once when the app is loaded
   useEffect(() => {

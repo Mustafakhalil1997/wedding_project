@@ -5,7 +5,7 @@ import DefaultText from "./DefaultText";
 import { useSelector } from "react-redux";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
-const UserChatItem = (props) => {
+const HallChatItem = (props) => {
   const { navigation, item } = props;
   const { _id, chats, userId: userItem } = item;
 
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserChatItem;
+export default HallChatItem;

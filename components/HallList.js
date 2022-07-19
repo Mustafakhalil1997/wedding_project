@@ -55,6 +55,16 @@ const HallList = (props) => {
 
   console.log("connectionStatus ", connectionStatus);
   console.log("connectionType ", connectionType);
+  console.log("helloo");
+
+  const userChats = useSelector((state) => state.UserChats.userChats);
+  const hallChats = useSelector((state) => state.HallChats.hallChats);
+
+  console.log(
+    "userChats in HallList ",
+    userChats.length === 0 ? "empty" : "not empty"
+  );
+  console.log("hallChats in HallListtt ", hallChats);
 
   useLayoutEffect(() => {
     navigation.setOptions({

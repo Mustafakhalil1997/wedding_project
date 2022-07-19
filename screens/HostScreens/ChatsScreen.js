@@ -20,11 +20,16 @@ import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 import DefaultText from "../../components/DefaultText";
-import { getChats, setChats } from "../../store/actions/Chat";
-import HallChatItem from "../../components/HallChatItem";
+import {
+  getHallChats,
+  setHallChats,
+  setHallStatus,
+} from "../../store/actions/HallChat";
+// import HallChatItem from "../../components/HallChatItem";
 import Colors from "../../constants/Colors";
-import { setStatus } from "./../../store/actions/Chat";
+// import { setHallStatus } from "./../../store/actions/HallChat";
 import { Ionicons } from "@expo/vector-icons";
+import HallChatItem from "./../../components/HallChatItem";
 
 const socket = io.connect(URL);
 
@@ -83,10 +88,12 @@ const ChatsScreen = (props) => {
 
   const token = useSelector((state) => state.Auth.token);
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
-  const chatsDetails = useSelector((state) => state.Chats.chats);
-  const status = useSelector((state) => state.Chats.status);
+  const chatsDetails = useSelector((state) => state.HallChats.hallChats);
+  const status = useSelector((state) => state.HallChats.hallChatStatus);
+  const userType = useSelector((state) => state.Auth.userType);
 
-  console.log("chatsDetails after update ", chatsDetails);
+  console.log("chatsDetailss ", chatsDetails);
+  // console.log("chatsDetails after update ", chatsDetails);
   console.log("hallInfoo ", hallInfo);
 
   const { chatRooms, hallName, id: hallId } = hallInfo;
@@ -99,33 +106,39 @@ const ChatsScreen = (props) => {
   // }, []);
 
   const tryAgain = () => {
-    dispatch(setStatus(100));
+    dispatch(setHallStatus(100));
   };
 
   useEffect(() => {
     const getMessages = () => {
-      dispatch(getChats(chatRooms, "hall"));
+      console.log("setting chats in chatsScreen for hall");
+      console.log("chatRooms.length in hall ", chatRooms.length);
+      // dispatch(getChats(chatRooms, "hall"));
+      dispatch(getHallChats(chatRooms));
     };
     if (chatRooms.length !== 0 && status === 100) {
       setLoading(true);
       getMessages();
     }
-  }, [chatRooms, status]);
+  }, [hallInfo, status]);
 
   // useEffect(() => {
   //   if (loading) getMessages();
   // }, [loading]);
 
   useEffect(() => {
+    console.log("status is ", status);
     if (status !== 100) {
       setLoading(false);
     }
   }, [status]);
 
   useEffect(() => {
-    if (token && chatsDetails.length !== 0 && flag === false) {
+    console.log("here shoulddd");
+    if (chatsDetails.length !== 0 && flag === false) {
       setFlag(true);
       setLoading(false);
+      console.log("here should");
     }
   }, [chatsDetails]);
 
@@ -139,7 +152,7 @@ const ChatsScreen = (props) => {
           chatRoom: chatRooms[i],
         };
         const stringObjectListener = JSON.stringify(objectListener);
-        console.log("chatsDetails in useEffect ", chatsDetails);
+        // console.log("chatsDetails in useEffect ", chatsDetails);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", hallId);
           console.log("messagesReceived ", messagesReceived);
@@ -178,7 +191,7 @@ const ChatsScreen = (props) => {
           });
           // newChats[index] = chatRoom;
           // console.log("hereee");
-          dispatch(setChats(newChats));
+          dispatch(setHallChats(newChats));
         });
       }
     }
