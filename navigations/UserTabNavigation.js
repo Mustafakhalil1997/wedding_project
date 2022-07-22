@@ -97,7 +97,7 @@ const UserTabNavigator = () => {
         <Stack.Screen name="Chats" component={ChatsScreen} />
         {token && (
           <Stack.Screen
-            name="Chat"
+            name="UserChat"
             component={ChatScreen}
             options={({ route }) => ({
               title: route.params.title,

@@ -9,6 +9,8 @@ const UserChatItem = (props) => {
   const { navigation, item } = props;
   const { _id, chats, hallId: hallItem } = item;
 
+  console.log("item in userChatItem ", item);
+
   console.log("hallItem in chatItem ", hallItem);
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
@@ -55,7 +57,7 @@ const UserChatItem = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("Chat", {
+        navigation.navigate("UserChat", {
           title: contactName,
           contactImage: contactImage,
           contactId: contactId,

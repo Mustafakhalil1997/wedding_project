@@ -84,7 +84,7 @@ const HostTabNavigator = () => {
         <Stack.Screen name="Chats" component={ChatsScreen} />
         {token && (
           <Stack.Screen
-            name="Chat"
+            name="HallChat"
             component={ChatScreen}
             options={({ route }) => ({
               title: route.params.title,

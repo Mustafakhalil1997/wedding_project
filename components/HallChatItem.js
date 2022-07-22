@@ -55,7 +55,7 @@ const HallChatItem = (props) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("Chat", {
+        navigation.navigate("HallChat", {
           title: contactName,
           contactImage: contactImage,
           contactId: contactId,
