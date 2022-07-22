@@ -121,13 +121,14 @@ const ChatScreen = (props) => {
       console.log("existingChatRoom ", existingChatRoom);
       stringObjectListener = JSON.stringify({
         contactId: contactId,
-        chatRoom: roomId,
+        chatRoom: roomId ? roomId : existingChatRoom._id,
       });
       socket.emit("sentMessage", { stringObjectListener, messages });
 
       // const index = chatRooms.findIndex((chatRoom) => chatRoom._id === roomId);
       chatRoom = chatRooms.find((chatRoom) => {
-        return chatRoom._id === roomId;
+        if (roomId) return chatRoom._id === roomId;
+        if (existingChatRoom) return chatRoom._id === existingChatRoom._id;
       });
 
       chatRoom.chats.unshift(newMessage);
