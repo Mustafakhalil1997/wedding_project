@@ -25,15 +25,13 @@ const ChatScreen = (props) => {
 
   const { title, contactImage, contactId, roomId } = route.params;
 
+  console.log("route.params ", route.params);
+
+  console.log("contactImage ", contactImage);
+
   const [messages, setMessages] = useState([]);
 
   const dispatch = useDispatch();
-  const {
-    id: userId,
-    firstName,
-    lastName,
-    profileImage,
-  } = useSelector((state) => state.Auth.userInfo);
 
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
@@ -49,9 +47,20 @@ const ChatScreen = (props) => {
     });
   }
 
+  let existingChatRoom;
+  if (!roomId) {
+    console.log("not roomId");
+    existingChatRoom = chatRooms.find((room) => {
+      return room.userId._id === contactId && room.hallId === hallId;
+    });
+  }
+
+  // console.log("chatRoom ", chatRoom);
+  // console.log("existingChatRoom ", existingChatRoom);
+
   useEffect(() => {
-    if (chatRoom) {
-      const convertedMessages = chatRoom.chats.map((chat) => {
+    const convertMessages = (chatRoom) => {
+      return chatRoom.chats.map((chat) => {
         const { _id, message, time, senderId } = chat;
         const newMessage = {
           _id: _id.toString(),
@@ -68,9 +77,21 @@ const ChatScreen = (props) => {
         };
         return newMessage;
       });
+    };
 
+    if (chatRoom) {
+      console.log("setting chatRoom messages");
+      const convertedMessages = convertMessages(chatRoom);
       setMessages(convertedMessages);
     }
+
+    if (existingChatRoom) {
+      console.log("setting messages");
+      const convertedMessages = convertMessages(existingChatRoom);
+      setMessages(convertedMessages);
+    }
+
+    // setMessages(convertedMessages);
   }, [chatRooms]);
 
   const onSend = useCallback(async (messages = []) => {
@@ -95,7 +116,9 @@ const ChatScreen = (props) => {
 
     let stringObjectListener;
     let chatRoom;
-    if (roomId) {
+    if (roomId || existingChatRoom) {
+      console.log("roomId ", roomId);
+      console.log("existingChatRoom ", existingChatRoom);
       stringObjectListener = JSON.stringify({
         contactId: contactId,
         chatRoom: roomId,
@@ -150,12 +173,14 @@ const ChatScreen = (props) => {
           body: JSON.stringify(requestBody),
         });
 
-        const responseData = response.json();
+        const responseData = await response.json();
 
         if (response.status !== 200) {
           console.log("returned with status ", response.status);
         } else {
+          console.log("responsedata after creating chatroom ", responseData);
           const { chatRoom } = responseData;
+          console.log("chatRoom created ", chatRoom);
           const newChats = [chatRoom, ...chatRooms];
           dispatch(setHallChats(newChats));
         }
