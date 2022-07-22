@@ -16,6 +16,7 @@ import DefaultText from "../../components/DefaultText";
 import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 const CalendarScreen = ({ navigation }) => {
   const [items, setItems] = useState({});
@@ -128,15 +129,19 @@ const CalendarScreen = ({ navigation }) => {
         } else {
           const userData = bookingsWithUsers[strTime];
           let convertedImageUrl = "";
+          let contactImage = "";
 
           if (userData.profileImage.length !== 0) {
             convertedImageUrl =
-              URL + "/" + userData.profileImage.replace(/\\/g, "/");
+              cloudinaryURL + "/" + userData.profileImage.replace(/\\/g, "/");
+            contactImage = userData.profileImage.replace(/\\/g, "/");
           }
           items[strTime].push({
+            userId: userData._id,
             name: userData.firstName + " " + userData.lastName,
             email: userData.email,
             convertedImageUrl: convertedImageUrl,
+            contactImage: contactImage,
           });
         }
       }
@@ -152,7 +157,8 @@ const CalendarScreen = ({ navigation }) => {
   const renderItem = (item) => {
     // const fontSize = isFirst ? 16 : 14;
     // const color = isFirst ? "black" : "#43515c";
-    const { name, email, convertedImageUrl } = item;
+    console.log("itemmm ", item);
+    const { name, email, convertedImageUrl, contactImage, userId } = item;
     if (convertedImageUrl === null) {
       return (
         <TouchableOpacity
@@ -167,7 +173,15 @@ const CalendarScreen = ({ navigation }) => {
     }
 
     const chatIconClickHandler = () => {
-      navigation.navigate("ChatStack");
+      navigation.navigate("ChatStack", {
+        screen: "HallChat",
+        params: {
+          title: name,
+          contactId: userId,
+          contactImage: contactImage,
+        },
+      });
+      // navigation.navigate("ChatStack");
     };
 
     return (
