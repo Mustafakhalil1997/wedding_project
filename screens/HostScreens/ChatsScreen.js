@@ -208,6 +208,7 @@ const ChatsScreen = (props) => {
 
   const renderItem = ({ item }) => {
     // console.log("item ", item);
+    console.log("chatItem in host chatsScreen ", item);
     return <HallChatItem navigation={navigation} item={item} />;
   };
 
