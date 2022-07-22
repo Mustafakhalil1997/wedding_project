@@ -69,7 +69,7 @@ const HallDetailScreen = (props) => {
 
   const contactHostClickHandler = () => {
     navigation.navigate("ChatStack", {
-      screen: "Chat",
+      screen: "UserChat",
       params: {
         title: name,
         contactId: hallId,
