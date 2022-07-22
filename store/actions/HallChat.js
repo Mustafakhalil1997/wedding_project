@@ -32,7 +32,7 @@ export const getHallChats = (chatRooms) => {
 };
 
 export const setHallChats = (chats) => {
-  // console.log("chats in reducer ", chats);
+  console.log("chats in reducer ", chats);
   return { type: SET_HALL_CHATS, chats: chats };
 };
 
