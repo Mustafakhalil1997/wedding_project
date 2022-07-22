@@ -58,33 +58,12 @@ const ChatScreen = (props) => {
 
   let existingChatRoom;
   if (!roomId) {
+    console.log("not roomId");
     existingChatRoom = chatRooms.find((room) => {
-      // console.log("type of room id ", typeof room._id);
-      // console.log("type of room.userId", typeof room.userId);
-      // console.log("type of userId", typeof userId);
-      // console.log("type of room.hallId", typeof room.hallId._id);
-      // console.log("type of hallId", typeof contactId);
       return room.userId === userId && room.hallId._id === contactId;
     });
   }
   console.log("existingChatRoom ", existingChatRoom);
-
-  // const goBackToChats = () => {
-  //   navigation.dispatch({
-  //     ...CommonActions.reset({
-  //       index: 0,
-  //       routes: [{ name: "ChatStack" }],
-  //     }),
-  //   });
-  // };
-
-  // useLayoutEffect(() => {
-  //   customBackArrow({
-  //     navigation,
-  //     isSubmitting: false,
-  //     onPress: goBackToChats,
-  //   });
-  // }, []);
 
   useEffect(() => {
     const convertMessages = (chatRoom) => {
@@ -141,6 +120,8 @@ const ChatScreen = (props) => {
     let stringObjectListener;
     let chatRoom;
     if (roomId || existingChatRoom) {
+      console.log("roomId ", roomId);
+      console.log("existingChatRoom ", existingChatRoom);
       stringObjectListener = JSON.stringify({
         contactId: contactId,
         chatRoom: roomId,
@@ -178,7 +159,7 @@ const ChatScreen = (props) => {
         console.log("err ", err);
       }
     } else {
-      console.log("here");
+      console.log("new chatroom");
       setMessages((previousMessages) =>
         GiftedChat.append(previousMessages, messages)
       );
