@@ -10,7 +10,7 @@ const initialState = {
   hallChatStatus: 100,
 };
 
-const ChatReducer = (state = initialState, action) => {
+const HallChatReducer = (state = initialState, action) => {
   console.log("action.chats ", action.chats);
 
   switch (action.type) {
@@ -41,4 +41,4 @@ const ChatReducer = (state = initialState, action) => {
   }
 };
 
-export default ChatReducer;
+export default HallChatReducer;
