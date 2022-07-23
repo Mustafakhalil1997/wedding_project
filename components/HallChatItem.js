@@ -9,8 +9,6 @@ const HallChatItem = (props) => {
   const { navigation, item } = props;
   const { _id, chats, userId: userItem } = item;
 
-  console.log("userItem in chatItem ", userItem);
-
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
   const { chatRooms, firstName, id: userId } = userInfo;
