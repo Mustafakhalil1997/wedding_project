@@ -19,8 +19,6 @@ export const getUserChats = (chatRooms) => {
         dispatch({ type: SET_USER_STATUS, status: 500 });
       } else {
         const { chats, message } = responseData;
-        console.log("chats in userChat actions ", chats);
-
         // console.log("chats in store ", chats);
         // console.log("responseData ", responseData);
         dispatch({ type: GET_USER_CHATS, chats: chats });
@@ -33,7 +31,7 @@ export const getUserChats = (chatRooms) => {
 };
 
 export const setUserChats = (chats) => {
-  console.log("chats in reducer ", chats);
+  // console.log("chats in reducer ", chats);
   return { type: SET_USER_CHATS, chats: chats };
 };
 

@@ -11,7 +11,7 @@ const initialState = {
 };
 
 const HallChatReducer = (state = initialState, action) => {
-  console.log("action.chats ", action.chats);
+  // console.log("action.chats ", action.chats);
 
   switch (action.type) {
     case GET_HALL_CHATS:
