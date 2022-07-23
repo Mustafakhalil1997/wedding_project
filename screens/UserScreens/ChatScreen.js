@@ -195,11 +195,16 @@ const ChatScreen = (props) => {
           dispatch(setStatus(100));
           dispatch(editProfile(user));
           dispatch(setUserChats(newChats));
+
           stringObjectListener = JSON.stringify({
-            contactId: contactId,
-            chatRoom: roomId,
+            contactId: contactId._id,
           });
-          socket.emit("sentMessage", { stringObjectListener, messages });
+          socket.emit("newChatRoom", {
+            stringObjectListener,
+            chatRoom: roomId,
+            // messages,
+          });
+          // socket.emit("sentMessage", { stringObjectListener, messages });
         }
       } catch (err) {
         console.log("err ", err);

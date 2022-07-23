@@ -194,6 +194,21 @@ const ChatsScreen = (props) => {
           dispatch(setHallChats(newChats));
         });
       }
+      const newChatRoomListener = {
+        contactId: hallId,
+      };
+
+      const newChatRoomStringListener = JSON.stringify(newChatRoomListener);
+
+      console.log(
+        "newChatRoomStringListener ",
+        newChatRoomListener,
+        typeof newChatRoomListener
+      );
+
+      socket.on(newChatRoomStringListener, (chatRoom, messages) => {
+        console.log("received successfully from socket");
+      });
     }
   }, [flag]);
 

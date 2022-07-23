@@ -165,6 +165,7 @@ const ChatScreen = (props) => {
         userId: contactId,
         hallId: hallId,
       };
+
       try {
         const response = await fetch(`${URL}/api/chat/createChat`, {
           method: "POST",
