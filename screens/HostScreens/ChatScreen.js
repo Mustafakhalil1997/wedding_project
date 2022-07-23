@@ -149,7 +149,7 @@ const ChatScreen = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            roomId: roomId,
+            roomId: roomId ? roomId : existingChatRoom._id,
             newMessage: messageSentToDatabase,
           }),
         });

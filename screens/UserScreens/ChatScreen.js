@@ -152,7 +152,7 @@ const ChatScreen = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            roomId: roomId,
+            roomId: roomId ? roomId : existingChatRoom._id,
             newMessage: messageSentToDatabase,
           }),
         });
@@ -187,6 +187,8 @@ const ChatScreen = (props) => {
         } else {
           const { chatRoom, user } = responseData;
           const newChats = [chatRoom, ...chatRooms];
+
+          console.log("newChats after newChat created ", newChats);
 
           const { _id: roomId, hallId: contactId } = chatRoom;
 
