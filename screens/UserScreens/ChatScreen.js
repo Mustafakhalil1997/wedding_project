@@ -201,8 +201,8 @@ const ChatScreen = (props) => {
           });
           socket.emit("newChatRoom", {
             stringObjectListener,
-            chatRoom: roomId,
-            // messages,
+            // chatRoom: roomId,
+            messages: messages,
           });
           // socket.emit("sentMessage", { stringObjectListener, messages });
         }

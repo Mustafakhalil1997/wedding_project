@@ -208,6 +208,8 @@ const ChatsScreen = (props) => {
 
       socket.on(newChatRoomStringListener, (chatRoom, messages) => {
         console.log("received successfully from socket");
+        console.log("new chatRoom received from socket ", chatRoom);
+        console.log("first message of new chatRoom ", messages);
       });
     }
   }, [flag]);
