@@ -134,12 +134,11 @@ const ChatsScreen = (props) => {
   }, [status]);
 
   useEffect(() => {
-    console.log("here shoulddd");
     if (chatsDetails.length !== 0 && flag === false) {
       setFlag(true);
       setLoading(false);
-      console.log("here should");
     }
+    console.log("chatsDetails right now ", chatsDetails);
   }, [chatsDetails]);
 
   // try setting a listener for every room and pass room id with receiverId
@@ -206,10 +205,20 @@ const ChatsScreen = (props) => {
         typeof newChatRoomListener
       );
 
-      socket.on(newChatRoomStringListener, (chatRoom, messages) => {
+      socket.on(newChatRoomStringListener, (messageWithId) => {
+        const { chatRoom, messages } = messageWithId;
         console.log("received successfully from socket");
         console.log("new chatRoom received from socket ", chatRoom);
         console.log("first message of new chatRoom ", messages);
+
+        const newChatRoom = {
+          _id: chatRoom,
+          chats: [messages],
+        };
+
+        const newChats = [newChatRoom, ...chatsDetails];
+        console.log("newChats ", newChats);
+        dispatch(setHallChats(newChats));
       });
     }
   }, [flag]);
