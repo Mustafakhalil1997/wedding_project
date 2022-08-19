@@ -199,14 +199,14 @@ const ChatScreen = (props) => {
           stringObjectListener = JSON.stringify({
             contactId: contactId._id,
           });
-          (messageWithId = {
-            chatRoom: roomId,
-            messages: messages,
-          }),
-            socket.emit("newChatRoom", {
-              stringObjectListener,
-              messageWithId: JSON.stringify(messageWithId),
-            });
+
+          socket.emit("newChatRoom", {
+            stringObjectListener,
+            messageWithId: {
+              chatRoom: roomId,
+              messages: messages,
+            },
+          });
           // socket.emit("sentMessage", { stringObjectListener, messages });
         }
       } catch (err) {
