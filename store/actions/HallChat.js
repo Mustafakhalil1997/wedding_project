@@ -1,7 +1,7 @@
 export const GET_HALL_CHATS = "GET_HALL_CHATS";
 export const SET_HALL_CHATS = "SET_HALL_CHATS";
 export const SET_HALL_STATUS = "SET_HALL_STATUS";
-export const LOG_OUT = "LOG_OUT";
+export const HALL_LOG_OUT = "HALL_LOG_OUT";
 export const GET_CHAT_BY_ROOM_ID = "GET_CHAT_BY_ROOM_ID";
 import { URL } from "../../helpers/url";
 
@@ -41,7 +41,7 @@ export const setHallStatus = (status) => {
 };
 
 export const hallLogOut = () => {
-  return { type: LOG_OUT };
+  return { type: HALL_LOG_OUT };
 };
 
 // export const getChatByRoomId = (roomId) => {

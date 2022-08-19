@@ -2,7 +2,7 @@ import {
   GET_USER_CHATS,
   SET_USER_CHATS,
   SET_USER_STATUS,
-  LOG_OUT,
+  USER_LOG_OUT,
 } from "../actions/UserChat";
 
 const initialState = {
@@ -29,7 +29,7 @@ const UserChatReducer = (state = initialState, action) => {
         ...state,
         userChatStatus: action.status,
       };
-    case LOG_OUT:
+    case USER_LOG_OUT:
       return {
         ...state,
         userChatStatus: 100,

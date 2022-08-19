@@ -1,7 +1,7 @@
 export const GET_USER_CHATS = "GET_USER_CHATS";
 export const SET_USER_CHATS = "SET_USER_CHATS";
 export const SET_USER_STATUS = "SET_USER_STATUS";
-export const LOG_OUT = "LOG_OUT";
+export const USER_LOG_OUT = "USER_LOG_OUT";
 export const GET_CHAT_BY_ROOM_ID = "GET_CHAT_BY_ROOM_ID";
 import { URL } from "../../helpers/url";
 
@@ -40,7 +40,7 @@ export const setStatus = (status) => {
 };
 
 export const userLogOut = () => {
-  return { type: LOG_OUT };
+  return { type: USER_LOG_OUT };
 };
 
 // export const getChatByRoomId = (roomId) => {

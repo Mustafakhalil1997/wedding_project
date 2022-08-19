@@ -2,7 +2,7 @@ import {
   GET_HALL_CHATS,
   SET_HALL_CHATS,
   SET_HALL_STATUS,
-  LOG_OUT,
+  HALL_LOG_OUT,
 } from "../actions/HallChat";
 
 const initialState = {
@@ -30,7 +30,7 @@ const HallChatReducer = (state = initialState, action) => {
         ...state,
         hallChatStatus: action.status,
       };
-    case LOG_OUT:
+    case HALL_LOG_OUT:
       return {
         ...state,
         hallChatStatus: 100,
