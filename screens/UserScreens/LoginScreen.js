@@ -136,7 +136,7 @@ const LoginScreen = ({ navigation }) => {
       edges={["bottom"]}
     >
       <View style={[styles.formContainer]}>
-        <View style={{ marginBottom: "40%" }}></View>
+        <View style={{ marginBottom: "50%" }}></View>
 
         <ScrollView keyboardShouldPersistTaps="handled">
           {/* <StatusBar style="auto" /> */}

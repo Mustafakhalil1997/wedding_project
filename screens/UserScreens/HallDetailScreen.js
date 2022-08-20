@@ -15,7 +15,10 @@ import ImageSlider from "../../components/ImageSliderShow/ImageSlider";
 import DefaultText from "../../components/DefaultText";
 
 import { cloudinaryURL } from "./../../helpers/cloudinaryURL";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -77,6 +80,8 @@ const HallDetailScreen = (props) => {
       },
     });
   };
+
+  const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>

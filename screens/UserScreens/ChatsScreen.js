@@ -213,7 +213,10 @@ const ChatsScreen = (props) => {
 
   if (!token) {
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <SafeAreaView
+        style={{ flex: 1, paddingTop: insets.top }}
+        edges={["bottom"]}
+      >
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -234,10 +237,10 @@ const ChatsScreen = (props) => {
 
   if (loading) {
     return (
-      <View
+      <SafeAreaView
         style={{
           flex: 1,
-          paddingTop: insets.bottom,
+          paddingTop: insets.top,
         }}
       >
         <View
@@ -253,13 +256,16 @@ const ChatsScreen = (props) => {
           <ActivityIndicator size="large" color={Colors.primaryColor} />
           <Text>Loading</Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (status === 500) {
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <SafeAreaView
+        style={{ flex: 1, paddingTop: insets.top }}
+        edges={["bottom"]}
+      >
         <View
           style={[
             styles.listContainer,
@@ -277,7 +283,10 @@ const ChatsScreen = (props) => {
 
   if (chatsDetails.length === 0) {
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <SafeAreaView
+        style={{ flex: 1, paddingTop: insets.top }}
+        edges={["bottom"]}
+      >
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -296,10 +305,10 @@ const ChatsScreen = (props) => {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
-        // paddingTop: insets.bottom,
+        paddingTop: insets.top,
         backgroundColor: "white",
       }}
     >
@@ -311,7 +320,7 @@ const ChatsScreen = (props) => {
           <RefreshControl refreshing={loading} onRefresh={tryAgain} />
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

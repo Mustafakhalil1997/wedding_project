@@ -2,7 +2,10 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import { Formik } from "formik";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
@@ -190,8 +193,10 @@ const SignupScreen = ({ navigation }) => {
     // }, 2000);
   };
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+    <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>
       <View style={styles.formContainer}>
         <ScrollView keyboardShouldPersistTaps="handled">
           <CustomButton

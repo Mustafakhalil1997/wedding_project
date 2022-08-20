@@ -79,7 +79,8 @@ const ProfileScreen = (props) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View
+    <SafeAreaView
+      edges={["left", "right"]}
       style={{
         flex: 1,
         paddingTop: insets.top,
@@ -159,7 +160,7 @@ const ProfileScreen = (props) => {
           </ProfileElement>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

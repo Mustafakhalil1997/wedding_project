@@ -29,6 +29,7 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
+          // headerShown: false,
         }}
       >
         <Stack.Screen
@@ -36,6 +37,7 @@ const UserTabNavigator = () => {
           component={HallListScreen}
           options={{
             title: "Wedding Venues",
+            headerShown: false,
           }}
         />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
@@ -52,6 +54,7 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
+          // headerShown: false,
         }}
       >
         <Stack.Screen
@@ -59,6 +62,7 @@ const UserTabNavigator = () => {
           component={FavoriteHallsScreen}
           options={{
             title: "My Favorites",
+            headerShown: false,
           }}
         />
         <Stack.Screen name="HallDetail" component={HallDetailScreen} />
@@ -94,7 +98,11 @@ const UserTabNavigator = () => {
           headerTitleAlign: "center",
         }}
       >
-        <Stack.Screen name="Chats" component={ChatsScreen} />
+        <Stack.Screen
+          name="Chats"
+          component={ChatsScreen}
+          options={{ headerShown: false }}
+        />
         {token && (
           <Stack.Screen
             name="UserChat"
@@ -117,11 +125,18 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
+          // headerShown: false,
         }}
       >
         {!token && (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <Stack.Screen name="Signup" component={SignupScreen} />
           </>
         )}

@@ -183,11 +183,10 @@ const HallList = (props) => {
   }
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
       }}
-      edges={["bottom"]}
     >
       <View style={styles.listContainer}>
         <FlatList
@@ -199,7 +198,7 @@ const HallList = (props) => {
           }
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
