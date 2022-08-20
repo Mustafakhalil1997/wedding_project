@@ -173,7 +173,7 @@ const EditProfileScreen = (props) => {
         firstName,
         lastName,
       };
-      const response = await fetch(`${URL}/api/user/${id}`, {
+      const response = await fetch(`${URL}/api/user/edit/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
