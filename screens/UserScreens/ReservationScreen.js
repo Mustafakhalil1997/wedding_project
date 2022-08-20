@@ -26,14 +26,12 @@ const ReservationScreen = (props) => {
 
   const { reservation } = useSelector((state) => state.Auth.userInfo);
 
-  console.log("reservation ", reservation);
-
   const { hallId, date } = reservation;
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallList = useSelector((state) => state.halls.hallList);
 
-  const hall = hallList.find((hall) => hall.id === hallId);
+  const reservedHall = hallList.find((hall) => hall.id === hallId);
   const newDate = new Date(date);
 
   const month = monthNames[newDate.getMonth()];
@@ -46,7 +44,7 @@ const ReservationScreen = (props) => {
     return false;
   };
 
-  const isFavorite = isItemFavorite(hall.id);
+  const isFavorite = isItemFavorite(reservedHall.id);
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
@@ -65,7 +63,11 @@ const ReservationScreen = (props) => {
           </DefaultText>
         </DefaultText>
 
-        <HallItem isFavorite={isFavorite} item={hall} navigation={navigation} />
+        <HallItem
+          isFavorite={isFavorite}
+          item={reservedHall}
+          navigation={navigation}
+        />
       </View>
     </SafeAreaView>
   );
