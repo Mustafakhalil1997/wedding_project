@@ -15,6 +15,7 @@ import {
   Platform,
   StatusBar,
   RefreshControl,
+  TouchableNativeFeedback,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -32,6 +33,7 @@ import DefaultText from "./DefaultText";
 import Colors from "../constants/Colors";
 import CustomHeaderButton from "./HeaderButton";
 import { connectionMessage } from "../helpers/connectionMessageHandler";
+import { SearchBar } from "react-native-elements";
 
 const HallList = (props) => {
   const { navigation } = props;
@@ -39,6 +41,7 @@ const HallList = (props) => {
   // const [state, dispatchState] = useReducer(reducer, initialState);
 
   const [loading, setLoading] = useState(false);
+  const [filterByPrice, setFilterByPrice] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
 
@@ -115,6 +118,12 @@ const HallList = (props) => {
     dispatch(setStatus(100));
   };
 
+  const sortedListByPrice = [...DUMMY_HALLLIST].sort(
+    (a, b) => a.price - b.price
+  );
+  console.log("sortedByPrice ", sortedListByPrice);
+  console.log("hallList ", DUMMY_HALLLIST);
+
   const renderHall = (itemData) => {
     const { item } = itemData;
     const { id } = item;
@@ -172,22 +181,53 @@ const HallList = (props) => {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <View style={styles.listContainer}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={DUMMY_HALLLIST}
-          renderItem={renderHall}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={tryAgain} />
-          }
-        />
-      </View>
+    // <View
+    //   style={{
+    //     flex: 1,
+    //   }}
+    // >
+    <View style={styles.listContainer}>
+      <TouchableOpacity onPress={() => setFilterByPrice(!filterByPrice)}>
+        <View
+          style={{
+            alignSelf: "flex-end",
+            backgroundColor: filterByPrice ? "green" : "black",
+            padding: 5,
+            marginTop: 5,
+            marginRight: "8%",
+            borderRadius: 5,
+            marginBottom: 5,
+          }}
+        >
+          <Text style={{ color: "white" }}>
+            {filterByPrice ? "Filtered" : "Filter by Price"}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {/* <SearchBar
+        round
+        placeholder="Type Here..."
+        containerStyle={{
+          backgroundColor: "white",
+          borderWidth: 0,
+          paddingVertical: 5,
+          borderColor: "white",
+        }}
+        inputContainerStyle={{
+          margin: 5,
+          backfaceVisibility: 1,
+        }}
+      /> */}
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={filterByPrice ? sortedListByPrice : DUMMY_HALLLIST}
+        renderItem={renderHall}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={tryAgain} />
+        }
+      />
     </View>
+    // </View>
   );
 };
 
