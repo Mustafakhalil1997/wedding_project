@@ -23,7 +23,6 @@ const HomeScreen = (props) => {
   const dispatch = useDispatch();
 
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
-  console.log("hallInfo ", hallInfo);
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const token = useSelector((state) => state.Auth.token);
 
@@ -42,8 +41,6 @@ const HomeScreen = (props) => {
     };
     loadCurrentLocation();
   }, [dispatch]);
-
-  console.log("hallName ", hallName);
 
   const goToCompleteProfile = () => {
     navigation.navigate({

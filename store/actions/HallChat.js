@@ -19,7 +19,6 @@ export const getHallChats = (chatRooms) => {
         dispatch({ type: SET_HALL_STATUS, status: 500 });
       } else {
         const { chats, message } = responseData;
-        console.log("chats in hallChat actions ", chats);
         // console.log("chats in store ", chats);
         // console.log("responseData ", responseData);
         dispatch({ type: GET_HALL_CHATS, chats: chats });
@@ -32,7 +31,6 @@ export const getHallChats = (chatRooms) => {
 };
 
 export const setHallChats = (chats) => {
-  console.log("chats in reducer ", chats);
   return { type: SET_HALL_CHATS, chats: chats };
 };
 

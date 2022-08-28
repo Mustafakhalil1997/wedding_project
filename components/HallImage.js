@@ -17,8 +17,6 @@ const HallImage = (props) => {
 
   const imageUri = cloudinaryURL + image;
 
-  console.log("selected ", selected);
-
   const onLongPressHandler = () => {
     setSelected(true);
     onImageLongPressed(true);

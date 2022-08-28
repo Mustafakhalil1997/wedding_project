@@ -50,9 +50,7 @@ const HallDetailScreen = (props) => {
   const { id: userId, reservation } = userInfo;
 
   let halls = useSelector((state) => state.halls.hallList);
-  console.log("halls ", halls);
   const hall = halls.find((h) => h.id === hallId);
-  console.log("hall ", hall);
 
   const favorite = () => {
     if (Object.keys(userInfo).length === 0) return false;

@@ -48,7 +48,6 @@ const AuthReducer = (state = initialState, action) => {
         hallInfo: {},
       };
     case REMOVE_TOKEN:
-      console.log("settttingggg token ", action.token);
       return {
         ...state,
         userType: "user",
@@ -64,9 +63,7 @@ const AuthReducer = (state = initialState, action) => {
       };
     case EDIT_PROFILE:
       const tempInfo = { ...state.userInfo };
-      console.log("tempInfo ", tempInfo);
       const updatedInfo = { ...tempInfo, ...action.newData };
-      console.log("updatedInfo ", updatedInfo);
       return {
         ...state,
         userInfo: updatedInfo,
@@ -74,20 +71,15 @@ const AuthReducer = (state = initialState, action) => {
     case EDIT_HALL_INFO:
       const tempHallInfo = { ...state.hallInfo };
       const updatedHallInfo = { ...tempHallInfo, ...action.newData };
-      console.log("UPDATEDHALLINFO ", updatedHallInfo);
       return {
         ...state,
         hallInfo: updatedHallInfo,
       };
     case TOGGLE_USER_FAVORITE:
-      console.log("action.hallId ", action.hallId);
       const hallId = action.hallId;
-      console.log("hallId ", hallId);
       const index = state.userInfo.favorites.findIndex((id) => id === hallId);
       if (index < 0) {
         const newFavorites = [...state.userInfo.favorites, action.hallId];
-        console.log("newFavorites ", newFavorites);
-        console.log("state.userInfo ", state.userInfo);
         const newUserInfo = { ...state.userInfo, favorites: newFavorites };
         return {
           ...state,
@@ -97,7 +89,6 @@ const AuthReducer = (state = initialState, action) => {
       } else {
         const newFavorites = [...state.userInfo.favorites];
         newFavorites.splice(index, 1);
-        console.log("newFavorites ", newFavorites);
         return {
           ...state,
           userInfo: { ...state.userInfo, favorites: newFavorites },

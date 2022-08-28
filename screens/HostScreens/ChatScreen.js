@@ -25,10 +25,6 @@ const ChatScreen = (props) => {
 
   const { title, contactImage, contactId, roomId } = route.params;
 
-  console.log("route.params ", route.params);
-
-  console.log("contactImage ", contactImage);
-
   const [messages, setMessages] = useState([]);
 
   const dispatch = useDispatch();
@@ -37,7 +33,6 @@ const ChatScreen = (props) => {
 
   const { id: hallId, hallName, images } = hallInfo;
 
-  //   console.log("hallIdd ", hallInfo);
   const chatRooms = useSelector((state) => state.HallChats.hallChats);
 
   let chatRoom;
@@ -49,7 +44,6 @@ const ChatScreen = (props) => {
 
   let existingChatRoom;
   if (!roomId) {
-    console.log("not roomId");
     existingChatRoom = chatRooms.find((room) => {
       return room.userId._id === contactId && room.hallId === hallId;
     });
@@ -80,13 +74,11 @@ const ChatScreen = (props) => {
     };
 
     if (chatRoom) {
-      console.log("setting chatRoom messages");
       const convertedMessages = convertMessages(chatRoom);
       setMessages(convertedMessages);
     }
 
     if (existingChatRoom) {
-      console.log("setting messages");
       const convertedMessages = convertMessages(existingChatRoom);
       setMessages(convertedMessages);
     }
@@ -117,8 +109,6 @@ const ChatScreen = (props) => {
     let stringObjectListener;
     let chatRoom;
     if (roomId || existingChatRoom) {
-      console.log("roomId ", roomId);
-      console.log("existingChatRoom ", existingChatRoom);
       stringObjectListener = JSON.stringify({
         contactId: contactId,
         chatRoom: roomId ? roomId : existingChatRoom._id,
@@ -180,7 +170,6 @@ const ChatScreen = (props) => {
         if (response.status !== 200) {
           console.log("returned with status ", response.status);
         } else {
-          console.log("responsedata after creating chatroom ", responseData);
           const { chatRoom } = responseData;
           console.log("chatRoom created ", chatRoom);
           const newChats = [chatRoom, ...chatRooms];

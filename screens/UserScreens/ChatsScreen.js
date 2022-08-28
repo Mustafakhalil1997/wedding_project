@@ -92,12 +92,10 @@ const ChatsScreen = (props) => {
   const userType = useSelector((state) => state.Auth.userType);
 
   console.log("usertype changed to ", userType);
-  console.log("status ", status);
   // console.log("chatsDetails after update ", chatsDetails);
 
   const { chatRooms, firstName, id: userId } = userInfo;
 
-  console.log("chatRooms ", chatRooms);
   // const onRefresh = useCallback(() => {
   //   setRefreshing(true);
   //   setTimeout(() => {
@@ -116,8 +114,6 @@ const ChatsScreen = (props) => {
       dispatch(getUserChats(chatRooms));
     };
     if (token && chatRooms.length !== 0 && status === 100) {
-      console.log("loading list of chats again");
-      console.log("userType changed");
       setLoading(true);
       getMessages();
     }
@@ -144,17 +140,13 @@ const ChatsScreen = (props) => {
   useEffect(() => {
     if (flag) {
       for (let i = 0; i < chatRooms.length; i++) {
-        console.log("room ", chatRooms[i]);
         const objectListener = {
           contactId: userId,
           chatRoom: chatRooms[i],
         };
         const stringObjectListener = JSON.stringify(objectListener);
-        // console.log("chatsDetails in useEffect ", chatsDetails);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
-          console.log("messagesReceived ", messagesReceived);
-          console.log("type of time ", typeof messagesReceived[0].createdAt);
 
           // set chats adding new message
           // console.log("chatsDetails in on ", chatsDetails);
@@ -167,7 +159,6 @@ const ChatsScreen = (props) => {
               typeof chatDetails._id,
               chatDetails._id
             );
-            console.log("chatRoom ", typeof chatRooms[i], chatRooms[i]);
             return chatDetails._id === chatRooms[i];
           });
 

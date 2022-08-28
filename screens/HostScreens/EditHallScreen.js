@@ -35,7 +35,6 @@ const EditHallScreen = ({ navigation }) => {
   );
 
   const hallInformation = useSelector((state) => state.Auth.hallInfo);
-  console.log("Hall Information ", hallInformation);
 
   const hallInfo = {
     hallName: "",
@@ -70,7 +69,6 @@ const EditHallScreen = ({ navigation }) => {
       images: [],
       reservations: [],
     };
-    console.log("valuesss ", hall);
     setTimeout(() => {
       dispatch(editHall(hall));
       //   formikActions.resetForm();

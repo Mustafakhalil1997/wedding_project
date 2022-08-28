@@ -53,18 +53,8 @@ const HallList = (props) => {
     (state) => state.Connection.isInternetReachable
   );
 
-  console.log("connectionStatus ", connectionStatus);
-  console.log("connectionType ", connectionType);
-  console.log("helloo");
-
-  const userChats = useSelector((state) => state.UserChats.userChats);
-  const hallChats = useSelector((state) => state.HallChats.hallChats);
-
-  console.log(
-    "userChats in HallList ",
-    userChats.length === 0 ? "empty" : "not empty"
-  );
-  console.log("hallChats in HallListtt ", hallChats);
+  // const userChats = useSelector((state) => state.UserChats.userChats);
+  // const hallChats = useSelector((state) => state.HallChats.hallChats);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -107,7 +97,6 @@ const HallList = (props) => {
   }, [dispatch, status]);
 
   useEffect(() => {
-    console.log("status ", status);
     if (status !== 100) {
       setLoading(false);
       // dispatchState({ type: "setLoading", loading: false });

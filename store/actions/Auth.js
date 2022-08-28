@@ -13,8 +13,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const login = (token, userInfo, hallInfo) => {
   const currentDate = new Date();
   const expirationDate = new Date(currentDate.getTime() + 60 * 60000); // 10 minutes      // 24 hours or 1440 minutes
-  console.log("this is login ");
-  console.log("hallInfo ", hallInfo);
 
   const tokenObject = {
     token: token,
@@ -75,22 +73,17 @@ export const setToken = (myToken = null) => {
           const { token, expirationDate, userInfo, hallInfo, userType } =
             jsonValue;
 
-          console.log("hallInfooo ", hallInfo);
-
           const date = new Date();
           console.log("current date ", date);
           console.log("expiration date ", new Date(expirationDate));
           if (new Date(expirationDate) < date) {
             console.log("current date is now greater than expiration date");
             await AsyncStorage.removeItem("@token");
-            console.log("token removed");
             dispatch({ type: REMOVE_TOKEN });
             // dispatch({ type: SWITCH_PROFILE });
           } else {
-            console.log("userInfooooo ", userInfo);
             console.log(Object.keys(userInfo).length);
             if (Object.keys(userInfo).length !== 0) {
-              console.log("here man");
               dispatch({
                 type: LOGIN,
                 token: token,
@@ -152,7 +145,6 @@ export const switchProfile = () => {
           };
           const newJsonValue = JSON.stringify(newValue);
           await AsyncStorage.setItem("@token", newJsonValue);
-          console.log("hallInfooo ", hallInfo);
           dispatch({ type: SWITCH_PROFILE });
         }
       });

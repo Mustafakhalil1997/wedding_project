@@ -92,10 +92,6 @@ const ChatsScreen = (props) => {
   const status = useSelector((state) => state.HallChats.hallChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
 
-  console.log("chatsDetailss ", chatsDetails);
-  // console.log("chatsDetails after update ", chatsDetails);
-  console.log("hallInfoo ", hallInfo);
-
   const { chatRooms, hallName, id: hallId } = hallInfo;
 
   // const onRefresh = useCallback(() => {
@@ -111,9 +107,6 @@ const ChatsScreen = (props) => {
 
   useEffect(() => {
     const getMessages = () => {
-      console.log("setting chats in chatsScreen for hall");
-      console.log("chatRooms.length in hall ", chatRooms.length);
-      // dispatch(getChats(chatRooms, "hall"));
       dispatch(getHallChats(chatRooms));
     };
     if (chatRooms.length !== 0 && status === 100) {
@@ -127,7 +120,6 @@ const ChatsScreen = (props) => {
   // }, [loading]);
 
   useEffect(() => {
-    console.log("status is ", status);
     if (status !== 100) {
       setLoading(false);
     }
@@ -138,14 +130,12 @@ const ChatsScreen = (props) => {
       setFlag(true);
       setLoading(false);
     }
-    console.log("chatsDetails right now ", chatsDetails);
   }, [chatsDetails]);
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
     if (flag) {
       for (let i = 0; i < chatRooms.length; i++) {
-        console.log("room ", chatRooms[i]);
         const objectListener = {
           contactId: hallId,
           chatRoom: chatRooms[i],
@@ -155,7 +145,6 @@ const ChatsScreen = (props) => {
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", hallId);
           console.log("messagesReceived ", messagesReceived);
-          console.log("type of time ", typeof messagesReceived[0].createdAt);
 
           // set chats adding new message
           // console.log("chatsDetails in on ", chatsDetails);
@@ -163,12 +152,6 @@ const ChatsScreen = (props) => {
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
           const chatRoom = chatsDetails.find((chatDetails) => {
-            console.log(
-              "chatDetails ",
-              typeof chatDetails._id,
-              chatDetails._id
-            );
-            console.log("chatRoom ", typeof chatRooms[i], chatRooms[i]);
             return chatDetails._id === chatRooms[i];
           });
 
@@ -179,8 +162,6 @@ const ChatsScreen = (props) => {
             senderId: messagesReceived[0].user._id,
             receiverId: hallId,
           };
-
-          console.log("chatRoom.chats ", chatRoom);
 
           chatRoom.chats.unshift(newMessage);
 

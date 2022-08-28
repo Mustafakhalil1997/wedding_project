@@ -47,8 +47,8 @@ const UserChatItem = (props) => {
   //   return contacts[0].firstName + " " + contacts[0].lastName;
   // })();
 
-  console.log(contactName);
-  console.log(lastChat);
+  // console.log(contactName);
+  // console.log(lastChat);
 
   return (
     <TouchableOpacity

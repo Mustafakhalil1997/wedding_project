@@ -75,8 +75,6 @@ const HallItem = (props) => {
     setDimensions({ width: width, height: height });
   };
 
-  // console.log("dimensions in hallItem ", dimensions);
-
   return (
     <Card>
       <View style={{ flex: 1, width: "100%" }}>

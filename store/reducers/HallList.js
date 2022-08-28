@@ -38,7 +38,6 @@ const hallListReducer = (state = initialState, action) => {
       });
 
       if (existingIndex >= 0) {
-        console.log("removing");
         updatedHallsList[hallItemInListIndex].isFavorite = false;
         updatedFavoriteList.splice(existingIndex, 1);
       } else {
@@ -58,7 +57,6 @@ const hallListReducer = (state = initialState, action) => {
       const { userId, hallId, date, price } = action.reservation;
       const hall = state.hallList.find((h) => h.id === hallId);
       const index = state.hallList.findIndex((h) => h.id === hallId);
-      console.log("hall ", hall);
       const previousReservations = hall.bookings;
       console.log("previousReservations ", previousReservations);
       // const checkExistingIndex = previousReservations.findIndex(

@@ -39,7 +39,6 @@ export const setHallList = () => {
       const response = await fetch(`${URL}/api/hall`);
 
       const responseData = await response.json();
-      console.log("responseDataa ", responseData.halls);
       dispatch({ type: SET_LIST, hallList: responseData.halls });
     } catch (err) {
       showMessage({

@@ -25,12 +25,9 @@ const { width } = Dimensions.get("window");
 const CompleteHostProfileScreen = (props) => {
   const { navigation } = props;
 
-  console.log("width ", width);
-
   const dispatch = useDispatch();
 
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
-  console.log("hallInfo ", hallInfo);
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const token = useSelector((state) => state.Auth.token);
 
@@ -53,11 +50,8 @@ const CompleteHostProfileScreen = (props) => {
     loadCurrentLocation();
   }, [dispatch]);
 
-  console.log("hallName ", hallName);
-
   const getLocation = (location) => {
     setLocation(location);
-    // console.log("location ", location);
   };
 
   const hallNameChange = (value) => {
@@ -92,7 +86,6 @@ const CompleteHostProfileScreen = (props) => {
       // base64: true,
       quality: 1,
     });
-    console.log("result ", result);
     if (!result.cancelled) {
       // const imageSize = result.base64.length * (3 / 4) - 2;
       // console.log("imageSize ", imageSize);
@@ -148,8 +141,6 @@ const CompleteHostProfileScreen = (props) => {
         price: pricePerPerson,
       };
 
-      console.log("sending request");
-
       const response = await fetch(`${URL}/api/hall/createHall`, {
         method: "POST",
         headers: {
@@ -158,8 +149,6 @@ const CompleteHostProfileScreen = (props) => {
         },
         body: JSON.stringify(newHall),
       });
-
-      console.log("request sent");
 
       const responseData = await response.json();
       const newHallInfo = responseData.hall;

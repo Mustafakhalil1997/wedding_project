@@ -69,7 +69,6 @@ const LoginScreen = ({ navigation }) => {
       console.log("response.status ", response.status);
       const responseData = await response.json();
       const { userInfo, token, hallInfo } = responseData;
-      console.log("responseData ", responseData);
       console.log("message ", responseData.message);
 
       if (response.status === 200) {

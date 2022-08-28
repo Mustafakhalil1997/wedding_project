@@ -157,7 +157,6 @@ const CalendarScreen = ({ navigation }) => {
   const renderItem = (item) => {
     // const fontSize = isFirst ? 16 : 14;
     // const color = isFirst ? "black" : "#43515c";
-    console.log("itemmm ", item);
     const { name, email, convertedImageUrl, contactImage, userId } = item;
     if (convertedImageUrl === null) {
       return (

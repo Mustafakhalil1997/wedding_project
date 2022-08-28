@@ -25,8 +25,6 @@ const Tab = createBottomTabNavigator();
 const HostTabNavigator = () => {
   const AuthStack = () => {
     const token = useSelector((state) => state.Auth.token);
-    console.log("token ", token);
-    console.log("tokennn", !token);
     return (
       <Stack.Navigator
         screenOptions={{

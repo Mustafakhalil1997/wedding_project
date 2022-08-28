@@ -24,7 +24,6 @@ const Map = ({ route, navigation, getLocation }) => {
   let lat;
   let lng;
 
-  console.log("currentLocationn ", currentLocation);
   if (Object.keys(currentLocation).length !== 0) {
     console.log("currentLocation set");
     lat = currentLocation.latitude;

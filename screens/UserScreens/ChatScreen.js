@@ -46,7 +46,6 @@ const ChatScreen = (props) => {
   const chatRooms = useSelector((state) => state.UserChats.userChats);
 
   let chatRoom;
-  console.log("roomId ", roomId);
   // console.log("chatRooms ", chatRooms);
   if (roomId) {
     chatRoom = chatRooms.find((room) => {
@@ -54,16 +53,12 @@ const ChatScreen = (props) => {
     });
   }
 
-  console.log("chatRoom found?? ", chatRoom ? "found" : "not found");
-
   let existingChatRoom;
   if (!roomId) {
-    console.log("not roomId");
     existingChatRoom = chatRooms.find((room) => {
       return room.userId === userId && room.hallId._id === contactId;
     });
   }
-  console.log("existingChatRoom ", existingChatRoom);
 
   useEffect(() => {
     const convertMessages = (chatRoom) => {
@@ -120,8 +115,6 @@ const ChatScreen = (props) => {
     let stringObjectListener;
     let chatRoom;
     if (roomId || existingChatRoom) {
-      console.log("roomId ", roomId);
-      console.log("existingChatRoom ", existingChatRoom);
       stringObjectListener = JSON.stringify({
         contactId: contactId,
         chatRoom: roomId ? roomId : existingChatRoom._id,
@@ -179,8 +172,6 @@ const ChatScreen = (props) => {
         });
 
         const responseData = await response.json();
-
-        console.log("responseData ", responseData);
 
         if (response.status !== 200) {
           console.log("returned with status ", response.status);

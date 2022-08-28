@@ -35,7 +35,6 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userInfo in profileScreenn ", userInfo);
 
   const { firstName, lastName, email, id, profileImage, reservation } =
     userInfo;

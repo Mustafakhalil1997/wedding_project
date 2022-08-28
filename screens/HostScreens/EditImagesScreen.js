@@ -38,7 +38,6 @@ const EditImagesScreen = ({ navigation, route }) => {
     selected[images[i]] = false;
   }
 
-  console.log("isSubmittinggg ", isSubmitting);
 
   const [selectedImages, setSelectedImages] = useState(selected);
 
@@ -46,7 +45,6 @@ const EditImagesScreen = ({ navigation, route }) => {
     const backHandler = customBackHandler({ navigation, isSubmitting });
 
     return () => {
-      console.log("useEffect returned");
       backHandler.remove();
     };
   }, [isSubmitting]);
@@ -157,7 +155,6 @@ const EditImagesScreen = ({ navigation, route }) => {
       // base64: true,
       quality: 1,
     });
-    console.log("result ", result);
     if (!result.cancelled) {
       setImageSelected(result.uri);
       const imageData = new FormData();
@@ -167,7 +164,6 @@ const EditImagesScreen = ({ navigation, route }) => {
         type: "image/jpg" || "image/png" || "image/jpeg",
       });
       try {
-        console.log("uploading image");
         const res = await fetch(`${URL}/api/hall/addImage/${hallId}`, {
           method: "PATCH",
           headers: {
@@ -179,9 +175,6 @@ const EditImagesScreen = ({ navigation, route }) => {
         });
         const resData = await res.json();
         const { newHallInfo: updatedHall, newImage } = resData;
-
-        console.log("hallInfo in editImages ", hallInfo);
-        console.log("newHallInfo after adding Image ", updatedHall);
 
         if (res.status === 200) {
           dispatch(editHall(updatedHall));

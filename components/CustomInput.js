@@ -64,8 +64,6 @@ const CustomInput = (props) => {
   );
 };
 
-console.log("text inputt");
-
 const styles = StyleSheet.create({
   inputLabelContainer: {
     marginVertical: 10,

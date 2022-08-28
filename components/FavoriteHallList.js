@@ -56,14 +56,12 @@ const FavoriteHallList = (props) => {
     DUMMY_HALLLIST = [];
   } else {
     const favoritesIds = userInfo.favorites;
-    console.log("favoritesIds ", favoritesIds);
     const favoritesList = hallList.filter((h) => favoritesIds.includes(h.id));
     DUMMY_HALLLIST = favoritesList;
     // DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
   }
 
   const isItemFavorite = (id) => {
-    console.log("isItemFavoite userInfo ", userInfo);
     if (Object.keys(userInfo).length === 0) return false;
     if (userInfo.favorites.includes(id)) return true;
     return false;

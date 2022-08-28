@@ -52,7 +52,6 @@ const EditProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  console.log("userinfo ", userInfo);
   const token = useSelector((state) => state.Auth.token);
 
   const { id, firstName, lastName, email, profileImage } = userInfo;
@@ -131,14 +130,11 @@ const EditProfileScreen = (props) => {
   };
 
   const handleSubmitForm = async (values, formikActions) => {
-    console.log("New Values ", values);
-
     const { email, firstName, lastName } = values;
 
     setIsSubmitting(true);
     try {
       if (profileImagePicked) {
-        console.log();
         const imageData = new FormData();
         imageData.append("profileImage", {
           name: new Date() + "_profile",
