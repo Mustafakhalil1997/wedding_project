@@ -11,7 +11,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { useSelector, useDispatch } from "react-redux";
 
 import { io } from "socket.io-client";
@@ -219,9 +222,14 @@ const ChatsScreen = (props) => {
     return <HallChatItem navigation={navigation} item={item} />;
   };
 
+  const insets = useSafeAreaInsets();
+
   if (!token) {
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "white", paddingTop: insets.top }}
+        edges={["left", "right"]}
+      >
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
@@ -262,7 +270,10 @@ const ChatsScreen = (props) => {
 
   if (status === 500) {
     return (
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "white" }}
+        edges={["left", "right"]}
+      >
         <View
           style={[{ flex: 1, alignItems: "center", justifyContent: "center" }]}
         >
@@ -316,6 +327,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "white",
   },
   container: {
     flex: 1,

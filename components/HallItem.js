@@ -137,7 +137,7 @@ const HallItem = (props) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingTop: 10,
+    // paddingTop: 10,
     paddingHorizontal: 20,
   },
 

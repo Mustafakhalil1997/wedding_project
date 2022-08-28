@@ -73,7 +73,6 @@ const SignupScreen = ({ navigation }) => {
       );
 
       const responseData = await userInfoResponse.json();
-      console.log("responseData here ", responseData);
 
       const { name, email } = responseData;
 
@@ -128,7 +127,6 @@ const SignupScreen = ({ navigation }) => {
     console.log("full name ", nameArray);
     let first = nameArray[0];
     console.log("first ", first);
-    console.log();
     for (let i = 1; i < arraySize - 1; i++) {
       console.log(nameArray[i]);
       first = first + " " + nameArray[i];

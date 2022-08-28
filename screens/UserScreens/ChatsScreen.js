@@ -205,15 +205,14 @@ const ChatsScreen = (props) => {
   if (!token) {
     return (
       <SafeAreaView
-        style={{ flex: 1, paddingTop: insets.top }}
-        edges={["bottom"]}
+        style={{ flex: 1, paddingTop: insets.top, backgroundColor: "white" }}
+        edges={["left", "right"]}
       >
         <View style={styles.notLoggedIn}>
           <DefaultText
             styles={{
               fontSize: 18,
               fontFamily: "open-sans-bold",
-              marginBottom: 10,
             }}
           >
             Login To See Your Messages
