@@ -43,7 +43,7 @@ const CalendarScreen = ({ navigation }) => {
   }
 
   const bookings = hallInfo.bookings;
-  const bookingIds = bookings.map((booking) => booking.id);
+  const bookingIds = bookings.map((booking) => booking._id);
 
   const datesReserved = bookings.map((booking) =>
     booking.date.substring(0, 10)
@@ -93,7 +93,7 @@ const CalendarScreen = ({ navigation }) => {
       }
     };
     getBookingsWithUsers();
-  }, []);
+  }, [hallInfo]);
 
   // const renderEmptyDate = () => {
   //   return (

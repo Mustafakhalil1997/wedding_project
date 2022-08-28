@@ -29,7 +29,9 @@ const EditImagesScreen = ({ navigation, route }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
-  const { id: hallId, images } = useSelector((state) => state.Auth.hallInfo);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
+
+  const { id: hallId, images } = hallInfo;
 
   const selected = [];
   for (let i = 0; i < images.length; i++) {
@@ -177,6 +179,9 @@ const EditImagesScreen = ({ navigation, route }) => {
         });
         const resData = await res.json();
         const { newHallInfo: updatedHall, newImage } = resData;
+
+        console.log("hallInfo in editImages ", hallInfo);
+        console.log("newHallInfo after adding Image ", updatedHall);
 
         if (res.status === 200) {
           dispatch(editHall(updatedHall));
