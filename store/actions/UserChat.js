@@ -39,7 +39,7 @@ export const setStatus = (status) => {
   return { type: SET_USER_STATUS, status: status };
 };
 
-export const userLogOut = () => {
+export const userChatLogOut = () => {
   return { type: USER_LOG_OUT };
 };
 

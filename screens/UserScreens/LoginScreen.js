@@ -37,6 +37,10 @@ const LoginScreen = ({ navigation }) => {
   const userType = useSelector((state) => state.Auth.userType);
   const connectionStatus = useSelector((state) => state.Connection.isConnected);
 
+  const userChats = useSelector((state) => state.UserChats.userChats);
+
+  console.log("userChats in loginScreen ", userChats);
+
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
     console.log("connectionStatuss ", connectionStatus);

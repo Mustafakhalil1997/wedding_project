@@ -11,6 +11,7 @@ const initialState = {
 };
 
 const UserChatReducer = (state = initialState, action) => {
+  console.log("this is userChat reducer");
   // console.log("action.chats in UserChat reducer ", action.chats);
   switch (action.type) {
     case GET_USER_CHATS:
@@ -30,6 +31,7 @@ const UserChatReducer = (state = initialState, action) => {
         userChatStatus: action.status,
       };
     case USER_LOG_OUT:
+      console.log("reached userLogout in userChats");
       return {
         ...state,
         userChatStatus: 100,

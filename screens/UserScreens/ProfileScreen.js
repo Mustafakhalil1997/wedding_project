@@ -21,8 +21,8 @@ import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 import DefaultText from "../../components/DefaultText";
 import ProfileElement from "./ProfileElement";
-import { userLogOut } from "../../store/actions/UserChat";
-import { hallLogOut } from "../../store/actions/HallChat";
+import { userChatLogOut } from "../../store/actions/UserChat";
+import { hallChatLogOut } from "../../store/actions/HallChat";
 // import { logOut } from "./../../store/actions/HallChat";
 import {
   SafeAreaView,
@@ -56,8 +56,8 @@ const ProfileScreen = (props) => {
 
   const logoutClickHandler = () => {
     dispatch(logout());
-    dispatch(userLogOut());
-    dispatch(hallLogOut());
+    dispatch(userChatLogOut());
+    dispatch(hallChatLogOut());
   };
 
   const switchProfileClickHandler = () => {

@@ -38,7 +38,7 @@ export const setHallStatus = (status) => {
   return { type: SET_HALL_STATUS, status: status };
 };
 
-export const hallLogOut = () => {
+export const hallChatLogOut = () => {
   return { type: HALL_LOG_OUT };
 };
 
