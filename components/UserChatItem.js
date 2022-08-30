@@ -13,28 +13,54 @@ const UserChatItem = (props) => {
 
   const { chatRooms, firstName, id: userId } = userInfo;
 
-  const lastChat = chats[0];
-  const { message, time } = lastChat;
+  let lastChat;
+  let timeDifference;
 
-  const convertedTime = new Date(time);
-  console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
-  const now = new Date();
+  if (chats[0]) {
+    lastChat = chats[0];
+    const { message, time } = lastChat;
 
-  const timeDifference = (() => {
-    // when message was sent
-    const diffMs = now - convertedTime;
-    const diffDays = Math.floor(diffMs / 86400000); // days
-    if (diffDays >= 1) return diffDays + " days ago";
-    const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-    if (diffHrs >= 1) return diffHrs + " hours ago";
-    const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-    if (diffMins >= 1) return diffMins + " minutes ago";
-    return "now";
-  })();
+    const convertedTime = new Date(time);
+    console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
+    const now = new Date();
+
+    timeDifference = (() => {
+      // when message was sent
+      const diffMs = now - convertedTime;
+      const diffDays = Math.floor(diffMs / 86400000); // days
+      if (diffDays >= 1) return diffDays + " days ago";
+      const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+      if (diffHrs >= 1) return diffHrs + " hours ago";
+      const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+      if (diffMins >= 1) return diffMins + " minutes ago";
+      return "now";
+    })();
+    console.log("timeDifference ", timeDifference);
+  }
+  // const lastChat = chats[0];
+  // const { message, time } = lastChat;
+
+  // const convertedTime = new Date(time);
+  // console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
+  // const now = new Date();
+
+  // const timeDifference = (() => {
+  //   // when message was sent
+  //   const diffMs = now - convertedTime;
+  //   const diffDays = Math.floor(diffMs / 86400000); // days
+  //   if (diffDays >= 1) return diffDays + " days ago";
+  //   const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+  //   if (diffHrs >= 1) return diffHrs + " hours ago";
+  //   const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+  //   if (diffMins >= 1) return diffMins + " minutes ago";
+  //   return "now";
+  // })();
 
   const contactName = hallItem.hallName;
   const contactImage = hallItem.images[0];
   const contactId = hallItem._id;
+
+  console.log("lastChat here ", lastChat);
 
   // const contactName = (() => {
   //   if ( === firstName) {
@@ -80,9 +106,13 @@ const UserChatItem = (props) => {
         <View style={styles.textSection}>
           <View style={styles.userInfoText}>
             <DefaultText style={styles.userName}>{contactName}</DefaultText>
-            <DefaultText style={styles.postTime}>{timeDifference}</DefaultText>
+            <DefaultText style={styles.postTime}>
+              {lastChat ? timeDifference : null}
+            </DefaultText>
           </View>
-          <DefaultText style={styles.messageText}>{message}</DefaultText>
+          <DefaultText style={styles.messageText}>
+            {lastChat ? lastChat.message : null}
+          </DefaultText>
         </View>
       </View>
     </TouchableOpacity>
