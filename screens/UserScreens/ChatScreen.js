@@ -23,7 +23,7 @@ import { setUserChats } from "../../store/actions/UserChat";
 import customBackArrow from "./../../helpers/customBackArrow";
 import { CommonActions } from "@react-navigation/native";
 import { editProfile } from "./../../store/actions/Auth";
-import { setStatus } from "../../store/actions/UserChat";
+import { setUserStatus } from "../../store/actions/UserChat";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const socket = io.connect(URL);
@@ -59,65 +59,65 @@ const ChatScreen = (props) => {
     });
   }
 
-  useEffect(() => {
-    (async () => {
-      if (!existingChatRoom && !roomId) {
-        console.log("no chat room between these two");
-        // create chatRoom here
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!existingChatRoom && !roomId) {
+  //       console.log("no chat room between these two");
+  //       // create chatRoom here
 
-        const requestBody = {
-          // firstMessage: messageSentToDatabase,
-          userId: userId,
-          hallId: contactId,
-        };
-        try {
-          const response = await fetch(`${URL}/api/chat/createChat`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestBody),
-          });
+  //       const requestBody = {
+  //         // firstMessage: messageSentToDatabase,
+  //         userId: userId,
+  //         hallId: contactId,
+  //       };
+  //       try {
+  //         const response = await fetch(`${URL}/api/chat/createChat`, {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(requestBody),
+  //         });
 
-          const responseData = await response.json();
+  //         const responseData = await response.json();
 
-          if (response.status !== 200) {
-            console.log("returned with status ", response.status);
-          } else {
-            const { chatRoom, user } = responseData;
-            const newChats = [chatRoom, ...chatRooms];
+  //         if (response.status !== 200) {
+  //           console.log("returned with status ", response.status);
+  //         } else {
+  //           const { chatRoom, user } = responseData;
+  //           const newChats = [chatRoom, ...chatRooms];
 
-            console.log("newChats after newChat created ", newChats);
+  //           console.log("newChats after newChat created ", newChats);
 
-            const { _id: roomId, hallId: contactId } = chatRoom;
+  //           const { _id: roomId, hallId: contactId } = chatRoom;
 
-            if (!roomId && !existingChatRoom) {
-              existingChatRoom = chatRoom;
-            }
+  //           if (!roomId && !existingChatRoom) {
+  //             existingChatRoom = chatRoom;
+  //           }
 
-            dispatch(setStatus(100));
-            dispatch(editProfile(user));
-            dispatch(setUserChats(newChats));
+  //           dispatch(setUserStatus(100));
+  //           dispatch(editProfile(user));
+  //           dispatch(setUserChats(newChats));
 
-            // stringObjectListener = JSON.stringify({
-            //   contactId: contactId._id,
-            // });
+  //           // stringObjectListener = JSON.stringify({
+  //           //   contactId: contactId._id,
+  //           // });
 
-            // socket.emit("newChatRoom", {
-            //   stringObjectListener,
-            //   messageWithId: {
-            //     chatRoom: roomId,
-            //     messages: messages,
-            //   },
-            // });
-            // socket.emit("sentMessage", { stringObjectListener, messages });
-          }
-        } catch (err) {
-          console.log("err ", err);
-        }
-      }
-    })();
-  }, []);
+  //           // socket.emit("newChatRoom", {
+  //           //   stringObjectListener,
+  //           //   messageWithId: {
+  //           //     chatRoom: roomId,
+  //           //     messages: messages,
+  //           //   },
+  //           // });
+  //           // socket.emit("sentMessage", { stringObjectListener, messages });
+  //         }
+  //       } catch (err) {
+  //         console.log("err ", err);
+  //       }
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     const convertMessages = (chatRoom) => {
@@ -212,59 +212,58 @@ const ChatScreen = (props) => {
         } catch (err) {
           console.log("err ", err);
         }
+      } else {
+        console.log("new chatroom");
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, messages)
+        );
+        const requestBody = {
+          firstMessage: messageSentToDatabase,
+          userId: userId,
+          hallId: contactId,
+        };
+        try {
+          const response = await fetch(`${URL}/api/chat/createChat`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          const responseData = await response.json();
+
+          if (response.status !== 200) {
+            console.log("returned with status ", response.status);
+          } else {
+            const { chatRoom, user } = responseData;
+            const newChats = [chatRoom, ...chatRooms];
+
+            console.log("newChats after newChat created ", newChats);
+
+            const { _id: roomId, hallId: contactId } = chatRoom;
+
+            dispatch(setUserStatus(100));
+            dispatch(editProfile(user));
+            dispatch(setUserChats(newChats));
+
+            stringObjectListener = JSON.stringify({
+              contactId: contactId._id,
+            });
+
+            socket.emit("newChatRoom", {
+              stringObjectListener,
+              messageWithId: {
+                chatRoom: roomId,
+                messages: messages,
+              },
+            });
+            // socket.emit("sentMessage", { stringObjectListener, messages });
+          }
+        } catch (err) {
+          console.log("err ", err);
+        }
       }
-      // else {
-      //   console.log("new chatroom");
-      //   setMessages((previousMessages) =>
-      //     GiftedChat.append(previousMessages, messages)
-      //   );
-      //   const requestBody = {
-      //     firstMessage: messageSentToDatabase,
-      //     userId: userId,
-      //     hallId: contactId,
-      //   };
-      //   try {
-      //     const response = await fetch(`${URL}/api/chat/createChat`, {
-      //       method: "POST",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //       body: JSON.stringify(requestBody),
-      //     });
-
-      //     const responseData = await response.json();
-
-      //     if (response.status !== 200) {
-      //       console.log("returned with status ", response.status);
-      //     } else {
-      //       const { chatRoom, user } = responseData;
-      //       const newChats = [chatRoom, ...chatRooms];
-
-      //       console.log("newChats after newChat created ", newChats);
-
-      //       const { _id: roomId, hallId: contactId } = chatRoom;
-
-      //       dispatch(setStatus(100));
-      //       dispatch(editProfile(user));
-      //       dispatch(setUserChats(newChats));
-
-      //       stringObjectListener = JSON.stringify({
-      //         contactId: contactId._id,
-      //       });
-
-      //       socket.emit("newChatRoom", {
-      //         stringObjectListener,
-      //         messageWithId: {
-      //           chatRoom: roomId,
-      //           messages: messages,
-      //         },
-      //       });
-      //       // socket.emit("sentMessage", { stringObjectListener, messages });
-      //     }
-      //   } catch (err) {
-      //     console.log("err ", err);
-      //   }
-      // }
     },
     [chatRooms]
   );

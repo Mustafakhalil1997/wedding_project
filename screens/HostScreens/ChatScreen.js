@@ -53,6 +53,40 @@ const ChatScreen = (props) => {
   // console.log("existingChatRoom ", existingChatRoom);
 
   useEffect(() => {
+    (async () => {
+      if (!roomId && !existingChatRoom) {
+        const requestBody = {
+          userId: contactId,
+          hallId: hallId,
+        };
+
+        try {
+          const response = await fetch(`${URL}/api/chat/createChat`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          const responseData = await response.json();
+
+          if (response.status !== 200) {
+            console.log("returned with status ", response.status);
+          } else {
+            const { chatRoom } = responseData;
+            console.log("chatRoom created ", chatRoom);
+            const newChats = [chatRoom, ...chatRooms];
+            dispatch(setHallChats(newChats));
+          }
+        } catch (err) {
+          console.log("err ", err);
+        }
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     const convertMessages = (chatRoom) => {
       return chatRoom.chats.map((chat) => {
         const { _id, message, time, senderId } = chat;
@@ -146,39 +180,40 @@ const ChatScreen = (props) => {
       } catch (err) {
         console.log("err ", err);
       }
-    } else {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages)
-      );
-      const requestBody = {
-        firstMessage: messageSentToDatabase,
-        userId: contactId,
-        hallId: hallId,
-      };
-
-      try {
-        const response = await fetch(`${URL}/api/chat/createChat`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
-
-        const responseData = await response.json();
-
-        if (response.status !== 200) {
-          console.log("returned with status ", response.status);
-        } else {
-          const { chatRoom } = responseData;
-          console.log("chatRoom created ", chatRoom);
-          const newChats = [chatRoom, ...chatRooms];
-          dispatch(setHallChats(newChats));
-        }
-      } catch (err) {
-        console.log("err ", err);
-      }
     }
+    // else {
+    //   setMessages((previousMessages) =>
+    //     GiftedChat.append(previousMessages, messages)
+    //   );
+    //   const requestBody = {
+    //     firstMessage: messageSentToDatabase,
+    //     userId: contactId,
+    //     hallId: hallId,
+    //   };
+
+    //   try {
+    //     const response = await fetch(`${URL}/api/chat/createChat`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(requestBody),
+    //     });
+
+    //     const responseData = await response.json();
+
+    //     if (response.status !== 200) {
+    //       console.log("returned with status ", response.status);
+    //     } else {
+    //       const { chatRoom } = responseData;
+    //       console.log("chatRoom created ", chatRoom);
+    //       const newChats = [chatRoom, ...chatRooms];
+    //       dispatch(setHallChats(newChats));
+    //     }
+    //   } catch (err) {
+    //     console.log("err ", err);
+    //   }
+    // }
   }, []);
 
   const renderBubble = (props) => {

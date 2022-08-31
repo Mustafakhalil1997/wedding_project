@@ -23,7 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import { getUserChats, setUserChats } from "../../store/actions/UserChat";
-import { setStatus } from "../../store/actions/UserChat";
+import { setUserStatus } from "../../store/actions/UserChat";
 
 import Colors from "../../constants/Colors";
 import UserChatItem from "./../../components/UserChatItem";
@@ -91,6 +91,8 @@ const ChatsScreen = (props) => {
   const status = useSelector((state) => state.UserChats.userChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
 
+  console.log("chatsDetails user ChatsScreen ", chatsDetails);
+
   console.log("usertype changed to ", userType);
   // console.log("chatsDetails after update ", chatsDetails);
 
@@ -104,7 +106,7 @@ const ChatsScreen = (props) => {
   // }, []);
 
   const tryAgain = () => {
-    dispatch(setStatus(100));
+    dispatch(setUserStatus(100));
   };
 
   useEffect(() => {
