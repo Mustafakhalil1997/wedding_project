@@ -13,14 +13,11 @@ export const getUserChats = (chatRooms) => {
       const response = await fetch(`${URL}/api/chat/user/${arr}`);
       const responseData = await response.json();
       console.log("sent request");
-      // console.log("responseData in chats store ", responseData);
 
       if (response.status !== 200) {
         dispatch({ type: SET_USER_STATUS, status: 500 });
       } else {
         const { chats, message } = responseData;
-        // console.log("chats in store ", chats);
-        // console.log("responseData ", responseData);
         dispatch({ type: GET_USER_CHATS, chats: chats });
       }
     } catch (err) {
@@ -35,7 +32,7 @@ export const setUserChats = (chats) => {
   return { type: SET_USER_CHATS, chats: chats };
 };
 
-export const setStatus = (status) => {
+export const setUserStatus = (status) => {
   return { type: SET_USER_STATUS, status: status };
 };
 

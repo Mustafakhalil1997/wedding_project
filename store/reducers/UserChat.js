@@ -15,6 +15,7 @@ const UserChatReducer = (state = initialState, action) => {
   // console.log("action.chats in UserChat reducer ", action.chats);
   switch (action.type) {
     case GET_USER_CHATS:
+      console.log("getting chats in userChat reducer");
       return {
         ...state,
         userChatStatus: 200,
