@@ -91,9 +91,9 @@ const ChatsScreen = (props) => {
   const status = useSelector((state) => state.UserChats.userChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
 
-  console.log("chatsDetails user ChatsScreen ", chatsDetails);
+  // console.log("chatsDetails user ChatsScreen ", chatsDetails);
 
-  console.log("usertype changed to ", userType);
+  // console.log("usertype changed to ", userType);
   // console.log("chatsDetails after update ", chatsDetails);
 
   const { chatRooms, firstName, id: userId } = userInfo;
@@ -110,9 +110,12 @@ const ChatsScreen = (props) => {
   };
 
   useEffect(() => {
+    console.log("this is useEffect");
+    console.log("token ", token);
+    console.log("chatRooms.length ", chatRooms);
+    console.log("status ", status);
     const getMessages = () => {
       console.log("setting chats in chatsScreen for user");
-      // dispatch(getUserChats(chatRooms, "user"));
       dispatch(getUserChats(chatRooms));
     };
     if (token && chatRooms.length !== 0 && status === 100) {
@@ -120,10 +123,6 @@ const ChatsScreen = (props) => {
       getMessages();
     }
   }, [userInfo, status, userType]);
-
-  // useEffect(() => {
-  //   if (loading) getMessages();
-  // }, [loading]);
 
   useEffect(() => {
     if (status !== 100) {
@@ -155,14 +154,9 @@ const ChatsScreen = (props) => {
           const index = chatsDetails.findIndex(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
-          const chatRoom = chatsDetails.find((chatDetails) => {
-            console.log(
-              "chatDetails ",
-              typeof chatDetails._id,
-              chatDetails._id
-            );
-            return chatDetails._id === chatRooms[i];
-          });
+          const chatRoom = chatsDetails.find(
+            (chatDetails) => chatDetails._id === chatRooms[i]
+          );
 
           const newMessage = {
             _id: messagesReceived[0]._id,

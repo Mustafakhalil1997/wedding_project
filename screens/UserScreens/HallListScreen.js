@@ -13,6 +13,8 @@ const HallListScreen = ({ navigation }) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
+  console.log("userInfo ", userInfo);
+
   // useLayoutEffect(() => {
   //   navigation.setOptions({
   //     headerTitle: () => <CustomHeader title="Wedding Halls" />,

@@ -98,6 +98,8 @@ const ChatsScreen = (props) => {
 
   const { chatRooms, hallName, id: hallId } = hallInfo;
 
+  console.log("chatsDetails in host chatsScreen ", chatsDetails);
+
   // const onRefresh = useCallback(() => {
   //   setRefreshing(true);
   //   setTimeout(() => {
@@ -197,7 +199,6 @@ const ChatsScreen = (props) => {
           chatRoom: chatRooms[i],
         };
         const stringObjectListener = JSON.stringify(objectListener);
-        // console.log("chatsDetails in useEffect ", chatsDetails);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", hallId);
           console.log("messagesReceived ", messagesReceived);
@@ -207,9 +208,9 @@ const ChatsScreen = (props) => {
           const index = chatsDetails.findIndex(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
-          const chatRoom = chatsDetails.find((chatDetails) => {
-            return chatDetails._id === chatRooms[i];
-          });
+          const chatRoom = chatsDetails.find(
+            (chatDetails) => chatDetails._id === chatRooms[i]
+          );
 
           const newMessage = {
             _id: messagesReceived[0]._id,

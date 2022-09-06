@@ -20,7 +20,6 @@ const initialState = {
 };
 
 const AuthReducer = (state = initialState, action) => {
-  console.log("AuthReducer");
   switch (action.type) {
     case LOGIN:
       return {
@@ -63,10 +62,18 @@ const AuthReducer = (state = initialState, action) => {
       };
     case EDIT_PROFILE:
       const tempInfo = { ...state.userInfo };
-      const updatedInfo = { ...tempInfo, ...action.newData };
+      console.log("newData after updating profile", action.newData);
+      // const { firstName, lastName, profileImage } = action.newData;
+      // const newDataReceived = {
+      //   firstName,
+      //   lastName,
+      //   profileImage,
+      // };
+      // const updatedInfo = { ...tempInfo, ...newDataReceived };
+      // console.log("updatedInfo after editing ", updatedInfo);
       return {
         ...state,
-        userInfo: updatedInfo,
+        userInfo: action.newData,
       };
     case EDIT_HALL_INFO:
       const tempHallInfo = { ...state.hallInfo };

@@ -239,6 +239,8 @@ const ChatScreen = (props) => {
             const { chatRoom, user } = responseData;
             const newChats = [chatRoom, ...chatRooms];
 
+            console.log("user after creating chatRoom ", user);
+
             console.log("newChats after newChat created ", newChats);
 
             const { _id: roomId, hallId: contactId } = chatRoom;

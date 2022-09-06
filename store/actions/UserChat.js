@@ -28,7 +28,7 @@ export const getUserChats = (chatRooms) => {
 };
 
 export const setUserChats = (chats) => {
-  // console.log("chats in reducer ", chats);
+  console.log("chats in reducer ", chats);
   return { type: SET_USER_CHATS, chats: chats };
 };
 
