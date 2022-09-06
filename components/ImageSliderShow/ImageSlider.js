@@ -38,7 +38,7 @@ const ImageSlider = (props) => {
 
   const onLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
-    console.log(x, y, width, height);
+    // console.log(x, y, width, height);
     setDimensions({ width: width, height: height });
   };
 

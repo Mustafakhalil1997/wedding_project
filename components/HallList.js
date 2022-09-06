@@ -4,6 +4,7 @@ import React, {
   useState,
   useLayoutEffect,
   useCallback,
+  useMemo,
 } from "react";
 import {
   View,
@@ -56,6 +57,9 @@ const HallList = (props) => {
     (state) => state.Connection.isInternetReachable
   );
 
+  console.log("rendering hallList");
+  console.log("again and again");
+
   // const userChats = useSelector((state) => state.UserChats.userChats);
   // const hallChats = useSelector((state) => state.HallChats.hallChats);
 
@@ -69,7 +73,7 @@ const HallList = (props) => {
         </HeaderButtons>
       ),
     });
-  });
+  }, []);
 
   // const onRefresh = useCallback(() => {
   //   setLoading(true);
@@ -79,13 +83,13 @@ const HallList = (props) => {
   //   }, 2000);
   // }, []);
 
-  useEffect(() => {
-    if (!connectionStatus) {
-      console.log("connectionType ", connectionType);
-      console.log("not connected to wifi");
-      connectionMessage("You are not connected to wifi");
-    }
-  }, [connectionStatus]);
+  // useEffect(() => {
+  //   if (!connectionStatus) {
+  //     console.log("connectionType ", connectionType);
+  //     console.log("not connected to wifi");
+  //     connectionMessage("You are not connected to wifi");
+  //   }
+  // }, [connectionStatus]);
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
@@ -97,12 +101,8 @@ const HallList = (props) => {
       // dispatchState({ type: "setLoading", loading: true });
       loadListAndCurrentLocation();
     }
-  }, [dispatch, status]);
-
-  useEffect(() => {
     if (status !== 100) {
       setLoading(false);
-      // dispatchState({ type: "setLoading", loading: false });
     }
   }, [status]);
 
@@ -118,11 +118,10 @@ const HallList = (props) => {
     dispatch(setStatus(100));
   };
 
-  const sortedListByPrice = [...DUMMY_HALLLIST].sort(
-    (a, b) => a.price - b.price
+  const sortedListByPrice = useMemo(
+    () => [...DUMMY_HALLLIST].sort((a, b) => a.price - b.price),
+    [DUMMY_HALLLIST]
   );
-  console.log("sortedByPrice ", sortedListByPrice);
-  console.log("hallList ", DUMMY_HALLLIST);
 
   const renderHall = (itemData) => {
     const { item } = itemData;

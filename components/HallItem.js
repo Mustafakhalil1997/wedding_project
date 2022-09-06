@@ -71,7 +71,7 @@ const HallItem = (props) => {
 
   const onLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
-    console.log("value s", x, y, width, height);
+    // console.log("value s", x, y, width, height);
     setDimensions({ width: width, height: height });
   };
 
