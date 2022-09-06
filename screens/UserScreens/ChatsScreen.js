@@ -120,13 +120,15 @@ const ChatsScreen = (props) => {
     };
     if (token && chatRooms.length !== 0 && status === 100) {
       setLoading(true);
+      setFlag(true);
       getMessages();
     }
-  }, [userInfo, status, userType]);
+  }, [userInfo, status, chatRooms]);
 
   useEffect(() => {
     if (status !== 100) {
       setLoading(false);
+      setFlag(false);
     }
   }, [status]);
 
@@ -135,7 +137,7 @@ const ChatsScreen = (props) => {
       setFlag(true);
       setLoading(false);
     }
-  }, [chatsDetails]);
+  }, [flag, chatsDetails]);
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
@@ -145,6 +147,8 @@ const ChatsScreen = (props) => {
           contactId: userId,
           chatRoom: chatRooms[i],
         };
+
+        console.log("setting listeners");
         const stringObjectListener = JSON.stringify(objectListener);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
@@ -157,6 +161,11 @@ const ChatsScreen = (props) => {
           const chatRoom = chatsDetails.find(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
+
+          console.log("chatRoom?? ", chatRoom);
+
+          ////////////////////////////////////////////////////////
+          // error existing here upon new chat creation check it tomorrow
 
           const newMessage = {
             _id: messagesReceived[0]._id,
@@ -180,7 +189,7 @@ const ChatsScreen = (props) => {
         });
       }
     }
-  }, [flag]);
+  }, [flag, chatRooms]);
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });
