@@ -32,10 +32,22 @@ const ReservationScreen = (props) => {
   const hallList = useSelector((state) => state.halls.hallList);
 
   const reservedHall = hallList.find((hall) => hall.id === hallId);
-  const newDate = new Date(date);
 
+  const newDate = new Date(date);
   const month = monthNames[newDate.getMonth()];
-  const day = newDate.getDay();
+  const day = newDate.getUTCDate();
+
+  const weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  const weekday = weekdays[newDate.getUTCDay()];
 
   const isItemFavorite = (id) => {
     if (Object.keys(userInfo).length === 0) return false;
@@ -56,7 +68,7 @@ const ReservationScreen = (props) => {
             margin: 10,
           }}
         >
-          Your wedding is on the{" "}
+          Your wedding is on {weekday},{" "}
           <DefaultText style={{ fontFamily: "open-sans-bold" }}>
             {day}th of {month}
           </DefaultText>
