@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StatusBar,
   View,
@@ -22,6 +22,8 @@ import { URL } from "../../helpers/url";
 import DefaultText from "../../components/DefaultText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connectionMessage } from "../../helpers/connectionMessageHandler";
+import { userChatLogOut } from "../../store/actions/UserChat";
+import { hallChatLogOut } from "../../store/actions/HallChat";
 
 // envelope // lock
 
@@ -35,11 +37,24 @@ const LoginScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.Auth.userType);
+  const token = useSelector((state) => state.Auth.token);
   const connectionStatus = useSelector((state) => state.Connection.isConnected);
 
   const userChats = useSelector((state) => state.UserChats.userChats);
 
-  console.log("userChats in loginScreen ", userChats);
+  useEffect(() => {
+    /* had to these two after I make sure useData is wiped out
+       what was happening is that the dispatch doesn't work in order,
+       so it doesn't wait until userData is wiped out to delete chats.
+       it was deleting the chats sometimes before chatRooms list inside userInfo is cleared,
+       then when the token is set to null first the useEffect inside chatsScreen runs again
+       and calls api request to get chats. so by the time userInfo is cleared it is too late then
+     */
+    if (!token) {
+      dispatch(userChatLogOut());
+      dispatch(hallChatLogOut());
+    }
+  }, [token]);
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server

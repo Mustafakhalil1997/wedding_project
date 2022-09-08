@@ -20,6 +20,7 @@ const initialState = {
 };
 
 const AuthReducer = (state = initialState, action) => {
+  console.log("AuthReducer");
   switch (action.type) {
     case LOGIN:
       return {
@@ -39,6 +40,7 @@ const AuthReducer = (state = initialState, action) => {
     case LOGOUT:
       // let switchType = state.userType === "user" ? "host" : "user";
       let switchType = "user";
+      console.log("logging out in store");
       return {
         ...state,
         userType: switchType,

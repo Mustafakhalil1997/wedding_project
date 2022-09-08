@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -35,6 +35,8 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const chatsDetails = useSelector((state) => state.UserChats.userChats);
+  const token = useSelector((state) => state.Auth.token);
 
   const { firstName, lastName, email, id, profileImage, reservation } =
     userInfo;
@@ -56,8 +58,6 @@ const ProfileScreen = (props) => {
 
   const logoutClickHandler = () => {
     dispatch(logout());
-    dispatch(userChatLogOut());
-    dispatch(hallChatLogOut());
   };
 
   const switchProfileClickHandler = () => {

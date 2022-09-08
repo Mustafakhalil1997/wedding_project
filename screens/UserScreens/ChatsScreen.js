@@ -91,12 +91,12 @@ const ChatsScreen = (props) => {
   const status = useSelector((state) => state.UserChats.userChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
 
-  // console.log("chatsDetails user ChatsScreen ", chatsDetails);
-
   // console.log("usertype changed to ", userType);
   // console.log("chatsDetails after update ", chatsDetails);
 
   const { chatRooms, firstName, id: userId } = userInfo;
+
+  console.log("chatRooms in chatsScreen ", chatRooms);
 
   // const onRefresh = useCallback(() => {
   //   setRefreshing(true);
@@ -118,7 +118,7 @@ const ChatsScreen = (props) => {
       console.log("setting chats in chatsScreen for user");
       dispatch(getUserChats(chatRooms));
     };
-    if (token && chatRooms.length !== 0 && status === 100) {
+    if (token && chatRooms?.length !== 0 && status === 100) {
       setLoading(true);
       setFlag(true);
       getMessages();
@@ -142,7 +142,7 @@ const ChatsScreen = (props) => {
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
     if (flag) {
-      for (let i = 0; i < chatRooms.length; i++) {
+      for (let i = 0; i < chatRooms?.length; i++) {
         const objectListener = {
           contactId: userId,
           chatRoom: chatRooms[i],
