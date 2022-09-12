@@ -141,7 +141,8 @@ const ChatsScreen = (props) => {
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
-    if (flag) {
+    if (flag && chatsDetails.length !== 0) {
+      socket.removeAllListeners();
       for (let i = 0; i < chatRooms?.length; i++) {
         const objectListener = {
           contactId: userId,
@@ -149,9 +150,12 @@ const ChatsScreen = (props) => {
         };
 
         console.log("setting listeners");
+        console.log("chatRooms ", chatRooms);
+        console.log("chatsDetails in useEffect ", chatsDetails);
         const stringObjectListener = JSON.stringify(objectListener);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
+          console.log("messagesReceived ", messagesReceived);
 
           // set chats adding new message
           // console.log("chatsDetails in on ", chatsDetails);
@@ -162,10 +166,14 @@ const ChatsScreen = (props) => {
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
 
+          console.log("chatsDetails");
           console.log("chatRoom?? ", chatRoom);
 
-          ////////////////////////////////////////////////////////
-          // error existing here upon new chat creation check it tomorrow
+          /* 
+            socket.on is not working when a new chat is created and that chat is the first chat ever for this user.
+            the reason is that the backend in this case is returning the entire chatRoom instead of just chatRoom id in
+            the list of chatRooms for the user
+          */
 
           const newMessage = {
             _id: messagesReceived[0]._id,
@@ -189,7 +197,7 @@ const ChatsScreen = (props) => {
         });
       }
     }
-  }, [flag, chatRooms]);
+  }, [flag, chatsDetails]);
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });
