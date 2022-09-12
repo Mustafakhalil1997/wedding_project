@@ -15,7 +15,7 @@ import { io } from "socket.io-client";
 import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import DefaultText from "../../components/DefaultText";
-import { setHallChats } from "../../store/actions/HallChat";
+import { setHallChats, setHallStatus } from "../../store/actions/HallChat";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const socket = io.connect(URL);
@@ -24,6 +24,8 @@ const ChatScreen = (props) => {
   const { route, navigation } = props;
 
   const { title, contactImage, contactId, roomId } = route.params;
+
+  console.log("contactImage ", contactImage);
 
   const [messages, setMessages] = useState([]);
 
@@ -205,9 +207,16 @@ const ChatScreen = (props) => {
           console.log("returned with status ", response.status);
         } else {
           const { chatRoom } = responseData;
-          console.log("chatRoom created ", chatRoom);
           const newChats = [chatRoom, ...chatRooms];
+
+          const { _id: roomId, userId: contactId } = chatRoom;
+
+          dispatch(setHallStatus(100));
           dispatch(setHallChats(newChats));
+
+          stringObjectListener = JSON.stringify({
+            contactId: contactId._id,
+          });
         }
       } catch (err) {
         console.log("err ", err);

@@ -115,15 +115,16 @@ const ChatsScreen = (props) => {
     const getMessages = () => {
       dispatch(getHallChats(chatRooms));
     };
-    if (chatRooms.length !== 0 && status === 100) {
+    if (token && chatRooms?.length !== 0 && status === 100) {
       setLoading(true);
+      setFlag(true);
       getMessages();
     }
     if (status === 100) {
       setLoading(true);
       getMessages();
     }
-  }, [hallInfo, status]);
+  }, [hallInfo, status, chatRooms]);
 
   // useEffect(() => {
   //   if (loading) getMessages();
@@ -132,6 +133,7 @@ const ChatsScreen = (props) => {
   useEffect(() => {
     if (status !== 100) {
       setLoading(false);
+      setFlag(false);
     }
   }, [status]);
 
@@ -144,56 +146,31 @@ const ChatsScreen = (props) => {
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
-    const newChatRoomListener = {
-      contactId: hallId,
-    };
-    const newChatRoomStringListener = JSON.stringify(newChatRoomListener);
-    console.log(
-      "newChatRoomStringListener ",
-      newChatRoomListener,
-      typeof newChatRoomListener
-    );
+    // const newChatRoomListener = {
+    //   contactId: hallId,
+    // };
+    // const newChatRoomStringListener = JSON.stringify(newChatRoomListener);
+    // console.log(
+    //   "newChatRoomStringListener ",
+    //   newChatRoomListener,
+    //   typeof newChatRoomListener
+    // );
 
-    socket.on(newChatRoomStringListener, (messageWithId) => {
-      const { chatRoom, messages } = messageWithId;
-      const newChatRooms = [chatRoom, ...hallInfo.chatRooms];
-      const newHallInfo = {
-        ...newHallInfo,
-        chatRooms: newChatRooms,
-      };
+    // socket.on(newChatRoomStringListener, (messageWithId) => {
+    //   const { chatRoom, messages } = messageWithId;
+    //   const newChatRooms = [chatRoom, ...hallInfo.chatRooms];
+    //   const newHallInfo = {
+    //     ...newHallInfo,
+    //     chatRooms: newChatRooms,
+    //   };
 
-      dispatch(editHall(newHallInfo));
-      tryAgain();
+    //   dispatch(editHall(newHallInfo));
+    //   tryAgain();
+    // });
 
-      // console.log("received successfully from socket");
-      // console.log("new chatRoom received from socket ", chatRoom);
-      // console.log("first message of new chatRoom ", messages);
-
-      // const convertedMessages = messages.map((message) => {
-      //   const { _id, text, createdAt, user } = message;
-      //   return {
-      //     _id,
-      //     message: text,
-      //     receiverId: hallId,
-      //     senderId: user._id,
-      //     time: createdAt,
-      //   };
-      // });
-
-      // const newChatRoom = {
-      //   _id: chatRoom,
-      //   chats: convertedMessages,
-      // };
-
-      // const newChats = [newChatRoom, ...chatsDetails];
-      // console.log("newChats ", newChats);
-      // dispatch(setHallChats(newChats));
-    });
-
-    console.log("chatRooms in useEffect ", chatsDetails);
-
-    if (flag) {
-      for (let i = 0; i < chatRooms.length; i++) {
+    if (flag && chatsDetails.length !== 0) {
+      socket.removeAllListeners();
+      for (let i = 0; i < chatRooms?.length; i++) {
         const objectListener = {
           contactId: hallId,
           chatRoom: chatRooms[i],
@@ -208,6 +185,7 @@ const ChatsScreen = (props) => {
           const index = chatsDetails.findIndex(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
+
           const chatRoom = chatsDetails.find(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
@@ -232,7 +210,7 @@ const ChatsScreen = (props) => {
         });
       }
     }
-  }, [flag]);
+  }, [flag, chatsDetails]);
 
   const goToLogin = () => {
     navigation.navigate("Auth", { screen: "Login" });

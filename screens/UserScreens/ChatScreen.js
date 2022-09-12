@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -42,6 +37,7 @@ const ChatScreen = (props) => {
     lastName,
     profileImage,
   } = useSelector((state) => state.Auth.userInfo);
+
   const chatRooms = useSelector((state) => state.UserChats.userChats);
 
   let chatRoom;

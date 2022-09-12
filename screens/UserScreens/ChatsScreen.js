@@ -162,6 +162,7 @@ const ChatsScreen = (props) => {
           const index = chatsDetails.findIndex(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
+
           const chatRoom = chatsDetails.find(
             (chatDetails) => chatDetails._id === chatRooms[i]
           );
