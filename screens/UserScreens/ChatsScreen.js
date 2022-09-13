@@ -119,6 +119,7 @@ const ChatsScreen = (props) => {
       dispatch(getUserChats(chatRooms));
     };
     if (token && chatRooms?.length !== 0 && status === 100) {
+      console.log("right here");
       setLoading(true);
       setFlag(true);
       getMessages();

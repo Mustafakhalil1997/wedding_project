@@ -146,27 +146,27 @@ const ChatsScreen = (props) => {
 
   // try setting a listener for every room and pass room id with receiverId
   useEffect(() => {
-    // const newChatRoomListener = {
-    //   contactId: hallId,
-    // };
-    // const newChatRoomStringListener = JSON.stringify(newChatRoomListener);
-    // console.log(
-    //   "newChatRoomStringListener ",
-    //   newChatRoomListener,
-    //   typeof newChatRoomListener
-    // );
+    const newChatRoomListener = {
+      contactId: hallId,
+    };
+    const newChatRoomStringListener = JSON.stringify(newChatRoomListener);
+    console.log(
+      "newChatRoomStringListener ",
+      newChatRoomListener,
+      typeof newChatRoomListener
+    );
 
-    // socket.on(newChatRoomStringListener, (messageWithId) => {
-    //   const { chatRoom, messages } = messageWithId;
-    //   const newChatRooms = [chatRoom, ...hallInfo.chatRooms];
-    //   const newHallInfo = {
-    //     ...newHallInfo,
-    //     chatRooms: newChatRooms,
-    //   };
+    socket.on(newChatRoomStringListener, (messageWithId) => {
+      const { chatRoom, messages } = messageWithId;
+      const newChatRooms = [chatRoom, ...hallInfo.chatRooms];
+      const newHallInfo = {
+        ...newHallInfo,
+        chatRooms: newChatRooms,
+      };
 
-    //   dispatch(editHall(newHallInfo));
-    //   tryAgain();
-    // });
+      dispatch(editHall(newHallInfo));
+      tryAgain();
+    });
 
     if (flag && chatsDetails.length !== 0) {
       socket.removeAllListeners();
