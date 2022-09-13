@@ -170,11 +170,15 @@ const ChatsScreen = (props) => {
 
     if (flag && chatsDetails.length !== 0) {
       socket.removeAllListeners();
+      console.log("removed listeners");
+      console.log("chatRooms in here ", chatRooms);
       for (let i = 0; i < chatRooms?.length; i++) {
         const objectListener = {
           contactId: hallId,
           chatRoom: chatRooms[i],
         };
+
+        console.log("setting listeners");
         const stringObjectListener = JSON.stringify(objectListener);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", hallId);

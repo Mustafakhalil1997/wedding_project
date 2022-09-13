@@ -144,11 +144,15 @@ const ChatsScreen = (props) => {
   useEffect(() => {
     if (flag && chatsDetails.length !== 0) {
       socket.removeAllListeners();
-      for (let i = 0; i < chatRooms?.length; i++) {
+      for (let room of chatRooms) {
         const objectListener = {
           contactId: userId,
-          chatRoom: chatRooms[i],
+          chatRoom: room._id ? room._id : room,
         };
+
+        if (room._id) {
+          room = room._id;
+        }
 
         console.log("setting listeners");
         console.log("chatRooms ", chatRooms);
@@ -161,11 +165,11 @@ const ChatsScreen = (props) => {
           // set chats adding new message
           // console.log("chatsDetails in on ", chatsDetails);
           const index = chatsDetails.findIndex(
-            (chatDetails) => chatDetails._id === chatRooms[i]
+            (chatDetails) => chatDetails._id === room
           );
 
           const chatRoom = chatsDetails.find(
-            (chatDetails) => chatDetails._id === chatRooms[i]
+            (chatDetails) => chatDetails._id === room
           );
 
           console.log("chatsDetails");
