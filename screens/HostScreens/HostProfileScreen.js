@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: "white",
   },
   imagesContainer: {
     borderWidth: 0.5,

@@ -316,7 +316,14 @@ const ChatsScreen = (props) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingTop: insets.top,
+        backgroundColor: "white",
+      }}
+      // edges={["bottom"]}
+    >
       <View style={{ flex: 1 }}>
         <FlatList
           keyExtractor={(item) => `${item._id}`}

@@ -79,7 +79,11 @@ const HostTabNavigator = () => {
           headerTitleAlign: "center",
         }}
       >
-        <Stack.Screen name="Chats" component={ChatsScreen} />
+        <Stack.Screen
+          name="Chats"
+          component={ChatsScreen}
+          options={{ headerShown: false }}
+        />
         {token && (
           <Stack.Screen
             name="HallChat"
