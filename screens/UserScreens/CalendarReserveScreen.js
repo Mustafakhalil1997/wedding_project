@@ -18,6 +18,9 @@ import { reserveHall } from "../../store/actions/HallList";
 import customBackArrow from "../../helpers/customBackArrow";
 import customBackHandler from "../../helpers/customBackHandler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { io } from "socket.io-client";
+
+const socket = io.connect(URL);
 
 const CalendarReserveScreen = ({ route, navigation }) => {
   const { hallId, userId } = route.params;
@@ -98,8 +101,8 @@ const CalendarReserveScreen = ({ route, navigation }) => {
       userId,
       date: daySelected,
     };
-    dispatch(reserveHall(booking));
-    console.log("booking ", booking);
+    // dispatch(reserveHall(booking));
+    // console.log("booking ", booking);
 
     try {
       setIsSubmitting(true);
@@ -114,7 +117,7 @@ const CalendarReserveScreen = ({ route, navigation }) => {
 
       const responseData = await response.json();
 
-      const { userInfo: newUserInfo, message } = responseData;
+      const { message, userInfo: newUserInfo, newBooking } = responseData;
 
       setIsSubmitting(false);
 
@@ -128,16 +131,17 @@ const CalendarReserveScreen = ({ route, navigation }) => {
         return;
       }
 
-      if (response.status === 200) {
-        dispatch(editProfile(newUserInfo));
-        dispatch(reserveHall(booking));
-        showMessage({
-          message: "Your Reservation was successfull!",
-          type: "success",
-          style: { backgroundColor: "green" },
-        });
-        return;
-      }
+      dispatch(editProfile(newUserInfo));
+      dispatch(reserveHall(booking));
+      showMessage({
+        message: "Your Reservation was successfull!",
+        type: "success",
+        style: { backgroundColor: "green" },
+      });
+
+      const stringObjectListener = JSON.stringify({ hallId: hallId });
+
+      socket.emit("reservation", { stringObjectListener, newBooking });
     } catch (err) {
       setIsSubmitting(false);
       console.log(err);

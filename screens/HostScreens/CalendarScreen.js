@@ -7,9 +7,10 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Agenda } from "react-native-calendars";
 
+import { io } from "socket.io-client";
 import { URL } from "../../helpers/url";
 import { Avatar } from "react-native-paper";
 import DefaultText from "../../components/DefaultText";
@@ -17,6 +18,9 @@ import Colors from "../../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+import { editHall } from "./../../store/actions/Auth";
+
+const socket = io.connect(URL);
 
 const CalendarScreen = ({ navigation }) => {
   const [items, setItems] = useState({});
@@ -24,6 +28,8 @@ const CalendarScreen = ({ navigation }) => {
 
   const token = useSelector((state) => state.Auth.token);
   const hallInfo = useSelector((state) => state.Auth.hallInfo);
+
+  const dispatch = useDispatch();
 
   if (!hallInfo) {
     return (
@@ -44,6 +50,8 @@ const CalendarScreen = ({ navigation }) => {
 
   const bookings = hallInfo.bookings;
   const bookingIds = bookings.map((booking) => booking._id);
+
+  console.log("bookings ", bookings);
 
   const datesReserved = bookings.map((booking) =>
     booking.date.substring(0, 10)
@@ -93,6 +101,27 @@ const CalendarScreen = ({ navigation }) => {
       }
     };
     getBookingsWithUsers();
+  }, [hallInfo]);
+
+  console.log("hallId ", hallInfo._id);
+
+  useEffect(() => {
+    socket.removeAllListeners();
+    const objectListener = {
+      hallId: hallInfo._id,
+    };
+
+    const stringObjectListener = JSON.stringify(objectListener);
+    socket.on(stringObjectListener, (newBooking) => {
+      console.log("newBooking received ", newBooking)
+      const newBookings = [...hallInfo.bookings, newBooking];
+
+      dispatch(
+        editHall({
+          bookings: newBookings,
+        })
+      );
+    });
   }, [hallInfo]);
 
   // const renderEmptyDate = () => {
