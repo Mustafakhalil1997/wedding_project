@@ -73,9 +73,11 @@ const AuthReducer = (state = initialState, action) => {
       // };
       // const updatedInfo = { ...tempInfo, ...newDataReceived };
       // console.log("updatedInfo after editing ", updatedInfo);
+      const updatedInfo = { ...state.userInfo, ...action.newData };
+
       return {
         ...state,
-        userInfo: action.newData,
+        userInfo: updatedInfo,
       };
     case EDIT_HALL_INFO:
       const tempHallInfo = { ...state.hallInfo };
