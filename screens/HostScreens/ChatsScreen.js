@@ -157,6 +157,7 @@ const ChatsScreen = (props) => {
     );
 
     socket.on(newChatRoomStringListener, (messageWithId) => {
+      console.log("messageWithId ", messageWithId);
       const { chatRoom, messages } = messageWithId;
       const newChatRooms = [chatRoom, ...hallInfo.chatRooms];
       const newHallInfo = {

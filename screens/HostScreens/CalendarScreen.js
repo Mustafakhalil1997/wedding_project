@@ -110,10 +110,10 @@ const CalendarScreen = ({ navigation }) => {
     const objectListener = {
       hallId: hallInfo._id,
     };
-
+    console.log("setting listener");
     const stringObjectListener = JSON.stringify(objectListener);
     socket.on(stringObjectListener, (newBooking) => {
-      console.log("newBooking received ", newBooking)
+      console.log("newBooking received ", newBooking);
       const newBookings = [...hallInfo.bookings, newBooking];
 
       dispatch(
