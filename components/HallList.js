@@ -34,7 +34,7 @@ import DefaultText from "./DefaultText";
 import Colors from "../constants/Colors";
 import CustomHeaderButton from "./HeaderButton";
 import { connectionMessage } from "../helpers/connectionMessageHandler";
-import { SearchBar } from "react-native-elements";
+// import { SearchBar } from "react-native-elements";
 
 const HallList = (props) => {
   const { navigation } = props;

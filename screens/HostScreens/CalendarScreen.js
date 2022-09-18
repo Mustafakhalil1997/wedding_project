@@ -48,7 +48,7 @@ const CalendarScreen = ({ navigation }) => {
     );
   }
 
-  const bookings = hallInfo.bookings;
+  const { bookings } = hallInfo;
   const bookingIds = bookings.map((booking) => booking._id);
 
   console.log("bookings ", bookings);
@@ -157,6 +157,8 @@ const CalendarScreen = ({ navigation }) => {
           });
         } else {
           const userData = bookingsWithUsers[strTime];
+          console.log("userData ", userData);
+
           let convertedImageUrl = "";
           let contactImage = "";
 

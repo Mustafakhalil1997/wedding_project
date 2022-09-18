@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
 import { useSelector } from "react-redux";
 
 const Map = ({ route, navigation, getLocation }) => {

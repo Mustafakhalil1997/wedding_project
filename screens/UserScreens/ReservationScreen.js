@@ -26,7 +26,9 @@ const ReservationScreen = (props) => {
 
   const { reservation } = useSelector((state) => state.Auth.userInfo);
 
-  const { hallId, date } = reservation;
+  const { hallId, date, status } = reservation;
+
+  console.log("reservation ", reservation);
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const hallList = useSelector((state) => state.halls.hallList);
@@ -55,7 +57,7 @@ const ReservationScreen = (props) => {
     return false;
   };
 
-  const isFavorite = isItemFavorite(reservedHall.id);
+  const isFavorite = isItemFavorite(hallId);
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>

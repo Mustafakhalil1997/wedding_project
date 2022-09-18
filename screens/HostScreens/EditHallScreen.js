@@ -17,7 +17,7 @@ import Colors from "../../constants/Colors";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import validationSchema from "./HallSchema";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp, editHall } from "../../store/actions/Auth";
 

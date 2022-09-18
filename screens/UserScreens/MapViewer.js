@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions, Pressable } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import * as Location from "expo-location";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import DefaultText from "../../components/DefaultText";

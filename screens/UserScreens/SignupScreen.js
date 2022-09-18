@@ -8,7 +8,7 @@ import {
 } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import * as Google from "expo-auth-session/providers/google";
-import * as WebBrowser from "expo-web-browser";
+// import * as WebBrowser from "expo-web-browser";
 
 import { signUp } from "../../store/actions/Auth";
 import { URL } from "../../helpers/url";
