@@ -32,14 +32,14 @@ export const toggleFavorite = (hallId) => {
   return { type: TOGGLE_FAVORITE, hallId: hallId };
 };
 
-export const setHallList = () => {
+export const setHallList = (count) => {
   // later we get the list from mongodb and set the store list
   return async (dispatch) => {
     try {
-      const response = await fetch(`${URL}/api/hall`);
+      const response = await fetch(`${URL}/api/hall/${count}`);
 
       const responseData = await response.json();
-      dispatch({ type: SET_LIST, hallList: responseData.halls });
+      dispatch({ type: SET_LIST, hallList: responseData.halls, count });
     } catch (err) {
       showMessage({
         message: "Could not render list, please try again",

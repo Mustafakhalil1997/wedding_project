@@ -43,6 +43,7 @@ const HallList = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [filterByPrice, setFilterByPrice] = useState(false);
+  const [count, setCount] = useState(1);
 
   const token = useSelector((state) => state.Auth.token);
 
@@ -94,7 +95,7 @@ const HallList = (props) => {
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
       dispatch(setCurrentLocation());
-      dispatch(setHallList());
+      dispatch(setHallList(count));
     };
     if (status === 100) {
       setLoading(true);
@@ -106,6 +107,12 @@ const HallList = (props) => {
     }
   }, [status]);
 
+  const loadMoreItems = () => {
+    console.log("reached end of list");
+    dispatch(setHallList(count + 1));
+    setCount((count) => count + 1);
+  };
+
   // let usedList = DUMMY_HALLLIST;
 
   const isItemFavorite = (id) => {
@@ -115,6 +122,7 @@ const HallList = (props) => {
   };
 
   const tryAgain = () => {
+    setCount(1);
     dispatch(setStatus(100));
   };
 
@@ -224,6 +232,7 @@ const HallList = (props) => {
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={tryAgain} />
         }
+        onEndReached={loadMoreItems}
       />
     </View>
     // </View>

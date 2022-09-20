@@ -12,12 +12,18 @@ const initialState = {
 };
 
 const hallListReducer = (state = initialState, action) => {
+  console.log("count in reducer ", action.count);
   switch (action.type) {
     case SET_LIST:
+      const newList =
+        action.count === 1
+          ? action.hallList
+          : [...state.hallList, ...action.hallList];
       return {
         ...state,
         status: 200,
-        hallList: action.hallList,
+        // hallList: action.hallList,
+        hallList: newList,
       };
     case SET_STATUS:
       return {
