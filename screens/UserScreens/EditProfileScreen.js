@@ -228,6 +228,12 @@ const EditProfileScreen = (props) => {
     return null;
   };
 
+  const handleChangePassword = () => {
+    navigation.navigate({
+      name: "ChangePassword",
+    });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={styles.screenContainer}>
@@ -344,6 +350,7 @@ const EditProfileScreen = (props) => {
               borderRadius: 5,
               alignItems: "center",
             }}
+            onPress={handleChangePassword}
           >
             <DefaultText
               style={{ color: "white", fontFamily: "open-sans-bold" }}

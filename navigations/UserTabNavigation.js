@@ -19,6 +19,7 @@ import ReservationScreen from "../screens/UserScreens/ReservationScreen";
 import CalendarReserveScreen from "../screens/UserScreens/CalendarReserveScreen";
 import ChatsScreen from "./../screens/UserScreens/ChatsScreen";
 import ChatScreen from "./../screens/UserScreens/ChatScreen";
+import ChangePasswordScreen from "./../screens/UserScreens/ChangePasswordScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -166,6 +167,10 @@ const UserTabNavigator = () => {
                   backgroundColor: "white",
                 },
               }}
+            />
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePasswordScreen}
             />
             <Stack.Screen name="HallDetail" component={HallDetailScreen} />
           </>

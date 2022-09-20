@@ -41,6 +41,8 @@ const ProfileScreen = (props) => {
   const { firstName, lastName, email, id, profileImage, reservation } =
     userInfo;
 
+  console.log("userInfo ", userInfo);
+
   const fullName = firstName + " " + lastName;
   console.log("fullName in profileScreen", fullName);
   console.log("profileImage in profileScreen ", profileImage);
