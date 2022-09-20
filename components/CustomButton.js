@@ -32,7 +32,7 @@ const CustomButton = React.forwardRef((props, ref) => {
       <TouchableComponent
         ref={ref}
         {...props}
-        disabled={buttonDisabled}
+        disabled={buttonDisabled || submitting}
         onPress={handleSubmit}
         style={{
           borderRadius: 15,
