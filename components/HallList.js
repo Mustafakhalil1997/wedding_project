@@ -42,8 +42,10 @@ const HallList = (props) => {
   // const [state, dispatchState] = useReducer(reducer, initialState);
 
   const [loading, setLoading] = useState(false);
-  const [filterByPrice, setFilterByPrice] = useState(false);
-  const [count, setCount] = useState(1);
+
+  const [filters, setFilters] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isMoreItemsLoading, setIsMoreItemsLoading] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
 
@@ -60,6 +62,7 @@ const HallList = (props) => {
 
   console.log("rendering hallList");
   console.log("again and again");
+  console.log("hallList ", DUMMY_HALLLIST);
 
   // const userChats = useSelector((state) => state.UserChats.userChats);
   // const hallChats = useSelector((state) => state.HallChats.hallChats);
@@ -95,7 +98,7 @@ const HallList = (props) => {
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
       dispatch(setCurrentLocation());
-      dispatch(setHallList(count));
+      dispatch(setHallList(page, filters));
     };
     if (status === 100) {
       setLoading(true);
@@ -108,10 +111,32 @@ const HallList = (props) => {
   }, [status]);
 
   const loadMoreItems = () => {
-    console.log("reached end of list");
-    dispatch(setHallList(count + 1));
-    setCount((count) => count + 1);
+    setIsMoreItemsLoading(true);
+    dispatch(setHallList(page + 1, filters));
+    setPage((prevPage) => prevPage + 1);
   };
+
+  const addFilter = (filter) => {
+    let newFilters;
+    if (filters.includes(filter))
+      newFilters = filters.filter((fil) => fil !== filter);
+    else newFilters = [...filters, filter];
+
+    console.log("newFilters ", newFilters);
+    // dispatch(setHallList(page, newFilters));
+    setFilters(newFilters);
+    setPage(1);
+  };
+
+  useEffect(() => {
+    console.log("trying again");
+    tryAgain();
+  }, [filters]);
+
+  useEffect(() => {
+    console.log("isMoreItemsLoading ", isMoreItemsLoading);
+    setIsMoreItemsLoading(false);
+  }, [DUMMY_HALLLIST]);
 
   // let usedList = DUMMY_HALLLIST;
 
@@ -122,7 +147,7 @@ const HallList = (props) => {
   };
 
   const tryAgain = () => {
-    setCount(1);
+    setPage(1);
     dispatch(setStatus(100));
   };
 
@@ -182,7 +207,13 @@ const HallList = (props) => {
           },
         ]}
       >
-        <DefaultText>There Are no Venues</DefaultText>
+        <DefaultText style={{ fontWeight: "bold", fontSize: 24 }}>
+          There Are no Venues
+        </DefaultText>
+        <TouchableOpacity onPress={tryAgain}>
+          <Ionicons name="reload" size={36} color="black" />
+        </TouchableOpacity>
+        <Text>Reload</Text>
       </View>
     );
   }
@@ -194,23 +225,6 @@ const HallList = (props) => {
     //   }}
     // >
     <View style={styles.listContainer}>
-      <TouchableOpacity onPress={() => setFilterByPrice(!filterByPrice)}>
-        <View
-          style={{
-            alignSelf: "flex-end",
-            backgroundColor: filterByPrice ? "green" : "black",
-            padding: 5,
-            marginTop: 5,
-            marginRight: "8%",
-            borderRadius: 5,
-            marginBottom: 5,
-          }}
-        >
-          <Text style={{ color: "white" }}>
-            {filterByPrice ? "Filtered" : "Filter by Price"}
-          </Text>
-        </View>
-      </TouchableOpacity>
       {/* <SearchBar
         round
         placeholder="Type Here..."
@@ -227,19 +241,96 @@ const HallList = (props) => {
       /> */}
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={filterByPrice ? sortedListByPrice : DUMMY_HALLLIST}
+        // data={filterByPrice ? sortedListByPrice : DUMMY_HALLLIST}
+        data={DUMMY_HALLLIST}
         renderItem={renderHall}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={tryAgain} />
         }
         onEndReached={loadMoreItems}
+        onEndReachedThreshold={0.2}
+        ListHeaderComponent={() => <FiltersComponent addFilter={addFilter} />}
       />
+
+      {isMoreItemsLoading && (
+        <ActivityIndicator size="large" color={Colors.primaryColor} />
+      )}
     </View>
     // </View>
   );
 };
 
+const FiltersComponent = ({ addFilter }) => {
+  const [filterByPrice, setFilterByPrice] = useState(false);
+  console.log("rendering FiltersComponent");
+
+  return (
+    <View>
+      <TouchableOpacity
+        style={{ alignSelf: "flex-start" }}
+        onPress={() => setFilterByPrice(!filterByPrice)}
+      >
+        <View
+          style={{
+            // alignSelf: "flex-end",
+            backgroundColor: filterByPrice ? "green" : "black",
+            padding: 5,
+            marginTop: 5,
+            marginLeft: "5%",
+            borderRadius: 5,
+            marginBottom: 5,
+          }}
+        >
+          <Text style={{ color: "white" }}>
+            {filterByPrice ? "Filtered" : "Filter by Price"}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {filterByPrice && (
+        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+          <TouchableOpacity
+            style={styles.filterItem}
+            onPress={() => {
+              addFilter(1);
+            }}
+          >
+            <DefaultText style={styles.filterTextItem}>$0 - $10</DefaultText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.filterItem}
+            onPress={() => {
+              addFilter(2);
+            }}
+          >
+            <DefaultText style={styles.filterTextItem}>$10 - $20</DefaultText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.filterItem}
+            onPress={() => {
+              addFilter(3);
+            }}
+          >
+            <DefaultText style={styles.filterTextItem}>$20 - $30</DefaultText>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
+  filterItem: {
+    backgroundColor: "black",
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+    borderRadius: 3,
+    width: "27%",
+    alignItems: "center",
+  },
+  filterTextItem: {
+    fontWeight: "bold",
+    color: "white",
+  },
   listContainer: {
     flex: 1,
     backgroundColor: "white",

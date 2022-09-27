@@ -32,13 +32,23 @@ export const toggleFavorite = (hallId) => {
   return { type: TOGGLE_FAVORITE, hallId: hallId };
 };
 
-export const setHallList = (count) => {
+export const setHallList = (count, filters = []) => {
   // later we get the list from mongodb and set the store list
+  // const filters = [1, 2, 3];
+
+  console.log("filters in store ", filters);
+
   return async (dispatch) => {
     try {
-      const response = await fetch(`${URL}/api/hall/${count}`);
+      // filters = [2];
+      console.log("filters: ", filters);
+      const response = await fetch(`${URL}/api/hall/${count}/${filters}`);
+
+      if (response.status !== 200) console.log("failedd");
 
       const responseData = await response.json();
+      console.log("responseData ", responseData);
+      // if (responseData.halls.length !== 0)
       dispatch({ type: SET_LIST, hallList: responseData.halls, count });
     } catch (err) {
       showMessage({
