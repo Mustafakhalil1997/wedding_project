@@ -45,6 +45,8 @@ const HallList = (props) => {
 
   const [filters, setFilters] = useState([]);
   const [page, setPage] = useState(1);
+  const [filterByPrice, setFilterByPrice] = useState(false);
+
   const [isMoreItemsLoading, setIsMoreItemsLoading] = useState(false);
 
   const token = useSelector((state) => state.Auth.token);
@@ -249,7 +251,75 @@ const HallList = (props) => {
         }
         onEndReached={loadMoreItems}
         onEndReachedThreshold={0.2}
-        ListHeaderComponent={() => <FiltersComponent addFilter={addFilter} />}
+        ListHeaderComponent={() => (
+          <View>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-start" }}
+              onPress={() => setFilterByPrice(!filterByPrice)}
+            >
+              <View
+                style={{
+                  // alignSelf: "flex-end",
+                  backgroundColor: filters.length !== 0 ? "green" : "black",
+                  padding: 5,
+                  marginTop: 5,
+                  marginLeft: "5%",
+                  borderRadius: 5,
+                  marginBottom: 5,
+                }}
+              >
+                <Text style={{ color: "white" }}>
+                  {filters.length !== 0 ? "Filtered" : "Filter by Price"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {filterByPrice && (
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
+              >
+                <TouchableOpacity
+                  style={{
+                    ...styles.filterItem,
+                    backgroundColor: filters.includes(1) ? "green" : "black",
+                  }}
+                  onPress={() => {
+                    addFilter(1);
+                  }}
+                >
+                  <DefaultText style={styles.filterTextItem}>
+                    $0 - $10
+                  </DefaultText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    ...styles.filterItem,
+                    backgroundColor: filters.includes(2) ? "green" : "black",
+                  }}
+                  onPress={() => {
+                    addFilter(2);
+                  }}
+                >
+                  <DefaultText style={styles.filterTextItem}>
+                    $10 - $20
+                  </DefaultText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    ...styles.filterItem,
+                    backgroundColor: filters.includes(3) ? "green" : "black",
+                  }}
+                  onPress={() => {
+                    addFilter(3);
+                  }}
+                >
+                  <DefaultText style={styles.filterTextItem}>
+                    $20 - $30
+                  </DefaultText>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
       />
 
       {isMoreItemsLoading && (
