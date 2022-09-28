@@ -3,8 +3,11 @@ import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
 
-const Map = ({ route, navigation, getLocation }) => {
+const Map = (props) => {
   // const [currentLocation, setCurrentLocation] = useState(null);
+
+  const { route, navigation, getLocation } = props;
+
   const [errorMsg, setErrorMsg] = useState(null);
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
@@ -12,7 +15,7 @@ const Map = ({ route, navigation, getLocation }) => {
 
   console.log("currentLocationnn ", Object.keys(currentLocation).length);
 
-  const [selectedLocation, setSelectedLocation] = useState();
+  const [selectedLocation, setSelectedLocation] = useState(currentLocation);
 
   const hallList = useSelector((state) => state.halls.hallList);
   const locations = hallList.map((hall) => {
@@ -35,19 +38,28 @@ const Map = ({ route, navigation, getLocation }) => {
     setSelectedLocation(values.nativeEvent.coordinate);
   };
 
+  const regionChangeHandler = (region) => {
+    console.log(region);
+    // setSelectedLocation({
+    //   latitude: region.latitude,
+    //   longitude: region.longitude,
+    // });
+  };
+
   const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
 
   return (
     <View style={styles.container}>
       {Object.keys(currentLocation).length !== 0 && (
         <MapView
-          style={styles.map}
+          style={{ ...styles.map, ...props.style }}
           region={{
             latitude: selectedLocation ? selectedLocation.latitude : lat,
             longitude: selectedLocation ? selectedLocation.longitude : lng,
             latitudeDelta: 0.5,
             longitudeDelta: 0.5, // more view of the map
           }}
+          onRegionChange={regionChangeHandler}
         >
           {locations.map((location, index) => {
             const { lat, lng } = location;
@@ -63,7 +75,10 @@ const Map = ({ route, navigation, getLocation }) => {
           })}
           <Marker
             draggable
-            coordinate={{ latitude: lat, longitude: lng }}
+            coordinate={{
+              latitude: selectedLocation.latitude,
+              longitude: selectedLocation.longitude,
+            }}
             onDragEnd={getDragLocation}
           />
           {/* {route.params && (
