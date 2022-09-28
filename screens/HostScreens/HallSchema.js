@@ -4,11 +4,21 @@ export default Yup.object().shape({
   hallName: Yup.string()
     .label("hallName")
     .trim()
-    .min(3, "Invalid name")
-    .required("Name is required"),
+    .min(3, "Invalid Venue Name!")
+    .required("Venue Name is required!"),
   address: Yup.string()
     .label("address")
-    .min(5, "Invalid address")
+    .trim()
+    .min(5, "Invalid Address")
     .required("Address is required"),
-  // location: Yup.string().label("Location").required("Location is required"),
+  mobileNumber: Yup.string()
+    .label("mobileNumber")
+    .trim()
+    .min(7, "Invalid Mobile Number")
+    .required("Mobile Number is required"),
+  price: Yup.string()
+    .label("price")
+    .trim()
+    .min(1, "Invalid Price")
+    .required("Price is required"),
 });
