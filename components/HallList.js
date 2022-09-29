@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useReducer,
-  useState,
-  useLayoutEffect,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useEffect, useState, useLayoutEffect, useMemo } from "react";
 import {
   View,
   FlatList,
@@ -13,17 +6,11 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
-  Platform,
-  StatusBar,
   RefreshControl,
-  TouchableNativeFeedback,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import NetInfo from "@react-native-community/netinfo";
 
 import { setHallList } from "../store/actions/HallList";
 import { setCurrentLocation } from "./../store/actions/Location";
@@ -33,8 +20,6 @@ import HallItem from "./HallItem";
 import DefaultText from "./DefaultText";
 import Colors from "../constants/Colors";
 import CustomHeaderButton from "./HeaderButton";
-import { connectionMessage } from "../helpers/connectionMessageHandler";
-// import { SearchBar } from "react-native-elements";
 
 const HallList = (props) => {
   const { navigation } = props;
@@ -56,46 +41,25 @@ const HallList = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const DUMMY_HALLLIST = useSelector((state) => state.halls.hallList);
   const status = useSelector((state) => state.halls.status);
-  const connectionStatus = useSelector((state) => state.Connection.isConnected);
-  const connectionType = useSelector((state) => state.Connection.type);
-  const isReachable = useSelector(
-    (state) => state.Connection.isInternetReachable
-  );
+  // const connectionStatus = useSelector((state) => state.Connection.isConnected);
+  // const connectionType = useSelector((state) => state.Connection.type);
+  // const isReachable = useSelector(
+  //   (state) => state.Connection.isInternetReachable
+  // );
 
   console.log("rendering hallList");
   console.log("again and again");
   console.log("hallList ", DUMMY_HALLLIST);
 
-  // const userChats = useSelector((state) => state.UserChats.userChats);
-  // const hallChats = useSelector((state) => state.HallChats.hallChats);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        //   <Text>Save</Text>
-
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
           <Item title="Save" iconName="reload" onPress={tryAgain} />
         </HeaderButtons>
       ),
     });
   }, []);
-
-  // const onRefresh = useCallback(() => {
-  //   setLoading(true);
-  //   tryAgain();
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 2000);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!connectionStatus) {
-  //     console.log("connectionType ", connectionType);
-  //     console.log("not connected to wifi");
-  //     connectionMessage("You are not connected to wifi");
-  //   }
-  // }, [connectionStatus]);
 
   useEffect(() => {
     const loadListAndCurrentLocation = async () => {
@@ -125,7 +89,6 @@ const HallList = (props) => {
     else newFilters = [...filters, filter];
 
     console.log("newFilters ", newFilters);
-    // dispatch(setHallList(page, newFilters));
     setFilters(newFilters);
     setPage(1);
   };
@@ -139,8 +102,6 @@ const HallList = (props) => {
     console.log("isMoreItemsLoading ", isMoreItemsLoading);
     setIsMoreItemsLoading(false);
   }, [DUMMY_HALLLIST]);
-
-  // let usedList = DUMMY_HALLLIST;
 
   const isItemFavorite = (id) => {
     if (Object.keys(userInfo).length === 0) return false;
@@ -221,11 +182,6 @@ const HallList = (props) => {
   }
 
   return (
-    // <View
-    //   style={{
-    //     flex: 1,
-    //   }}
-    // >
     <View style={styles.listContainer}>
       {/* <SearchBar
         round
@@ -324,65 +280,6 @@ const HallList = (props) => {
 
       {isMoreItemsLoading && (
         <ActivityIndicator size="large" color={Colors.primaryColor} />
-      )}
-    </View>
-    // </View>
-  );
-};
-
-const FiltersComponent = ({ addFilter }) => {
-  const [filterByPrice, setFilterByPrice] = useState(false);
-  console.log("rendering FiltersComponent");
-
-  return (
-    <View>
-      <TouchableOpacity
-        style={{ alignSelf: "flex-start" }}
-        onPress={() => setFilterByPrice(!filterByPrice)}
-      >
-        <View
-          style={{
-            // alignSelf: "flex-end",
-            backgroundColor: filterByPrice ? "green" : "black",
-            padding: 5,
-            marginTop: 5,
-            marginLeft: "5%",
-            borderRadius: 5,
-            marginBottom: 5,
-          }}
-        >
-          <Text style={{ color: "white" }}>
-            {filterByPrice ? "Filtered" : "Filter by Price"}
-          </Text>
-        </View>
-      </TouchableOpacity>
-      {filterByPrice && (
-        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-          <TouchableOpacity
-            style={styles.filterItem}
-            onPress={() => {
-              addFilter(1);
-            }}
-          >
-            <DefaultText style={styles.filterTextItem}>$0 - $10</DefaultText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.filterItem}
-            onPress={() => {
-              addFilter(2);
-            }}
-          >
-            <DefaultText style={styles.filterTextItem}>$10 - $20</DefaultText>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.filterItem}
-            onPress={() => {
-              addFilter(3);
-            }}
-          >
-            <DefaultText style={styles.filterTextItem}>$20 - $30</DefaultText>
-          </TouchableOpacity>
-        </View>
       )}
     </View>
   );

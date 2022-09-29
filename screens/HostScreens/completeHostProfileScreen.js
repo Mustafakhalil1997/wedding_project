@@ -1,29 +1,25 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
   Dimensions,
-  TextInput,
-  ImageBackground,
   Image,
   Pressable,
 } from "react-native";
 import { Formik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
-import { Avatar } from "react-native-paper";
 
 import { URL } from "../../helpers/url";
 import { editHall } from "../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
 import { setCurrentLocation } from "../../store/actions/Location";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import * as ImagePicker from "expo-image-picker";
 import Map from "../../components/Map";
 
 import validationSchema from "./HallSchema";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import CustomButton from "./../../components/CustomButton";
 import DefaultText from "./../../components/DefaultText";
@@ -48,17 +44,10 @@ const CompleteHostProfileScreen = (props) => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
   const token = useSelector((state) => state.Auth.token);
 
-  const { id, firstName, lastName, email, password, profileImage } = userInfo;
+  const { id, email } = userInfo;
 
-  const [hallName, setHallName] = useState();
-  const [address, setAddress] = useState();
   const [imageSelected, setImageSelected] = useState();
   const [location, setLocation] = useState();
-  const [mobileNumber, setMobileNumber] = useState();
-  const [pricePerPerson, setPricePerPerson] = useState();
-  const [pageNum, setPageNum] = useState(1);
-
-  const scrollRef = useRef();
 
   useEffect(() => {
     const loadCurrentLocation = async () => {
@@ -71,22 +60,6 @@ const CompleteHostProfileScreen = (props) => {
     console.log("location", location);
     setLocation(location);
   };
-
-  // const hallNameChange = (value) => {
-  //   setHallName(value);
-  // };
-
-  // const addressChange = (value) => {
-  //   setAddress(value);
-  // };
-
-  // const mobileNumberChange = (value) => {
-  //   setMobileNumber(value);
-  // };
-
-  // const pricePerPersonChange = (value) => {
-  //   setPricePerPerson(value);
-  // };
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -114,108 +87,6 @@ const CompleteHostProfileScreen = (props) => {
       // setHasUnsavedChanges(true);
     }
   };
-
-  const submitValues = async () => {
-    try {
-      // add hall
-
-      // hallName, address, imageSelected, location
-
-      // a side note: add the token for authorization to heroku
-
-      const newHall = {
-        ownerId: id,
-        hallName,
-        email,
-        mobileNumber,
-        address,
-        location: {
-          lat: location.latitude,
-          lng: location.longitude,
-        },
-        price: pricePerPerson,
-      };
-
-      const response = await fetch(`${URL}/api/hall/createHall`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(newHall),
-      });
-
-      const responseData = await response.json();
-      const newHallInfo = responseData.hall;
-      console.log("newHallInfo ", newHallInfo);
-      // to be saved inside the store
-
-      if (response.status === 200) {
-        // dispatch(editHall(newHallInfo));
-      } else {
-        const errorMessage = responseData.message;
-        console.log("errorMessage ", errorMessage);
-        showMessage({
-          message: errorMessage,
-          type: "default",
-          color: "white",
-          backgroundColor: "red",
-          style: { borderRadius: 20 },
-        });
-      }
-
-      const imageData = new FormData();
-      imageData.append("profileImage", {
-        name: new Date() + "_profile",
-        uri: imageSelected,
-        type: "image/jpg" || "image/png" || "image/jpeg",
-      });
-
-      const res = await fetch(`${URL}/api/hall/addImage/${newHallInfo.id}`, {
-        method: "PATCH",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-          Authorization: "Bearer " + token,
-        },
-        body: imageData,
-      });
-
-      console.log("res in image upload ", res);
-      const resData = await res.json();
-
-      console.log("resData ", resData);
-
-      const { newHallInfo: updatedHall } = resData;
-
-      if (res.status === 200) {
-        dispatch(editHall(updatedHall));
-      }
-
-      if (res.status !== 200) {
-        const errorMessage = resData.message;
-        showMessage({
-          message: errorMessage,
-          type: "default",
-          color: "white",
-          backgroundColor: "red",
-          style: { borderRadius: 20 },
-        });
-      }
-    } catch (err) {
-      showMessage({
-        message: err.message || "An unknown error occured, Please try again",
-        type: "default",
-        color: "white",
-        backgroundColor: "red",
-        style: { borderRadius: 20 },
-      });
-      console.log("errorrr ", err);
-    }
-  };
-
-  // if (imageSelected) {
-  // }
 
   if (hallInfo) {
     return (
@@ -474,147 +345,6 @@ const CompleteHostProfileScreen = (props) => {
         </ScrollView>
       </View>
     </SafeAreaView>
-
-    // <ScrollView
-    //   contentContainerStyle={styles.screenContainer}
-    //   keyboardShouldPersistTaps="handled"
-    // >
-    //   <View style={styles.header}>
-    //     <ImageBackground
-    //       source={require("../.././constants/images/Roger.jpg")}
-    //       resizeMode="cover"
-    //       style={styles.backgroundImage}
-    //     ></ImageBackground>
-    //     {/* )} */}
-    //   </View>
-    //   <View
-    //     style={{
-    //       height: pageNum > 4 ? 250 : 70,
-    //       marginTop: pageNum > 4 ? 0 : 10,
-    //       // padding: 10,
-    //     }}
-    //   >
-    //     <ScrollView
-    //       ref={scrollRef}
-    //       horizontal
-    //       pagingEnabled
-    //       scrollEnabled={false}
-    //       showsHorizontalScrollIndicator={false}
-    //       decelerationRate={0.1}
-    //       keyboardShouldPersistTaps="handled"
-    //     >
-    //       <View style={[styles.textInputContainerStyle]}>
-    //         <TextInput
-    //           style={styles.hallNameInput}
-    //           placeholder="North Hall"
-    //           value={hallName}
-    //           onChangeText={hallNameChange}
-    //         />
-    //       </View>
-    //       <View style={styles.textInputContainerStyle}>
-    //         <TextInput
-    //           style={styles.hallNameInput}
-    //           placeholder="address"
-    //           value={address}
-    //           onChangeText={addressChange}
-    //         />
-    //       </View>
-    //       <View style={styles.textInputContainerStyle}>
-    //         <TextInput
-    //           style={styles.hallNameInput}
-    //           placeholder="mobile number"
-    //           value={mobileNumber}
-    //           onChangeText={mobileNumberChange}
-    //         />
-    //       </View>
-    //       <View style={styles.textInputContainerStyle}>
-    //         <TextInput
-    //           style={styles.hallNameInput}
-    //           placeholder="price per person"
-    //           value={pricePerPerson}
-    //           onChangeText={pricePerPersonChange}
-    //         />
-    //       </View>
-    //       <Map getLocation={getLocation} />
-    //       <View style={styles.textInputContainerStyle}>
-    //         <Pressable onPress={pickImage}>
-    //           <Image
-    //             source={
-    //               imageSelected
-    //                 ? { uri: imageSelected }
-    //                 : require("../.././constants/images/Roger.jpg")
-    //             }
-    //             style={{
-    //               ...styles.image,
-    //               width: "90%",
-    //               height: "90%",
-    //               aspectRatio: 3 / 2.3,
-    //               resizeMode: "cover",
-    //             }}
-    //           />
-    //         </Pressable>
-    //         {/* <TouchableOpacity onPress={pickImage}>
-    //           <View
-    //             style={{
-    //               borderWidth: 1,
-    //               borderRadius: 60,
-    //               paddingVertical: 45,
-    //               paddingHorizontal: 5,
-    //             }}
-    //           >
-    //             <DefaultText>Upload Images</DefaultText>
-    //           </View>
-    //         </TouchableOpacity> */}
-    //       </View>
-    //       <Map />
-    //     </ScrollView>
-    //   </View>
-    //   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-    //     <TouchableOpacity
-    //       onPress={goToPrevious}
-    //       disabled={pageNum === 1 ? true : false}
-    //     >
-    //       <View
-    //         style={{
-    //           opacity: pageNum === 1 ? 0.4 : 1,
-    //           ...styles.buttonContainerStyle,
-    //         }}
-    //       >
-    //         <DefaultText style={{ color: "white" }}>Previous</DefaultText>
-    //       </View>
-    //     </TouchableOpacity>
-    //     {pageNum !== 6 ? (
-    //       <TouchableOpacity
-    //         onPress={goToNext}
-    //         disabled={pageNum === 6 ? true : false}
-    //       >
-    //         <View
-    //           style={{
-    //             opacity: pageNum === 6 ? 0.4 : 1,
-    //             ...styles.buttonContainerStyle,
-    //           }}
-    //         >
-    //           <DefaultText style={{ color: "white" }}>Next</DefaultText>
-    //         </View>
-    //       </TouchableOpacity>
-    //     ) : (
-    //       <TouchableOpacity onPress={submitValues}>
-    //         <View
-    //           style={{
-    //             backgroundColor: "red",
-    //             alignSelf: "flex-end",
-    //             margin: 10,
-    //             padding: 10,
-    //             paddingHorizontal: 20,
-    //             borderRadius: 10,
-    //           }}
-    //         >
-    //           <DefaultText style={{ color: "white" }}>Submit</DefaultText>
-    //         </View>
-    //       </TouchableOpacity>
-    //     )}
-    //   </View>
-    // </ScrollView>
   );
 };
 
