@@ -2,11 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Image,
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
@@ -20,7 +18,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { io } from "socket.io-client";
 
 import { URL } from "../../helpers/url";
-import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 import DefaultText from "../../components/DefaultText";
 import {
@@ -28,63 +25,16 @@ import {
   setHallChats,
   setHallStatus,
 } from "../../store/actions/HallChat";
-// import HallChatItem from "../../components/HallChatItem";
 import Colors from "../../constants/Colors";
-// import { setHallStatus } from "./../../store/actions/HallChat";
 import { Ionicons } from "@expo/vector-icons";
 import HallChatItem from "./../../components/HallChatItem";
 import { editHall } from "./../../store/actions/Auth";
 
 const socket = io.connect(URL);
 
-const Messages = [
-  {
-    id: "1",
-    userName: "Jenny Doe",
-    userImg: require("../../assets/users/user-1.jpg"),
-    messageTime: "4 mins ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "2",
-    userName: "John Doe",
-    userImg: require("../../assets/users/user-2.jpg"),
-    messageTime: "2 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "3",
-    userName: "Ken William",
-    userImg: require("../../assets/users/user-4.jpg"),
-    messageTime: "1 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "4",
-    userName: "Selina Paul",
-    userImg: require("../../assets/users/user-6.jpg"),
-    messageTime: "1 day ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "5",
-    userName: "Christy Alex",
-    userImg: require("../../assets/users/user-7.jpg"),
-    messageTime: "2 days ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-];
-
 const ChatsScreen = (props) => {
   const { navigation } = props;
 
-  // const [chatsDetails, setChatsDetails] = useState([]);
-  // const [refreshing, setRefreshing] = useState(false);
   const [flag, setFlag] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -96,16 +46,9 @@ const ChatsScreen = (props) => {
   const status = useSelector((state) => state.HallChats.hallChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
 
-  const { chatRooms, hallName, id: hallId } = hallInfo;
+  const { hallName, id: hallId } = hallInfo;
 
-  console.log("chatsDetails in host chatsScreen ", chatsDetails);
-
-  // const onRefresh = useCallback(() => {
-  //   setRefreshing(true);
-  //   setTimeout(() => {
-  //     setRefreshing(false);
-  //   }, 2000);
-  // }, []);
+  console.log("hallInfo ", hallInfo);
 
   const tryAgain = () => {
     dispatch(setHallStatus(100));
@@ -113,9 +56,9 @@ const ChatsScreen = (props) => {
 
   useEffect(() => {
     const getMessages = () => {
-      dispatch(getHallChats(chatRooms));
+      dispatch(getHallChats(hallInfo.chatRooms));
     };
-    if (token && chatRooms?.length !== 0 && status === 100) {
+    if (token && hallInfo.chatRooms?.length !== 0 && status === 100) {
       setLoading(true);
       setFlag(true);
       getMessages();
@@ -124,7 +67,7 @@ const ChatsScreen = (props) => {
       setLoading(true);
       getMessages();
     }
-  }, [hallInfo, status, chatRooms]);
+  }, [hallInfo, status, hallInfo.chatRooms]);
 
   // useEffect(() => {
   //   if (loading) getMessages();
@@ -171,28 +114,17 @@ const ChatsScreen = (props) => {
 
     if (flag && chatsDetails.length !== 0) {
       socket.removeAllListeners();
-      console.log("removed listeners");
-      console.log("chatRooms in here ", chatRooms);
-      for (let i = 0; i < chatRooms?.length; i++) {
+
+      for (let i = 0; i < hallInfo.chatRooms?.length; i++) {
         const objectListener = {
           contactId: hallId,
-          chatRoom: chatRooms[i],
+          chatRoom: hallInfo.chatRooms[i],
         };
 
-        console.log("setting listeners");
         const stringObjectListener = JSON.stringify(objectListener);
         socket.on(stringObjectListener, (messagesReceived) => {
-          console.log("id of user that received message ", hallId);
-          console.log("messagesReceived ", messagesReceived);
-
-          // set chats adding new message
-          // console.log("chatsDetails in on ", chatsDetails);
-          const index = chatsDetails.findIndex(
-            (chatDetails) => chatDetails._id === chatRooms[i]
-          );
-
           const chatRoom = chatsDetails.find(
-            (chatDetails) => chatDetails._id === chatRooms[i]
+            (chatDetails) => chatDetails._id === hallInfo.chatRooms[i]
           );
 
           const newMessage = {
@@ -209,8 +141,7 @@ const ChatsScreen = (props) => {
           newChats.sort((x, y) => {
             return x._id === chatRoom._id ? -1 : y === chatRoom._id ? 1 : 0;
           });
-          // newChats[index] = chatRoom;
-          // console.log("hereee");
+
           dispatch(setHallChats(newChats));
         });
       }
@@ -222,13 +153,10 @@ const ChatsScreen = (props) => {
   };
 
   const chatClickHandler = () => {
-    console.log("hello");
     navigation.navigate("Chat", {});
   };
 
   const renderItem = ({ item }) => {
-    // console.log("item ", item);
-    console.log("chatItem in host chatsScreen ", item);
     return <HallChatItem navigation={navigation} item={item} />;
   };
 
@@ -323,7 +251,6 @@ const ChatsScreen = (props) => {
         paddingTop: insets.top,
         backgroundColor: "white",
       }}
-      // edges={["bottom"]}
     >
       <View style={{ flex: 1 }}>
         <FlatList

@@ -80,8 +80,6 @@ const styles = StyleSheet.create({
 
   input: {
     flex: 9,
-    // width: "80%",
-    // paddingHorizontal: 5,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

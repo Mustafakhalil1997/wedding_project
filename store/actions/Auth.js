@@ -1,5 +1,4 @@
 export const SET_TOKEN = "SET_TOKEN";
-import { getToken } from "./../../helpers/db";
 export const SIGNUP = "SIGNUP";
 export const LOGIN = "LOGIN";
 export const LOGOUT = "LOGOUT";

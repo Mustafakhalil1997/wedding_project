@@ -38,9 +38,6 @@ const HallItem = (props) => {
     ownerId,
     price,
   } = item;
-  // console.log("price in hallItem ", price);
-  // console.log("images ", images);
-  // const { lat, lng } = location;
 
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
@@ -62,7 +59,6 @@ const HallItem = (props) => {
         images,
         bookings,
         price,
-        // isFavorite: isFavorite, // when isFavorite is changed in the store, route parameters don't get updated unless they are revisited, so I can't pass isFavorite in here instead I have to directly access it from the store in HallDetailScreen
       },
     });
   };
@@ -71,7 +67,6 @@ const HallItem = (props) => {
 
   const onLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
-    // console.log("value s", x, y, width, height);
     setDimensions({ width: width, height: height });
   };
 
@@ -83,7 +78,6 @@ const HallItem = (props) => {
           background={
             android ? TouchableNativeFeedback.Ripple("white", false) : null
           }
-          //   useForeground
         >
           <View style={styles.contentContainer}>
             <View
@@ -100,7 +94,6 @@ const HallItem = (props) => {
                 isFavorite={isFavorite}
                 scrollEnabled={false}
               />
-              {/* <Image style={styles.image} source={source} /> */}
             </View>
             <View style={styles.infoContainer}>
               <View style={{ width: "55%" }}>
@@ -116,7 +109,6 @@ const HallItem = (props) => {
                   {kmAway} km away
                 </DefaultText>
               </View>
-              {/* <DefaultText>{email}</DefaultText> */}
               <View style={{ alignItems: "flex-end" }}>
                 <DefaultText>{mobileNumber}</DefaultText>
                 <DefaultText>
@@ -137,7 +129,6 @@ const HallItem = (props) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    // paddingTop: 10,
     paddingHorizontal: 20,
   },
 
@@ -145,7 +136,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
-    // alignItems: "center",
     height: "20%",
   },
   imageContainer: {
@@ -162,9 +152,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  //   hallItem: {
-  //       flexDirection: "row"
-  //   }
 });
 
 export default HallItem;

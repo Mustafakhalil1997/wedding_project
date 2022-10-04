@@ -47,10 +47,6 @@ const HallList = (props) => {
   //   (state) => state.Connection.isInternetReachable
   // );
 
-  console.log("rendering hallList");
-  console.log("again and again");
-  console.log("hallList ", DUMMY_HALLLIST);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -68,7 +64,6 @@ const HallList = (props) => {
     };
     if (status === 100) {
       setLoading(true);
-      // dispatchState({ type: "setLoading", loading: true });
       loadListAndCurrentLocation();
     }
     if (status !== 100) {
@@ -88,18 +83,15 @@ const HallList = (props) => {
       newFilters = filters.filter((fil) => fil !== filter);
     else newFilters = [...filters, filter];
 
-    console.log("newFilters ", newFilters);
     setFilters(newFilters);
     setPage(1);
   };
 
   useEffect(() => {
-    console.log("trying again");
     tryAgain();
   }, [filters]);
 
   useEffect(() => {
-    console.log("isMoreItemsLoading ", isMoreItemsLoading);
     setIsMoreItemsLoading(false);
   }, [DUMMY_HALLLIST]);
 
@@ -113,11 +105,6 @@ const HallList = (props) => {
     setPage(1);
     dispatch(setStatus(100));
   };
-
-  const sortedListByPrice = useMemo(
-    () => [...DUMMY_HALLLIST].sort((a, b) => a.price - b.price),
-    [DUMMY_HALLLIST]
-  );
 
   const renderHall = (itemData) => {
     const { item } = itemData;
@@ -199,7 +186,6 @@ const HallList = (props) => {
       /> */}
       <FlatList
         showsVerticalScrollIndicator={false}
-        // data={filterByPrice ? sortedListByPrice : DUMMY_HALLLIST}
         data={DUMMY_HALLLIST}
         renderItem={renderHall}
         refreshControl={
@@ -215,7 +201,6 @@ const HallList = (props) => {
             >
               <View
                 style={{
-                  // alignSelf: "flex-end",
                   backgroundColor: filters.length !== 0 ? "green" : "black",
                   padding: 5,
                   marginTop: 5,

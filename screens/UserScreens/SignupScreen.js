@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { View, StyleSheet, Dimensions, ScrollView } from "react-native";
-import { showMessage } from "react-native-flash-message";
-import { Formik } from "formik";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
+import { showMessage } from "react-native-flash-message";
+import { Formik } from "formik";
+
 import * as Google from "expo-auth-session/providers/google";
 // import * as WebBrowser from "expo-web-browser";
 
@@ -25,8 +26,6 @@ import customBackHandler from "./../../helpers/customBackHandler";
 const height = Dimensions.get("window").height;
 console.log("height ", height * 0.2);
 
-// WebBrowser.maybeCompleteAuthSession();
-
 const SignupScreen = ({ navigation }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [accessToken, setAccessToken] = useState();
@@ -36,64 +35,6 @@ const SignupScreen = ({ navigation }) => {
     password: "",
     confirmPassword: "",
   });
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId:
-      "275837775568-u8k7ihqr2gau5e5jrglsdg9v373ivqen.apps.googleusercontent.com",
-    iosClientId:
-      "275837775568-n3q6e3h0p8a4vgr8e1ttbfjovioolser.apps.googleusercontent.com",
-    androidClientId:
-      "275837775568-68ef1tkrabb6uvh83gcs06gq34gjp7lr.apps.googleusercontent.com",
-    scopes: ["profile", "email"],
-  });
-
-  useEffect(() => {
-    console.log("tryingg");
-    if (response?.type === "success") {
-      console.log("successs");
-      setAccessToken(response.authentication.accessToken);
-    }
-  }, [response]);
-
-  useEffect(() => {
-    if (accessToken) {
-      getUserData();
-    }
-  }, [accessToken]);
-
-  const getUserData = async () => {
-    try {
-      const userInfoResponse = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      const responseData = await userInfoResponse.json();
-
-      const { name, email } = responseData;
-
-      const newUserInfo = {
-        fullName: name,
-        email: email,
-        password: "",
-        confirmPassword: "",
-      };
-      setUserInfo(newUserInfo);
-    } catch (err) {
-      const errorMessage = responseData.message;
-      showMessage({
-        message: errorMessage,
-        type: "default",
-        color: "white",
-        backgroundColor: "red",
-        style: { borderRadius: 20 },
-      });
-    }
-  };
 
   useLayoutEffect(() => {
     customBackArrow({ navigation, isSubmitting });
@@ -109,13 +50,6 @@ const SignupScreen = ({ navigation }) => {
   }, [isSubmitting]);
 
   const dispatch = useDispatch();
-
-  const handleGoogleSignin = () => {
-    const config = {
-      iosClientId:
-        "275837775568-n3q6e3h0p8a4vgr8e1ttbfjovioolser.apps.googleusercontent.com",
-    };
-  };
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
@@ -190,8 +124,6 @@ const SignupScreen = ({ navigation }) => {
 
     // }, 2000);
   };
-
-  const insets = useSafeAreaInsets();
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>

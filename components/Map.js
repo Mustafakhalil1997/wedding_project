@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
 
 const Map = (props) => {
-  // const [currentLocation, setCurrentLocation] = useState(null);
+  const { getLocation } = props;
 
-  const { route, navigation, getLocation } = props;
-
-  const [errorMsg, setErrorMsg] = useState(null);
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
   );
-
-  console.log("currentLocationnn ", Object.keys(currentLocation).length);
 
   const [selectedLocation, setSelectedLocation] = useState(currentLocation);
 
@@ -27,26 +22,18 @@ const Map = (props) => {
   let lng;
 
   if (Object.keys(currentLocation).length !== 0) {
-    console.log("currentLocation set");
     lat = currentLocation.latitude;
     lng = currentLocation.longitude;
   }
 
   const getDragLocation = (values) => {
-    console.log("values ", values.nativeEvent.coordinate);
     getLocation(values.nativeEvent.coordinate);
     setSelectedLocation(values.nativeEvent.coordinate);
   };
 
   const regionChangeHandler = (region) => {
     console.log(region);
-    // setSelectedLocation({
-    //   latitude: region.latitude,
-    //   longitude: region.longitude,
-    // });
   };
-
-  const source = require("../constants/images/beautiful-photozone-with-big-wreath-decorated-with-greenery-roses-centerpiece-candles-sides-garland-hanged-trees_8353-11019.jpg");
 
   return (
     <View style={styles.container}>
@@ -57,7 +44,7 @@ const Map = (props) => {
             latitude: selectedLocation ? selectedLocation.latitude : lat,
             longitude: selectedLocation ? selectedLocation.longitude : lng,
             latitudeDelta: 0.5,
-            longitudeDelta: 0.5, // more view of the map
+            longitudeDelta: 0.5,
           }}
           onRegionChange={regionChangeHandler}
         >
@@ -68,7 +55,6 @@ const Map = (props) => {
                 key={index}
                 pinColor="green"
                 title={title}
-                // onPress={markerClickHandler}
                 coordinate={{ latitude: lat, longitude: lng }}
               />
             );

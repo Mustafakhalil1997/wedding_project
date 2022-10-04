@@ -15,15 +15,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Avatar } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 
-import { logout, switchProfile } from "../../store/actions/Auth";
-import { URL } from "../../helpers/url";
 import { cloudinaryURL } from "../../helpers/cloudinaryURL";
+import { logout, switchProfile } from "../../store/actions/Auth";
 
 import DefaultText from "../../components/DefaultText";
 import ProfileElement from "./ProfileElement";
-import { userChatLogOut } from "../../store/actions/UserChat";
-import { hallChatLogOut } from "../../store/actions/HallChat";
-// import { logOut } from "./../../store/actions/HallChat";
+
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -35,17 +32,13 @@ const ProfileScreen = (props) => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  const chatsDetails = useSelector((state) => state.UserChats.userChats);
-  const token = useSelector((state) => state.Auth.token);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
 
-  const { firstName, lastName, email, id, profileImage, reservation } =
-    userInfo;
+  console.log("HallInfo in profileScreen ", hallInfo);
 
-  console.log("userInfo ", userInfo);
+  const { firstName, lastName, profileImage, reservation } = userInfo;
 
   const fullName = firstName + " " + lastName;
-  console.log("fullName in profileScreen", fullName);
-  console.log("profileImage in profileScreen ", profileImage);
 
   let convertedImageUrl = "";
   if (profileImage) convertedImageUrl = cloudinaryURL + profileImage;
@@ -90,12 +83,6 @@ const ProfileScreen = (props) => {
       <ScrollView style={styles.profileContainer}>
         <View style={styles.header}>
           <View style={styles.imageCircleContainer}>
-            {/* <Avatar.Image
-              size={60}
-              source={{
-                uri: "https://res.cloudinary.com/drpmbofhb/image/upload/v1652994324/images/oiylcizbnqcquzrzz6zy.jpg",
-              }}
-            /> */}
             {profileImage ? (
               <Avatar.Image size={60} source={{ uri: convertedImageUrl }} />
             ) : (
@@ -105,7 +92,6 @@ const ProfileScreen = (props) => {
               />
             )}
           </View>
-          {/* <View></View> */}
           <TouchableOpacity style={{}} onPress={logoutClickHandler}>
             <DefaultText style={{ color: "red", fontFamily: "open-sans-bold" }}>
               LOGOUT

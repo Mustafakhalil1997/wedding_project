@@ -28,14 +28,9 @@ const HallDetailScreen = (props) => {
   const { hallId, name, email, address, location, number, images, price } =
     route.params;
 
-  console.log("pricee ", price);
-
   const userInfo = useSelector((state) => state.Auth.userInfo);
 
   const convertedImagesUrl = images.map((image) => cloudinaryURL + image);
-
-  // console.log("converted Images ", convertedImagesUrl);
-  // console.log("location ", location);
 
   const mapIconClickHandler = () => {
     navigation.navigate("MapView", {

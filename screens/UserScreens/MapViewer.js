@@ -1,36 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Dimensions, Pressable } from "react-native";
-import MapView, { Callout, Marker } from "react-native-maps";
-import { useSelector } from "react-redux";
+import React from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import DefaultText from "../../components/DefaultText";
+import { useSelector } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// const locations = [
-//   {
-//     hallId: "h1",
-//     title: "North Hall",
-//     lat: 34.431093869627254,
-//     lng: 35.8377506411768,
-//   },
-//   {
-//     hallId: "h2",
-//     title: "West Hall",
-//     lat: 34.15550968858545,
-//     lng: 35.64338541736089,
-//   },
-//   {
-//     hallId: "h3",
-//     title: "5 Star Hall",
-//     lat: 39.92801442507861,
-//     lng: 32.83767491273409,
-//   },
-// ];
+import MapView, { Callout, Marker } from "react-native-maps";
+import DefaultText from "../../components/DefaultText";
 
 const MapViewer = ({ route, navigation }) => {
-  // const [currentLocation, setCurrentLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  console.log("route.params ", route.params);
   const currentLocation = useSelector(
     (state) => state.location.currentLocation
   );
@@ -40,9 +17,6 @@ const MapViewer = ({ route, navigation }) => {
     return { ...hall.location, hallName: hall.hallName, hallId: hall.id };
   });
 
-  // console.log("locations ", locations);
-
-  let title;
   let lat = 0;
   let lng = 0;
   if (route.params) {
@@ -58,7 +32,6 @@ const MapViewer = ({ route, navigation }) => {
 
   const markerClickHandler = (hallId) => {
     const hall = hallList.find((hall) => hall.id === hallId);
-    console.log("hall ", hall);
     const { hallName, email, address, location, mobileNumber, images } = hall;
     console.log;
     navigation.navigate({
@@ -107,11 +80,7 @@ const MapViewer = ({ route, navigation }) => {
               return (
                 <Marker
                   key={index}
-                  // pinColor="green"
                   title={hallName}
-                  // onPress={() => {
-                  //   markerClickHandler(hallId);
-                  // }}
                   onCalloutPress={() => {
                     markerClickHandler(hallId);
                   }}
@@ -145,29 +114,11 @@ const MapViewer = ({ route, navigation }) => {
                           // marginBottom: -15
                         }}
                       />
-                      {/* <View
-                      style={{
-                        backgroundColor: "transparent",
-                        borderColor: "transparent",
-                        borderTopColor: "#fff",
-                        borderWidth: 16,
-                        alignSelf: "center",
-                        marginTop: -32,
-                      }}
-                    /> */}
                     </View>
                   </Callout>
                 </Marker>
               );
             })}
-            {/* {route.params && (
-          <Marker
-            pinColor="green"
-            title={title}
-            // image={source}
-            coordinate={{ latitude: lat, longitude: lng }}
-          />
-        )} */}
           </MapView>
         )}
       </View>

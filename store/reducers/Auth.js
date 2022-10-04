@@ -63,18 +63,7 @@ const AuthReducer = (state = initialState, action) => {
         userType: switchType,
       };
     case EDIT_PROFILE:
-      const tempInfo = { ...state.userInfo };
-      console.log("newData after updating profile", action.newData);
-      // const { firstName, lastName, profileImage } = action.newData;
-      // const newDataReceived = {
-      //   firstName,
-      //   lastName,
-      //   profileImage,
-      // };
-      // const updatedInfo = { ...tempInfo, ...newDataReceived };
-      // console.log("updatedInfo after editing ", updatedInfo);
       const updatedInfo = { ...state.userInfo, ...action.newData };
-
       return {
         ...state,
         userInfo: updatedInfo,
@@ -94,7 +83,6 @@ const AuthReducer = (state = initialState, action) => {
         const newUserInfo = { ...state.userInfo, favorites: newFavorites };
         return {
           ...state,
-          // userInfo: { ...state.userInfo, favorites: newFavorites },
           userInfo: newUserInfo,
         };
       } else {

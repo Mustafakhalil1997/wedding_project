@@ -1,29 +1,22 @@
 import React, { useEffect } from "react";
-import {
-  StatusBar,
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  TextInput,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { showMessage, hideMessage } from "react-native-flash-message";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Colors from "../../constants/Colors";
-import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
-import validationSchema from "./LoginSchema";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/actions/Auth";
-import { URL } from "../../helpers/url";
-import DefaultText from "../../components/DefaultText";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import { showMessage } from "react-native-flash-message";
+import { Formik } from "formik";
+
+import { URL } from "../../helpers/url";
 import { connectionMessage } from "../../helpers/connectionMessageHandler";
+import { login } from "../../store/actions/Auth";
 import { userChatLogOut } from "../../store/actions/UserChat";
 import { hallChatLogOut } from "../../store/actions/HallChat";
+
+import validationSchema from "./LoginSchema";
+import Colors from "../../constants/Colors";
+
+import DefaultText from "../../components/DefaultText";
+import CustomInput from "../../components/CustomInput";
+import CustomButton from "../../components/CustomButton";
 
 // envelope // lock
 
@@ -38,9 +31,6 @@ const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.Auth.userType);
   const token = useSelector((state) => state.Auth.token);
-  const connectionStatus = useSelector((state) => state.Connection.isConnected);
-
-  const userChats = useSelector((state) => state.UserChats.userChats);
 
   useEffect(() => {
     /* had to these two after I make sure useData is wiped out
@@ -58,13 +48,6 @@ const LoginScreen = ({ navigation }) => {
 
   const handleSubmitForm = async (values, formikActions) => {
     // send to the server
-    console.log("connectionStatuss ", connectionStatus);
-    if (!connectionStatus) {
-      console.log("connectionTypee ", connectionType);
-      console.log("not connected to wifi");
-      connectionMessage("You are not connected to wifi");
-      return;
-    }
     const { email, password } = values;
 
     const user = {
@@ -85,10 +68,8 @@ const LoginScreen = ({ navigation }) => {
         },
         body: JSON.stringify({ email, password }),
       });
-      console.log("response.status ", response.status);
       const responseData = await response.json();
       const { userInfo, token, hallInfo } = responseData;
-      console.log("message ", responseData.message);
 
       if (response.status === 200) {
         dispatch(login(token, userInfo, hallInfo));
@@ -253,8 +234,6 @@ const styles = StyleSheet.create({
 
   inputsContainer: {
     flex: 1,
-    // paddingLeft: 20,
-    // paddingRight: 20,
     justifyContent: "center",
     alignItems: "center",
   },

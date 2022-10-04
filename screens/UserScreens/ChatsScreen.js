@@ -32,48 +32,48 @@ import { StatusBar } from "expo-status-bar";
 
 const socket = io.connect(URL);
 
-const Messages = [
-  {
-    id: "1",
-    userName: "Jenny Doe",
-    userImg: require("../../assets/users/user-1.jpg"),
-    messageTime: "4 mins ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "2",
-    userName: "John Doe",
-    userImg: require("../../assets/users/user-2.jpg"),
-    messageTime: "2 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "3",
-    userName: "Ken William",
-    userImg: require("../../assets/users/user-4.jpg"),
-    messageTime: "1 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "4",
-    userName: "Selina Paul",
-    userImg: require("../../assets/users/user-6.jpg"),
-    messageTime: "1 day ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "5",
-    userName: "Christy Alex",
-    userImg: require("../../assets/users/user-7.jpg"),
-    messageTime: "2 days ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-];
+// const Messages = [
+//   {
+//     id: "1",
+//     userName: "Jenny Doe",
+//     userImg: require("../../assets/users/user-1.jpg"),
+//     messageTime: "4 mins ago",
+//     messageText:
+//       "Hey there, this is my test for a post of my social app in React Native.",
+//   },
+//   {
+//     id: "2",
+//     userName: "John Doe",
+//     userImg: require("../../assets/users/user-2.jpg"),
+//     messageTime: "2 hours ago",
+//     messageText:
+//       "Hey there, this is my test for a post of my social app in React Native.",
+//   },
+//   {
+//     id: "3",
+//     userName: "Ken William",
+//     userImg: require("../../assets/users/user-4.jpg"),
+//     messageTime: "1 hours ago",
+//     messageText:
+//       "Hey there, this is my test for a post of my social app in React Native.",
+//   },
+//   {
+//     id: "4",
+//     userName: "Selina Paul",
+//     userImg: require("../../assets/users/user-6.jpg"),
+//     messageTime: "1 day ago",
+//     messageText:
+//       "Hey there, this is my test for a post of my social app in React Native.",
+//   },
+//   {
+//     id: "5",
+//     userName: "Christy Alex",
+//     userImg: require("../../assets/users/user-7.jpg"),
+//     messageTime: "2 days ago",
+//     messageText:
+//       "Hey there, this is my test for a post of my social app in React Native.",
+//   },
+// ];
 
 const ChatsScreen = (props) => {
   const { navigation } = props;
@@ -87,6 +87,7 @@ const ChatsScreen = (props) => {
 
   const token = useSelector((state) => state.Auth.token);
   const userInfo = useSelector((state) => state.Auth.userInfo);
+  const hallInfo = useSelector((state) => state.Auth.hallInfo);
   const chatsDetails = useSelector((state) => state.UserChats.userChats);
   const status = useSelector((state) => state.UserChats.userChatStatus);
   const userType = useSelector((state) => state.Auth.userType);
@@ -96,30 +97,15 @@ const ChatsScreen = (props) => {
 
   const { chatRooms, firstName, id: userId } = userInfo;
 
-  console.log("chatRooms in chatsScreen ", chatRooms);
-
-  // const onRefresh = useCallback(() => {
-  //   setRefreshing(true);
-  //   setTimeout(() => {
-  //     setRefreshing(false);
-  //   }, 2000);
-  // }, []);
-
   const tryAgain = () => {
     dispatch(setUserStatus(100));
   };
 
   useEffect(() => {
-    console.log("this is useEffect");
-    console.log("token ", token);
-    console.log("chatRooms.length ", chatRooms);
-    console.log("status ", status);
     const getMessages = () => {
-      console.log("setting chats in chatsScreen for user");
       dispatch(getUserChats(chatRooms));
     };
-    if (token && chatRooms.length !== 0 && status === 100) {
-      console.log("right here");
+    if (token && hallInfo && chatRooms?.length !== 0 && status === 100) {
       setLoading(true);
       setFlag(true);
       getMessages();
@@ -156,7 +142,7 @@ const ChatsScreen = (props) => {
 
         console.log("setting listeners");
         console.log("chatRooms ", chatRooms);
-        console.log("chatsDetails in useEffect ", chatsDetails);
+
         const stringObjectListener = JSON.stringify(objectListener);
         socket.on(stringObjectListener, (messagesReceived) => {
           console.log("id of user that received message ", userId);
@@ -171,14 +157,10 @@ const ChatsScreen = (props) => {
           const chatRoom = chatsDetails.find(
             (chatDetails) => chatDetails._id === room
           );
-
-          console.log("chatsDetails");
-          console.log("chatRoom?? ", chatRoom);
-
           /* 
             socket.on is not working when a new chat is created and that chat is the first chat ever for this user.
             the reason is that the backend in this case is returning the entire chatRoom instead of just chatRoom id in
-            the list of chatRooms for the user
+            the list of chatRooms for the user -- fixed
           */
 
           const newMessage = {

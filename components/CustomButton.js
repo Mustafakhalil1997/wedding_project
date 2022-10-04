@@ -8,7 +8,6 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import Colors from "../constants/Colors";
 
 let TouchableComponent = TouchableOpacity;
 let android = false;
@@ -38,14 +37,12 @@ const CustomButton = React.forwardRef((props, ref) => {
           borderRadius: 15,
           overflow: "hidden",
           flex: 1,
-          // backgroundColor: "green",
         }}
         background={
           rippleColor
             ? TouchableNativeFeedback.Ripple(rippleColor, false)
             : TouchableNativeFeedback.Ripple("white", false)
         }
-        //   background={TouchableNativeFeedback.Ripple("white", false)}
       >
         <View
           style={{
@@ -71,7 +68,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     overflow: "hidden",
     alignSelf: "center",
-    // alignItems: "center",
   },
   button: {
     borderRadius: 10,

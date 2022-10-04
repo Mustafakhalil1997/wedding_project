@@ -11,7 +11,7 @@ import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 const { width } = Dimensions.get("window");
 
 const HallImage = (props) => {
-  const { image, onImageLongPressed, index } = props;
+  const { image, onImageLongPressed } = props;
 
   const [selected, setSelected] = useState(false);
 

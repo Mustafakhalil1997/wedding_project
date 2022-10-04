@@ -51,8 +51,6 @@ const CalendarScreen = ({ navigation }) => {
   const { bookings } = hallInfo;
   const bookingIds = bookings.map((booking) => booking._id);
 
-  console.log("bookings ", bookings);
-
   const datesReserved = bookings.map((booking) =>
     booking.date.substring(0, 10)
   );
@@ -73,11 +71,6 @@ const CalendarScreen = ({ navigation }) => {
     };
     calendarDates = { ...calendarDates, ...Object.assign(calendarDate) };
   }
-  // // for (let i = 0; i < bookings.length; i++) {
-  // //   dateToUser[bookings[i].date.substring(0, 10)] = {};
-  // // }
-
-  // next populate calendar with info about users
 
   useEffect(() => {
     const getBookingsWithUsers = async () => {
@@ -103,17 +96,13 @@ const CalendarScreen = ({ navigation }) => {
     getBookingsWithUsers();
   }, [hallInfo]);
 
-  console.log("hallId ", hallInfo._id);
-
   useEffect(() => {
     socket.removeAllListeners();
     const objectListener = {
       hallId: hallInfo._id,
     };
-    console.log("setting listener");
     const stringObjectListener = JSON.stringify(objectListener);
     socket.on(stringObjectListener, (newBooking) => {
-      console.log("newBooking received ", newBooking);
       const newBookings = [...hallInfo.bookings, newBooking];
 
       dispatch(
@@ -123,18 +112,6 @@ const CalendarScreen = ({ navigation }) => {
       );
     });
   }, [hallInfo]);
-
-  // const renderEmptyDate = () => {
-  //   return (
-  //     <View style={styles.emptyDate}>
-  //       <Text>This is empty date!</Text>
-  //     </View>
-  //   );
-  // };
-
-  // const rowHasChanged = (r1, r2) => {
-  //   return r1.name !== r2.name;
-  // };
 
   const timeToString = (time) => {
     const date = new Date(time);
@@ -186,8 +163,6 @@ const CalendarScreen = ({ navigation }) => {
   };
 
   const renderItem = (item) => {
-    // const fontSize = isFirst ? 16 : 14;
-    // const color = isFirst ? "black" : "#43515c";
     const { name, email, convertedImageUrl, contactImage, userId } = item;
     if (convertedImageUrl === null) {
       return (
@@ -294,8 +269,6 @@ const CalendarScreen = ({ navigation }) => {
               // "2022-05-26": { endingDay: true, color: "gray" },
             }}
             showOnlySelectedDayItems
-            // monthFormat={'yyyy'}
-            // theme={{ calendarBackground: "red", agendaKnobColor: "green" }}
             theme={{ agendaKnobColor: "black" }}
 
             //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}

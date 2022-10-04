@@ -74,7 +74,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
   console.log("calendarDates ", calendarDates);
 
   const dayPressHandler = (day) => {
-    console.log("selected day", day.dateString);
     setDaySelected(day.dateString);
   };
 
@@ -101,8 +100,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
       userId,
       date: daySelected,
     };
-    // dispatch(reserveHall(booking));
-    // console.log("booking ", booking);
 
     try {
       setIsSubmitting(true);
@@ -127,7 +124,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
           type: "info",
           style: { backgroundColor: "black" },
         });
-        console.log("could not reserve");
         return;
       }
 
@@ -154,15 +150,12 @@ const CalendarReserveScreen = ({ route, navigation }) => {
         <Calendar
           style={{ height: 350 }}
           onDayPress={dayPressHandler}
-          // Handler which gets executed on day long press. Default = undefined
           onDayLongPress={(day) => {
             console.log("selected day", day);
           }}
           minDate={`${today}`}
-          // minDate={today}
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={"MMMM yyyy "}
-          // Handler which gets executed when visible month changes in calendar. Default = undefined
           onMonthChange={(month) => {
             console.log("month changed", month);
           }}
@@ -187,16 +180,9 @@ const CalendarReserveScreen = ({ route, navigation }) => {
             //   },
             // },
           }}
-          // Enable the option to swipe between months. Default = false
           enableSwipeMonths={true}
         />
-        {/* <View
-      style={[
-        styles.reserveButtonContainer,
-        { marginTop: 10 },
-        { opacity: daySelected ? 1 : 0.4 },
-      ]}
-    > */}
+
         <TouchableOpacity
           onPress={confirmReservationClickHandler}
           disabled={
@@ -215,7 +201,6 @@ const CalendarReserveScreen = ({ route, navigation }) => {
             <DefaultText styles={styles.reserveButtonText}>CONFRIM</DefaultText>
           )}
         </TouchableOpacity>
-        {/* </View> */}
       </View>
     </SafeAreaView>
   );

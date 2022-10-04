@@ -22,7 +22,6 @@ import UserChatReducer from "./store/reducers/UserChat";
 import HallChatReducer from "./store/reducers/HallChat";
 import connectionReducer from "./store/reducers/Connection";
 
-import UserTabNavigator from "./navigations/UserTabNavigation";
 import SwitchNavigation from "./navigations/SwitchNavigation";
 import { setToken } from "./store/actions/Auth";
 import { setConnection } from "./store/actions/Connection";
@@ -41,6 +40,7 @@ console.log(date);
 //   .catch((err) => {
 //     console.log("Initializeding db failed");
 //     console.log(err);
+
 //   });
 
 enableScreens();
@@ -67,15 +67,6 @@ const fetchFonts = () => {
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      console.log("connectinon state ", state);
-      console.log("Connection type", state.type);
-      console.log("Is connected?", state.isConnected);
-      store.dispatch(setConnection(state));
-    });
-  }, []);
 
   if (!fontLoaded) {
     return (

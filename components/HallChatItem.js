@@ -2,16 +2,11 @@ import React from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 
 import DefaultText from "./DefaultText";
-import { useSelector } from "react-redux";
 import { cloudinaryURL } from "./../helpers/cloudinaryURL";
 
 const HallChatItem = (props) => {
   const { navigation, item } = props;
   const { _id, chats, userId: userItem } = item;
-
-  const userInfo = useSelector((state) => state.Auth.userInfo);
-
-  const { chatRooms, firstName, id: userId } = userInfo;
 
   const lastChat = chats[0];
   const { message, time } = lastChat;
@@ -36,20 +31,6 @@ const HallChatItem = (props) => {
   const contactImage = userItem.profileImage;
   const contactId = userItem._id;
 
-  // const contactName = (() => {
-  //   if ( === firstName) {
-  //     contactImage = contacts[1].profileImage;
-  //     contactId = contacts[1]._id;
-  //     return contacts[1].firstName + " " + contacts[1].lastName;
-  //   }
-  //   contactImage = contacts[0].profileImage;
-  //   contactId = contacts[0]._id;
-  //   return contacts[0].firstName + " " + contacts[0].lastName;
-  // })();
-
-  // console.log(contactName);
-  // console.log(lastChat);
-
   return (
     <TouchableOpacity
       onPress={() => {
@@ -72,7 +53,6 @@ const HallChatItem = (props) => {
           ) : (
             <Image
               source={require("../constants/images/Roger.jpg")}
-              // source={require("../../constants/images/Roger.jpg")}
               style={styles.userImage}
             />
           )}
@@ -114,7 +94,6 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingLeft: 0,
     marginLeft: 10,
-    // width: 300,
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
   },

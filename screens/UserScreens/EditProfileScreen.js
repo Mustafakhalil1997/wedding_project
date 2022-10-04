@@ -3,9 +3,6 @@ import {
   View,
   StyleSheet,
   ScrollView,
-  Image,
-  Button,
-  Text,
   Alert,
   Dimensions,
   TouchableOpacity,
@@ -18,20 +15,19 @@ import * as ImagePicker from "expo-image-picker";
 import validationSchema from "./EditProfileSchema";
 import { Formik } from "formik";
 import { Ionicons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { editProfile } from "../../store/actions/Auth";
 import { showMessage } from "react-native-flash-message";
+import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 import { URL } from "../../helpers/url";
 
 import customBackArrow from "../../helpers/customBackArrow";
 import customBackHandler from "../../helpers/customBackHandler";
-import { cloudinaryURL } from "../../helpers/cloudinaryURL";
 
 import CustomHeaderButton from "../../components/HeaderButton";
 import CustomInput from "../../components/CustomInput";
-import CustomButton from "../../components/CustomButton";
 import DefaultText from "../../components/DefaultText";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -113,7 +109,6 @@ const EditProfileScreen = (props) => {
     const backHandler = customBackHandler({ navigation, isSubmitting });
 
     return () => {
-      console.log("useEffect returned");
       backHandler.remove();
     };
   }, [isSubmitting]);

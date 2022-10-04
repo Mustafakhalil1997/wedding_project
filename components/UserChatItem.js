@@ -9,9 +9,6 @@ const UserChatItem = (props) => {
   const { navigation, item } = props;
   const { _id, chats, hallId: hallItem } = item;
 
-  const userInfo = useSelector((state) => state.Auth.userInfo);
-
-  const { chatRooms, firstName, id: userId } = userInfo;
 
   let lastChat;
   let timeDifference;
@@ -25,7 +22,6 @@ const UserChatItem = (props) => {
     const now = new Date();
 
     timeDifference = (() => {
-      // when message was sent
       const diffMs = now - convertedTime;
       const diffDays = Math.floor(diffMs / 86400000); // days
       if (diffDays >= 1) return diffDays + " days ago";
@@ -35,46 +31,11 @@ const UserChatItem = (props) => {
       if (diffMins >= 1) return diffMins + " minutes ago";
       return "now";
     })();
-    console.log("timeDifference ", timeDifference);
   }
-  // const lastChat = chats[0];
-  // const { message, time } = lastChat;
-
-  // const convertedTime = new Date(time);
-  // console.log(convertedTime.getHours() + ":" + convertedTime.getMinutes());
-  // const now = new Date();
-
-  // const timeDifference = (() => {
-  //   // when message was sent
-  //   const diffMs = now - convertedTime;
-  //   const diffDays = Math.floor(diffMs / 86400000); // days
-  //   if (diffDays >= 1) return diffDays + " days ago";
-  //   const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-  //   if (diffHrs >= 1) return diffHrs + " hours ago";
-  //   const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-  //   if (diffMins >= 1) return diffMins + " minutes ago";
-  //   return "now";
-  // })();
 
   const contactName = hallItem.hallName;
   const contactImage = hallItem.images[0];
   const contactId = hallItem._id;
-
-  console.log("lastChat here ", lastChat);
-
-  // const contactName = (() => {
-  //   if ( === firstName) {
-  //     contactImage = contacts[1].profileImage;
-  //     contactId = contacts[1]._id;
-  //     return contacts[1].firstName + " " + contacts[1].lastName;
-  //   }
-  //   contactImage = contacts[0].profileImage;
-  //   contactId = contacts[0]._id;
-  //   return contacts[0].firstName + " " + contacts[0].lastName;
-  // })();
-
-  // console.log(contactName);
-  // console.log(lastChat);
 
   return (
     <TouchableOpacity
@@ -98,7 +59,6 @@ const UserChatItem = (props) => {
           ) : (
             <Image
               source={require("../constants/images/Roger.jpg")}
-              // source={require("../../constants/images/Roger.jpg")}
               style={styles.userImage}
             />
           )}

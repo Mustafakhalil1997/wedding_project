@@ -1,18 +1,19 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { Formik } from "formik";
+
+import { showMessage } from "react-native-flash-message";
+import { editProfile } from "./../../store/actions/Auth";
+import { URL } from "./../../helpers/url";
 
 import validationSchema from "./ChangePasswordSchema";
 import CustomInput from "./../../components/CustomInput";
-import { Formik } from "formik";
 import CustomButton from "./../../components/CustomButton";
-import { URL } from "./../../helpers/url";
-import { useSelector, useDispatch } from "react-redux";
-import { editProfile } from "./../../store/actions/Auth";
-import { showMessage } from "react-native-flash-message";
 
 const ChangePasswordScreen = () => {
   const userInfo = useSelector((state) => state.Auth.userInfo);
-  const { id, password } = userInfo;
+  const { id } = userInfo;
   const token = useSelector((state) => state.Auth.token);
   console.log("userInfo ", userInfo);
   const dispatch = useDispatch();
@@ -51,10 +52,8 @@ const ChangePasswordScreen = () => {
         },
         body: JSON.stringify(values),
       });
-      console.log("response.status ", response.status);
       const responseData = await response.json();
       const { message } = responseData;
-      console.log("message ", message);
 
       if (response.status === 200) {
         dispatch(editProfile({ password: newPassword }));

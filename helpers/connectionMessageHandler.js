@@ -1,7 +1,6 @@
 import { showMessage } from "react-native-flash-message";
 
 export const connectionMessage = (message) => {
-  console.log("showing message");
   return showMessage({
     message: message,
     color: "white",

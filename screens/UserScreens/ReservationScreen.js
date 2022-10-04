@@ -21,6 +21,16 @@ const monthNames = [
   "December",
 ];
 
+const weekdays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 const ReservationScreen = (props) => {
   const { navigation } = props;
 
@@ -39,16 +49,6 @@ const ReservationScreen = (props) => {
   const month = monthNames[newDate.getMonth()];
   const day = newDate.getUTCDate();
 
-  const weekdays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
   const weekday = weekdays[newDate.getUTCDay()];
 
   const isItemFavorite = (id) => {
@@ -62,14 +62,7 @@ const ReservationScreen = (props) => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <View style={styles.screenContainer}>
-        <DefaultText
-          style={{
-            fontSize: 20,
-            fontFamily: "open-sans",
-            alignSelf: "center",
-            margin: 10,
-          }}
-        >
+        <DefaultText style={styles.weddingDateText}>
           Your wedding is on {weekday},{" "}
           <DefaultText style={{ fontFamily: "open-sans-bold" }}>
             {day}th of {month}
@@ -88,10 +81,15 @@ const ReservationScreen = (props) => {
 
 const styles = StyleSheet.create({
   screenContainer: {
-    // alignItems: "center",
-    // justifyContent: "center",
     flex: 1,
     backgroundColor: "white",
+  },
+
+  weddingDateText: {
+    fontSize: 20,
+    fontFamily: "open-sans",
+    alignSelf: "center",
+    margin: 10,
   },
 });
 

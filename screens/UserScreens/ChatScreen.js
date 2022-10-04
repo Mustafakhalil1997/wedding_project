@@ -41,7 +41,6 @@ const ChatScreen = (props) => {
   const chatRooms = useSelector((state) => state.UserChats.userChats);
 
   let chatRoom;
-  // console.log("chatRooms ", chatRooms);
   if (roomId) {
     chatRoom = chatRooms.find((room) => {
       return room._id === roomId;
@@ -54,66 +53,6 @@ const ChatScreen = (props) => {
       return room.userId === userId && room.hallId._id === contactId;
     });
   }
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!existingChatRoom && !roomId) {
-  //       console.log("no chat room between these two");
-  //       // create chatRoom here
-
-  //       const requestBody = {
-  //         // firstMessage: messageSentToDatabase,
-  //         userId: userId,
-  //         hallId: contactId,
-  //       };
-  //       try {
-  //         const response = await fetch(`${URL}/api/chat/createChat`, {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(requestBody),
-  //         });
-
-  //         const responseData = await response.json();
-
-  //         if (response.status !== 200) {
-  //           console.log("returned with status ", response.status);
-  //         } else {
-  //           const { chatRoom, user } = responseData;
-  //           const newChats = [chatRoom, ...chatRooms];
-
-  //           console.log("newChats after newChat created ", newChats);
-
-  //           const { _id: roomId, hallId: contactId } = chatRoom;
-
-  //           if (!roomId && !existingChatRoom) {
-  //             existingChatRoom = chatRoom;
-  //           }
-
-  //           dispatch(setUserStatus(100));
-  //           dispatch(editProfile(user));
-  //           dispatch(setUserChats(newChats));
-
-  //           // stringObjectListener = JSON.stringify({
-  //           //   contactId: contactId._id,
-  //           // });
-
-  //           // socket.emit("newChatRoom", {
-  //           //   stringObjectListener,
-  //           //   messageWithId: {
-  //           //     chatRoom: roomId,
-  //           //     messages: messages,
-  //           //   },
-  //           // });
-  //           // socket.emit("sentMessage", { stringObjectListener, messages });
-  //         }
-  //       } catch (err) {
-  //         console.log("err ", err);
-  //       }
-  //     }
-  //   })();
-  // }, []);
 
   useEffect(() => {
     const convertMessages = (chatRoom) => {
@@ -230,12 +169,11 @@ const ChatScreen = (props) => {
           const responseData = await response.json();
 
           if (response.status !== 200) {
-            console.log("returned with status ", response.status);
           } else {
             const { chatRoom, user } = responseData;
             const newChats = [chatRoom, ...chatRooms];
 
-            console.log("user after creating chatRoom ", user);
+            console.log("updated data in user ", user);
 
             console.log("newChats after newChat created ", newChats);
 

@@ -58,7 +58,6 @@ const FavoriteHallList = (props) => {
     const favoritesIds = userInfo.favorites;
     const favoritesList = hallList.filter((h) => favoritesIds.includes(h.id));
     DUMMY_HALLLIST = favoritesList;
-    // DUMMY_HALLLIST = useSelector((state) => state.halls.favoritesList);
   }
 
   const isItemFavorite = (id) => {
@@ -71,7 +70,6 @@ const FavoriteHallList = (props) => {
     const { item } = itemData;
     const { id } = item;
     const isFavorite = isItemFavorite(id);
-    // const isFavorite = false;
     return (
       <HallItem isFavorite={isFavorite} item={item} navigation={navigation} />
     );

@@ -38,19 +38,20 @@ const EditImagesScreen = ({ navigation, route }) => {
     selected[images[i]] = false;
   }
 
-
   const [selectedImages, setSelectedImages] = useState(selected);
+
+  useLayoutEffect(() => {
+    console.log("isSubmitting", isSubmitting);
+    customBackArrow({ navigation, isSubmitting });
+  }, [isSubmitting]);
 
   useEffect(() => {
     const backHandler = customBackHandler({ navigation, isSubmitting });
 
     return () => {
+      console.log("useEffect returned");
       backHandler.remove();
     };
-  }, [isSubmitting]);
-
-  useLayoutEffect(() => {
-    customBackArrow({ navigation, isSubmitting });
   }, [isSubmitting]);
 
   useLayoutEffect(() => {
@@ -156,7 +157,8 @@ const EditImagesScreen = ({ navigation, route }) => {
       quality: 1,
     });
     if (!result.cancelled) {
-      setImageSelected(result.uri);
+      // setImageSelected(result.uri);
+      setIsSubmitting(true);
       const imageData = new FormData();
       imageData.append("profileImage", {
         name: new Date() + "_profile",
@@ -198,6 +200,7 @@ const EditImagesScreen = ({ navigation, route }) => {
             style: { borderRadius: 20 },
           });
         }
+        setIsSubmitting(false);
       } catch (err) {
         showMessage({
           message: err.message || "An unknown error occured, Please try again",
@@ -208,7 +211,6 @@ const EditImagesScreen = ({ navigation, route }) => {
         });
         console.log("errorrr ", err);
       }
-      // setHasUnsavedChanges(true);
     }
   };
 

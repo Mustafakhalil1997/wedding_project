@@ -55,17 +55,28 @@ const HostTabNavigator = () => {
   };
 
   const HomeStack = () => {
+    const hallInfo = useSelector((state) => state.Auth.hallInfo);
+
     return (
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
         }}
       >
-        <Stack.Screen name="Homee" component={HomeScreen} />
         <Stack.Screen
-          name="completeProfile"
-          component={CompleteHostProfileScreen}
+          name="Homee"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
         />
+
+        {!hallInfo && (
+          <Stack.Screen
+            name="completeProfile"
+            component={CompleteHostProfileScreen}
+          />
+        )}
       </Stack.Navigator>
     );
   };
@@ -104,7 +115,6 @@ const HostTabNavigator = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
 
-        // tabBarVisibilityAnimationConfig: true,
         headerTitleAlign: "center",
         tabBarLabel: ({ focused }) => {
           const token = useSelector((state) => state.Auth.token);

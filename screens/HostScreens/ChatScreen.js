@@ -25,8 +25,6 @@ const ChatScreen = (props) => {
 
   const { title, contactImage, contactId, roomId } = route.params;
 
-  console.log("contactImage ", contactImage);
-
   const [messages, setMessages] = useState([]);
 
   const dispatch = useDispatch();
@@ -50,43 +48,6 @@ const ChatScreen = (props) => {
       return room.userId._id === contactId && room.hallId === hallId;
     });
   }
-
-  // console.log("chatRoom ", chatRoom);
-  // console.log("existingChatRoom ", existingChatRoom);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     if (!roomId && !existingChatRoom) {
-  //       const requestBody = {
-  //         userId: contactId,
-  //         hallId: hallId,
-  //       };
-
-  //       try {
-  //         const response = await fetch(`${URL}/api/chat/createChat`, {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(requestBody),
-  //         });
-
-  //         const responseData = await response.json();
-
-  //         if (response.status !== 200) {
-  //           console.log("returned with status ", response.status);
-  //         } else {
-  //           const { chatRoom } = responseData;
-  //           console.log("chatRoom created ", chatRoom);
-  //           const newChats = [chatRoom, ...chatRooms];
-  //           dispatch(setHallChats(newChats));
-  //         }
-  //       } catch (err) {
-  //         console.log("err ", err);
-  //       }
-  //     }
-  //   })();
-  // }, []);
 
   useEffect(() => {
     const convertMessages = (chatRoom) => {
@@ -118,8 +79,6 @@ const ChatScreen = (props) => {
       const convertedMessages = convertMessages(existingChatRoom);
       setMessages(convertedMessages);
     }
-
-    // setMessages(convertedMessages);
   }, [chatRooms]);
 
   const onSend = useCallback(async (messages = []) => {
@@ -151,7 +110,6 @@ const ChatScreen = (props) => {
       });
       socket.emit("sentMessage", { stringObjectListener, messages });
 
-      // const index = chatRooms.findIndex((chatRoom) => chatRoom._id === roomId);
       chatRoom = chatRooms.find((chatRoom) => {
         if (roomId) return chatRoom._id === roomId;
         if (existingChatRoom) return chatRoom._id === existingChatRoom._id;
@@ -204,7 +162,6 @@ const ChatScreen = (props) => {
         const responseData = await response.json();
 
         if (response.status !== 200) {
-          console.log("returned with status ", response.status);
         } else {
           const { chatRoom } = responseData;
           const newChats = [chatRoom, ...chatRooms];

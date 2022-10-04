@@ -1,10 +1,11 @@
 import React from "react";
-import HallList from "../../components/HallList";
-import FavoriteHallList from "../../components/FavoriteHallList";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+
+import HallList from "../../components/HallList";
+import FavoriteHallList from "../../components/FavoriteHallList";
 
 const FavoriteHallsScreen = ({ navigation }) => {
   const insets = useSafeAreaInsets();

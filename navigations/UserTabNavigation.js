@@ -30,7 +30,6 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
-          // headerShown: false,
         }}
       >
         <Stack.Screen
@@ -55,7 +54,6 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
-          // headerShown: false,
         }}
       >
         <Stack.Screen
@@ -124,7 +122,6 @@ const UserTabNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerTitleAlign: "center",
-          // headerShown: false,
         }}
       >
         {!token && (
@@ -195,7 +192,6 @@ const UserTabNavigator = () => {
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        // tabBarVisibilityAnimationConfig: true,
         headerTitleAlign: "center",
 
         tabBarLabel: ({ focused }) => {

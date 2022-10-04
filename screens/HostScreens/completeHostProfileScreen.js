@@ -57,7 +57,6 @@ const CompleteHostProfileScreen = (props) => {
   }, [dispatch]);
 
   const getLocation = (location) => {
-    console.log("location", location);
     setLocation(location);
   };
 

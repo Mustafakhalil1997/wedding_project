@@ -17,14 +17,12 @@ import Colors from "../../constants/Colors";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import validationSchema from "./HallSchema";
-// import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useDispatch, useSelector } from "react-redux";
 import { signUp, editHall } from "../../store/actions/Auth";
 
 // envelope // lock
 
 const height = Dimensions.get("window").height;
-console.log("height ", height * 0.2);
 
 const EditHallScreen = ({ navigation }) => {
   const user = useSelector((state) => state.Auth.userInfo);
@@ -49,15 +47,8 @@ const EditHallScreen = ({ navigation }) => {
 
   const dispatch = useDispatch();
 
-  // console.log("statusBar height", StatusBar.currentHeight);
-
   const handleSubmitForm = (values, formikActions) => {
-    // send to the server
     const { hallName, email, location } = values;
-
-    // const coords = location.split(",");
-    // console.log("coords ", coords);
-
     const hall = {
       id: "h1",
       hallName: hallName,

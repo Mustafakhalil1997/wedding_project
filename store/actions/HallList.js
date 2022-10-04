@@ -40,8 +40,6 @@ export const setHallList = (count, filters = []) => {
 
   return async (dispatch) => {
     try {
-      // filters = [2];
-      console.log("filters: ", filters);
       const response = await fetch(`${URL}/api/hall/${count}/${filters}`);
 
       if (response.status !== 200) console.log("failedd");
