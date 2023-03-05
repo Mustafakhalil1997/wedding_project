@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useSelector } from "react-redux";
+import DefaultText from "./DefaultText";
+import { Ionicons } from "@expo/vector-icons";
 
 const Map = (props) => {
   const { getLocation } = props;
@@ -59,6 +61,7 @@ const Map = (props) => {
               />
             );
           })}
+
           <Marker
             draggable
             coordinate={{
@@ -67,6 +70,9 @@ const Map = (props) => {
             }}
             onDragEnd={getDragLocation}
           />
+          {/* <View style={{ top: "50%", left: "50%", position: "absolute" }}>
+            <Ionicons name="location" size={36} color="black" />
+          </View> */}
           {/* {route.params && (
           <Marker
             pinColor="green"
@@ -89,6 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   map: {
+    flex: 1,
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },

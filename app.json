@@ -23,7 +23,12 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.mkhalil9752.WeddingProject",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDg4tYuP18NBxRkmw-3BbK6wVMGjfbaS9w"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

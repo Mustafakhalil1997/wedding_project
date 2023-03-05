@@ -110,7 +110,7 @@ const LoginScreen = ({ navigation }) => {
           borderRadius: 20,
         },
       });
-      console.log("errorR ", error.message);
+      console.log("errorR ", error);
     }
 
     // console.log("Formik acitons ", formikActions);
@@ -154,10 +154,7 @@ const LoginScreen = ({ navigation }) => {
               isSubmitting,
             }) => {
               let buttonDisabled = true;
-              if (
-                Object.keys(errors).length == 0 &&
-                Object.keys(touched).length != 0
-              ) {
+              if (Object.keys(errors).length == 0 && Object.keys(touched).length != 0) {
                 buttonDisabled = false;
               }
 
@@ -212,9 +209,7 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={forgotPasswordHandler}>
             <View style={{ marginTop: 20, alignSelf: "center" }}>
-              <DefaultText
-                styles={{ fontSize: 16, color: "blue", opacity: 0.6 }}
-              >
+              <DefaultText styles={{ fontSize: 16, color: "blue", opacity: 0.6 }}>
                 Forgot Password?
               </DefaultText>
             </View>
